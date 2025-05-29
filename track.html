@@ -19,7 +19,7 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            min-width: 1300px;
+            min-width: 1400px; /* Adjusted for progress bar */
         }
         th, td {
             border: 1px solid #374151; /* border-gray-700 */
@@ -32,6 +32,7 @@
         }
         th.day-header, td.day-cell { min-width: 35px; max-width: 35px; }
         th.stats-col { min-width: 55px; font-size: 0.75rem; }
+        th.progress-col { min-width: 120px; font-size: 0.75rem; } /* For progress bar */
         th.action-col, td.action-cell { min-width: 100px; }
         .checkbox-cell input[type="checkbox"] {
             appearance: none; -webkit-appearance: none; width: 18px; height: 18px;
@@ -59,8 +60,8 @@
             width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7);
         }
         .modal-content {
-            background-color: #1f2937; margin: 10% auto; padding: 25px;
-            border: 1px solid #374151; width: 90%; max-width: 550px;
+            background-color: #1f2937; margin: 8% auto; padding: 25px; /* Adjusted margin-top */
+            border: 1px solid #374151; width: 90%; max-width: 600px; /* Slightly wider for motivation */
             border-radius: 10px; color: #f3f4f6; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
         .modal-close-btn {
@@ -75,25 +76,41 @@
         }
         .ai-tip-btn:hover, .action-btn:hover { background-color: #2563eb; }
         .ai-tip-btn:disabled, .action-btn:disabled { background-color: #4b5563; cursor: not-allowed; }
-        .delete-btn { background-color: #ef4444; /* bg-red-500 */ }
-        .delete-btn:hover { background-color: #dc2626; /* bg-red-600 */ }
-        .edit-btn { background-color: #f59e0b; /* bg-amber-500 */ }
-        .edit-btn:hover { background-color: #d97706; /* bg-amber-600 */ }
-        input[type="text"], input[type="number"], select {
-            background-color: #374151; /* bg-gray-700 */
-            border: 1px solid #4b5563; /* border-gray-600 */
-            color: #f3f4f6; /* text-gray-100 */
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
+        .delete-btn { background-color: #ef4444; } .delete-btn:hover { background-color: #dc2626; }
+        .edit-btn { background-color: #f59e0b; } .edit-btn:hover { background-color: #d97706; }
+        input[type="text"], input[type="number"], select, textarea {
+            background-color: #374151; border: 1px solid #4b5563; color: #f3f4f6;
+            padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; width: 100%;
         }
+        textarea { min-height: 80px; }
         label { margin-bottom: 4px; display: block; font-size: 0.9rem; }
+        .progress-bar-container {
+            width: 100px; height: 10px; background-color: #4b5563; border-radius: 5px; overflow: hidden; margin: 0 auto;
+        }
+        .progress-bar-fill {
+            height: 100%; background-color: #10b981; border-radius: 5px; transition: width 0.3s ease-in-out;
+        }
+        .habit-motivation-display {
+            font-size: 0.7rem;
+            color: #9ca3af; /* gray-400 */
+            margin-top: 2px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen p-2 sm:p-4 md:p-8">
 
-    <div id="loadingIndicator" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[200]">
-        <div class="text-xl font-semibold">Loading Habit Tracker...</div>
+    <div id="loadingIndicator" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-[200]">
+        <div class="text-xl font-semibold text-white">Loading Habit Tracker...</div>
+    </div>
+
+    <div id="configErrorModal" class="modal z-[210]">
+        <div class="modal-content bg-red-800 text-white">
+            <h2 class="text-2xl font-bold mb-4">Configuration Error!</h2>
+            <p id="configErrorMessage" class="mb-3">Essential Firebase configuration is missing. This application cannot function without it.</p>
+            <p class="text-sm">This configuration is usually provided by the platform where this app is hosted. Please ensure `__firebase_config`, `__app_id`, and potentially `__initial_auth_token` are correctly set up in the environment.</p>
+            <button id="closeConfigErrorModal" class="action-btn mt-6 bg-red-600 hover:bg-red-700 w-full">Acknowledge</button>
+        </div>
     </div>
 
     <div id="authModal" class="modal z-[150]">
@@ -101,6 +118,7 @@
             <h2 class="text-xl font-semibold mb-4">Authentication</h2>
             <p id="authMessage">Initializing authentication...</p>
             <p class="mt-2 text-sm text-gray-400">Your User ID: <span id="modalUserId" class="font-mono"></span></p>
+            <p class="mt-3 text-xs text-gray-500">Your data is kept private and associated with this unique User ID, securely managed by Firebase.</p>
         </div>
     </div>
 
@@ -119,14 +137,16 @@
             <div>
                 <input type="hidden" id="habitEditId">
                 <label for="habitNameInput">Habit Name:</label>
-                <input type="text" id="habitNameInput" class="w-full" placeholder="e.g., Read for 30 minutes">
+                <input type="text" id="habitNameInput" placeholder="e.g., Read for 30 minutes">
                 <label for="habitGoalInput">Monthly Goal (days):</label>
-                <input type="number" id="habitGoalInput" class="w-full" placeholder="e.g., 20">
+                <input type="number" id="habitGoalInput" placeholder="e.g., 20">
                 <label for="habitPhaseInput">Phase:</label>
-                <select id="habitPhaseInput" class="w-full">
+                <select id="habitPhaseInput">
                     <option value="Building">Building</option>
                     <option value="Breaking">Breaking</option>
                 </select>
+                <label for="habitMotivationInput">My Motivation (Why this habit?):</label>
+                <textarea id="habitMotivationInput" placeholder="e.g., To expand my knowledge and relax."></textarea>
                 <button id="saveHabitBtn" class="action-btn mt-4 w-full bg-emerald-500 hover:bg-emerald-600">Save Habit</button>
             </div>
         </div>
@@ -149,14 +169,11 @@
 
     <div class="mb-8 p-4 bg-gray-800 rounded-lg shadow-lg">
         <h2 class="text-2xl font-semibold text-emerald-300 mb-3">Manage Habits for <span id="currentYearDisplayHabitMgmt"></span></h2>
-        <div id="habitListContainer" class="mb-4 space-y-2">
-            </div>
+        <div id="habitListContainer" class="mb-4 space-y-2"></div>
         <button id="openAddHabitModalBtn" class="action-btn bg-green-500 hover:bg-green-600 text-base">Add New Habit</button>
     </div>
 
-
-    <div id="monthsContainer" class="space-y-12">
-        </div>
+    <div id="monthsContainer" class="space-y-12"></div>
 
     <footer class="mt-12 text-center text-xs text-gray-500">
         <p>Dynamic Habit Tracker. Data stored in Firestore.</p>
@@ -169,14 +186,22 @@
         import { getFirestore, doc, setDoc, onSnapshot, deleteField, updateDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-dynamic-tracker-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        let firebaseConfigJSON = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        let firebaseConfig = null;
+        try {
+            if (firebaseConfigJSON) firebaseConfig = JSON.parse(firebaseConfigJSON);
+        } catch (e) {
+            console.error("Failed to parse Firebase config JSON:", e);
+            firebaseConfigJSON = null; // Ensure it's treated as missing
+        }
 
         let app, auth, db, userId = null, unsubscribeFirestore = null;
         let isDataInitialized = false;
-        let currentYear = new Date().getFullYear(); // Default to current year
-        let habitsConfig = []; // This will now hold user-defined habits for the currentYear
-        let allHabitDataForYear = {}; // Holds { habitId: { months: { ... } } }
+        let currentYear = new Date().getFullYear();
+        let habitsConfig = []; 
+        let allHabitDataForYear = {};
 
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -199,29 +224,40 @@
         const habitNameInput = document.getElementById('habitNameInput');
         const habitGoalInput = document.getElementById('habitGoalInput');
         const habitPhaseInput = document.getElementById('habitPhaseInput');
+        const habitMotivationInput = document.getElementById('habitMotivationInput'); // New motivation input
         const saveHabitBtn = document.getElementById('saveHabitBtn');
         const openAddHabitModalBtn = document.getElementById('openAddHabitModalBtn');
         const habitListContainer = document.getElementById('habitListContainer');
         const habitEditIdInput = document.getElementById('habitEditId');
         const yearInput = document.getElementById('yearInput');
         const loadYearBtn = document.getElementById('loadYearBtn');
+        const configErrorModal = document.getElementById('configErrorModal');
+        const closeConfigErrorModalBtn = document.getElementById('closeConfigErrorModal');
 
 
         closeTipModalBtn.onclick = () => tipModal.style.display = "none";
         closeHabitModalBtn.onclick = () => habitModal.style.display = "none";
+        closeConfigErrorModalBtn.onclick = () => configErrorModal.style.display = "none";
+
         window.onclick = (event) => {
             if (event.target == tipModal) tipModal.style.display = "none";
             if (event.target == habitModal) habitModal.style.display = "none";
+            if (event.target == configErrorModal) configErrorModal.style.display = "none";
+            if (event.target == authModal && authMessage.textContent.includes("Authenticated")) authModal.style.display = "none"; // Allow closing auth modal after success
         };
         openAddHabitModalBtn.onclick = () => openHabitModalForAdd();
         saveHabitBtn.onclick = () => handleSaveHabit();
         loadYearBtn.onclick = () => handleChangeYear();
 
         async function setupFirebase() {
-            yearInput.value = currentYear; // Set initial year in input
-            if (!firebaseConfig) {
-                console.error("Firebase config missing."); authMessage.textContent = "Error: Firebase config missing.";
-                authModal.style.display = "block"; loadingIndicator.style.display = "none"; return;
+            yearInput.value = currentYear;
+            if (!firebaseConfig || !appId) { // Check both config and app_id
+                console.error("Firebase config or App ID is missing. App cannot function.");
+                document.getElementById('configErrorMessage').textContent = `Essential Firebase configuration (firebaseConfig or appId) is missing. This application cannot function without it. Please ensure __firebase_config and __app_id are correctly set up in the environment.`;
+                configErrorModal.style.display = "block";
+                loadingIndicator.style.display = "none";
+                authModal.style.display = "none"; // Hide other modals
+                return; // Stop further execution
             }
             try {
                 app = initializeApp(firebaseConfig); auth = getAuth(app); db = getFirestore(app); setLogLevel('debug');
@@ -232,8 +268,8 @@
                         userId = user.uid; console.log("User authenticated:", userId);
                         displayedUserIdElement.textContent = userId; modalUserId.textContent = userId;
                         authMessage.textContent = "Authenticated. Loading data...";
-                        await loadDataForCurrentYear(); // Load data for the initially set year
-                        setTimeout(() => { if(isDataInitialized) authModal.style.display = "none"; }, 1500);
+                        await loadDataForCurrentYear();
+                        setTimeout(() => { if(isDataInitialized && authModal.style.display === "block") authModal.style.display = "none"; }, 1500);
                     } else {
                         authMessage.textContent = "No session. Attempting sign in...";
                         if (initialAuthToken) {
@@ -243,70 +279,63 @@
                     }
                 });
             } catch (error) {
-                console.error("Firebase init error:", error); authMessage.textContent = `Firebase init failed: ${error.message}`;
-                loadingIndicator.style.display = "none"; authModal.style.display = "block";
+                console.error("Firebase init error:", error); 
+                document.getElementById('configErrorMessage').textContent = `Firebase initialization failed: ${error.message}. Please check the console and ensure the Firebase project is correctly set up.`;
+                configErrorModal.style.display = "block";
+                loadingIndicator.style.display = "none"; authModal.style.display = "none";
             }
         }
         
         async function handleChangeYear() {
             const newYear = parseInt(yearInput.value);
             if (isNaN(newYear) || newYear < 1900 || newYear > 2200) {
-                alert("Please enter a valid year (e.g., 2024)."); // Using alert for simplicity here, ideally a custom modal
+                // Replace alert with a custom, non-blocking message if desired
+                console.warn("Invalid year entered."); 
+                const tempMsg = document.createElement('p');
+                tempMsg.textContent = "Please enter a valid year (1900-2200).";
+                tempMsg.className = "text-red-400 text-sm text-center my-2";
+                yearInput.parentNode.insertBefore(tempMsg, loadYearBtn.nextSibling);
+                setTimeout(() => tempMsg.remove(), 3000);
                 return;
             }
             currentYear = newYear;
-            loadingIndicator.style.display = "flex"; // Show loading indicator
+            loadingIndicator.style.display = "flex"; 
             await loadDataForCurrentYear();
         }
 
         async function loadDataForCurrentYear() {
             if (!userId || !db) { console.error("User/DB not ready."); loadingIndicator.style.display = "none"; return; }
-            
-            currentYearDisplayHabitMgmt.textContent = currentYear; // Update year display in habit management section
-
+            currentYearDisplayHabitMgmt.textContent = currentYear;
             const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
             if (unsubscribeFirestore) unsubscribeFirestore();
-
             unsubscribeFirestore = onSnapshot(docRef, (docSnap) => {
-                isDataInitialized = false; // Reset before loading new year's data
-                habitsConfig = [];
-                allHabitDataForYear = {};
-
+                isDataInitialized = false; habitsConfig = []; allHabitDataForYear = {};
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    habitsConfig = data.habitDefinitions || []; // Load habit definitions for the year
-                    allHabitDataForYear = data.habitTrackingData || {}; // Load tracking data
+                    habitsConfig = data.habitDefinitions || []; 
+                    allHabitDataForYear = data.habitTrackingData || {};
                     console.log(`Data loaded for ${currentYear}:`, habitsConfig, allHabitDataForYear);
                 } else {
-                    console.log(`No data found for ${currentYear}. User can add habits.`);
-                    // If no data, habitsConfig and allHabitDataForYear remain empty.
-                    // We won't create a doc here; it'll be created when the first habit is added or tracked.
+                    console.log(`No data found for ${currentYear}.`);
                 }
-                initializeAndNormalizeData(); // Ensure data structure is consistent
-                isDataInitialized = true;
-                renderApp();
-                loadingIndicator.style.display = "none";
+                initializeAndNormalizeData(); 
+                isDataInitialized = true; renderApp(); loadingIndicator.style.display = "none";
                 if (authModal.style.display === "block" && authMessage.textContent.includes("Loading data...")) {
-                     authMessage.textContent = "Data loaded!"; setTimeout(() => { authModal.style.display = "none"; }, 1000);
+                     authMessage.textContent = "Data loaded!"; setTimeout(() => { if(authModal.style.display === "block") authModal.style.display = "none"; }, 1000);
                 }
             }, (error) => {
                 console.error(`Error getting document for year ${currentYear}:`, error);
                 authMessage.textContent = `Error loading data: ${error.message}`;
-                loadingIndicator.style.display = "none";
-                habitsConfig = []; allHabitDataForYear = {}; // Clear data on error
-                renderApp(); // Render empty state or error message
+                loadingIndicator.style.display = "none"; habitsConfig = []; allHabitDataForYear = {}; 
+                renderApp(); 
             });
         }
 
         function initializeAndNormalizeData() {
-            // Ensure every habit in habitsConfig has tracking data structure in allHabitDataForYear
             habitsConfig.forEach(habitDef => {
-                if (!allHabitDataForYear[habitDef.id]) {
-                    allHabitDataForYear[habitDef.id] = { months: {} };
-                }
+                if (!allHabitDataForYear[habitDef.id]) allHabitDataForYear[habitDef.id] = { months: {} };
                 const habitTracking = allHabitDataForYear[habitDef.id];
                 if (!habitTracking.months) habitTracking.months = {};
-
                 monthNames.forEach((_, monthIndex) => {
                     const monthKey = `${currentYear}-${String(monthIndex + 1).padStart(2, '0')}`;
                     const daysInThisMonth = getDaysInMonth(currentYear, monthIndex);
@@ -317,16 +346,14 @@
             });
         }
 
-
         async function saveDataToFirestore() {
             if (!userId || !db || !isDataInitialized) { console.warn("User/DB/Data not ready for saving."); return; }
             const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
             try {
-                // We store habit definitions and their tracking data separately under the year's document
                 await setDoc(docRef, {
                     year: currentYear,
-                    habitDefinitions: habitsConfig, // Array of {id, name, monthlyGoal, phase}
-                    habitTrackingData: allHabitDataForYear // Object { habitId: { months: { ... } } }
+                    habitDefinitions: habitsConfig, 
+                    habitTrackingData: allHabitDataForYear 
                 }, { merge: true });
                 console.log(`Data saved for year ${currentYear}.`);
             } catch (error) { console.error("Error saving data: ", error); }
@@ -334,90 +361,84 @@
         
         function openHabitModalForAdd() {
             habitModalTitle.textContent = "Add New Habit";
-            habitEditIdInput.value = ""; // Clear edit ID
-            habitNameInput.value = "";
-            habitGoalInput.value = "";
-            habitPhaseInput.value = "Building";
-            habitModal.style.display = "block";
+            habitEditIdInput.value = ""; habitNameInput.value = ""; habitGoalInput.value = "";
+            habitPhaseInput.value = "Building"; habitMotivationInput.value = ""; // Clear motivation
+            habitModal.style.display = "block"; habitNameInput.focus();
         }
 
         function openHabitModalForEdit(habitId) {
             const habitToEdit = habitsConfig.find(h => h.id === habitId);
             if (!habitToEdit) return;
             habitModalTitle.textContent = "Edit Habit";
-            habitEditIdInput.value = habitId;
-            habitNameInput.value = habitToEdit.name;
-            habitGoalInput.value = habitToEdit.monthlyGoal;
-            habitPhaseInput.value = habitToEdit.phase;
-            habitModal.style.display = "block";
+            habitEditIdInput.value = habitId; habitNameInput.value = habitToEdit.name;
+            habitGoalInput.value = habitToEdit.monthlyGoal; habitPhaseInput.value = habitToEdit.phase;
+            habitMotivationInput.value = habitToEdit.motivation || ""; // Load motivation
+            habitModal.style.display = "block"; habitNameInput.focus();
         }
 
         async function handleSaveHabit() {
             const name = habitNameInput.value.trim();
             const monthlyGoal = parseInt(habitGoalInput.value);
             const phase = habitPhaseInput.value;
+            const motivation = habitMotivationInput.value.trim(); // Get motivation
             const editId = habitEditIdInput.value;
 
             if (!name || isNaN(monthlyGoal) || monthlyGoal <= 0) {
-                alert("Please enter valid habit details."); // Simplistic alert
+                // Simple non-blocking validation message
+                const prevMsg = habitModal.querySelector('.validation-error-msg');
+                if (prevMsg) prevMsg.remove();
+                const errorMsg = document.createElement('p');
+                errorMsg.textContent = "Please enter a valid name and a positive monthly goal.";
+                errorMsg.className = "text-red-400 text-sm mt-2 validation-error-msg";
+                saveHabitBtn.insertAdjacentElement('beforebegin', errorMsg);
                 return;
             }
+            const prevMsg = habitModal.querySelector('.validation-error-msg');
+            if (prevMsg) prevMsg.remove();
 
-            if (editId) { // Editing existing habit
+
+            if (editId) { 
                 const habitIndex = habitsConfig.findIndex(h => h.id === editId);
                 if (habitIndex > -1) {
-                    habitsConfig[habitIndex] = { ...habitsConfig[habitIndex], name, monthlyGoal, phase };
+                    habitsConfig[habitIndex] = { ...habitsConfig[habitIndex], name, monthlyGoal, phase, motivation };
                 }
-            } else { // Adding new habit
-                const newHabit = { id: crypto.randomUUID(), name, monthlyGoal, phase };
+            } else { 
+                const newHabit = { id: crypto.randomUUID(), name, monthlyGoal, phase, motivation };
                 habitsConfig.push(newHabit);
-                // Ensure tracking data structure is created for the new habit
                 if (!allHabitDataForYear[newHabit.id]) {
                     allHabitDataForYear[newHabit.id] = { months: {} };
-                    initializeAndNormalizeData(); // Re-run to setup months for this new habit
+                    initializeAndNormalizeData(); 
                 }
             }
             await saveDataToFirestore();
-            renderHabitList(); // Update the list of habits in manage section
-            renderApp(); // Re-render the main tracker tables
+            renderHabitList(); renderApp(); 
             habitModal.style.display = "none";
         }
 
         async function handleDeleteHabit(habitId) {
-            // Basic confirmation, ideally a custom modal
-            if (!confirm("Are you sure you want to delete this habit and all its tracking data for this year?")) return;
+            // Custom confirmation modal would be better, using confirm for now.
+            const habitToDelete = habitsConfig.find(h => h.id === habitId);
+            if (!habitToDelete) return;
+            if (!confirm(`Are you sure you want to delete the habit "${habitToDelete.name}" and all its tracking data for ${currentYear}? This action cannot be undone.`)) return;
 
             habitsConfig = habitsConfig.filter(h => h.id !== habitId);
-            // Remove tracking data for this habit
             delete allHabitDataForYear[habitId]; 
-
-            // To remove from Firestore, we need to update the document and delete the specific field
             const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
             const updates = {};
-            updates[`habitTrackingData.${habitId}`] = deleteField(); // This is how you delete a map field
-
+            updates[`habitTrackingData.${habitId}`] = deleteField(); 
             try {
-                await updateDoc(docRef, updates); // First, delete the tracking data field
-                await setDoc(docRef, { habitDefinitions: habitsConfig }, { merge: true }); // Then, update the definitions
-                console.log(`Habit ${habitId} and its tracking data deleted for year ${currentYear}.`);
-            } catch (error) {
-                console.error(`Error deleting habit ${habitId}:`, error);
-                // If deletion fails, we might want to revert local changes or retry, but for now, log it.
-                // For robustness, one might reload data from Firestore here to ensure consistency.
-            }
-            
-            renderHabitList();
-            renderApp();
+                await updateDoc(docRef, updates); 
+                await setDoc(docRef, { habitDefinitions: habitsConfig }, { merge: true }); 
+                console.log(`Habit ${habitId} deleted for year ${currentYear}.`);
+            } catch (error) { console.error(`Error deleting habit ${habitId}:`, error); }
+            renderHabitList(); renderApp();
         }
-
 
         function calculateAllStats(habitId, monthKey) {
             const habitDef = habitsConfig.find(h => h.id === habitId);
             const habitTracking = allHabitDataForYear[habitId];
             if (!habitDef || !habitTracking || !habitTracking.months[monthKey]) return;
-
-            const monthData = habitTracking.months[monthKey];
-            const daysArray = monthData.days;
+            const monthData = habitTracking.months[monthKey]; const daysArray = monthData.days;
             monthData.total = daysArray.filter(done => done).length;
             let longestStreak = 0, currentRun = 0;
             for (const dayDone of daysArray) { if (dayDone) currentRun++; else { longestStreak = Math.max(longestStreak, currentRun); currentRun = 0; } }
@@ -426,44 +447,65 @@
             const [yearStr, monthStr] = monthKey.split('-'); const monthYear = parseInt(yearStr), monthIndex = parseInt(monthStr) - 1;
             let lastRelevantDayIndex = daysArray.length - 1;
             if (monthYear === today.getFullYear() && monthIndex === today.getMonth() && monthYear === currentYear) lastRelevantDayIndex = today.getDate() - 1;
-            else if (new Date(monthYear, monthIndex) > today || monthYear !== currentYear) lastRelevantDayIndex = -1; // Also for future years relative to currentYear
+            else if (new Date(monthYear, monthIndex) > today || monthYear !== currentYear) lastRelevantDayIndex = -1;
             for (let i = lastRelevantDayIndex; i >= 0; i--) { if (daysArray[i]) currentStreak++; else break; }
             if(lastRelevantDayIndex < 0) currentStreak = 0;
             monthData.currentStreak = currentStreak;
         }
 
         function renderApp() {
-            if (!isDataInitialized) { loadingIndicator.style.display = "block"; return; }
+            if (!isDataInitialized && !configErrorModal.style.display.includes('block')) { // Don't hide loading if config error is up
+                 loadingIndicator.style.display = "flex"; return; 
+            }
             loadingIndicator.style.display = "none"; monthsContainer.innerHTML = '';
-            renderHabitList(); // Render the editable habit list
+            renderHabitList(); 
             monthNames.forEach((monthName, monthIndex) => { monthsContainer.appendChild(renderMonth(monthIndex, monthName, currentYear)); });
         }
         
         function renderHabitList() {
-            habitListContainer.innerHTML = ''; // Clear existing list
+            habitListContainer.innerHTML = ''; 
             if (habitsConfig.length === 0) {
-                habitListContainer.innerHTML = `<p class="text-gray-400">No habits defined for ${currentYear}. Add one below!</p>`;
-                return;
+                habitListContainer.innerHTML = `<p class="text-gray-400">No habits defined for ${currentYear}. Add one below!</p>`; return;
             }
-            const ul = document.createElement('ul');
-            ul.className = 'space-y-2';
+            const ul = document.createElement('ul'); ul.className = 'space-y-3'; // Increased space
             habitsConfig.forEach(habit => {
                 const li = document.createElement('li');
-                li.className = 'flex justify-between items-center p-3 bg-gray-700 rounded-md';
-                li.innerHTML = `
-                    <span class="font-medium">${habit.name} (Goal: ${habit.monthlyGoal}, Phase: ${habit.phase})</span>
-                    <div>
-                        <button class="action-btn edit-btn text-xs mr-2" data-habit-id="${habit.id}">Edit</button>
-                        <button class="action-btn delete-btn text-xs" data-habit-id="${habit.id}">Delete</button>
-                    </div>
-                `;
-                li.querySelector('.edit-btn').addEventListener('click', (e) => openHabitModalForEdit(e.target.dataset.habitId));
-                li.querySelector('.delete-btn').addEventListener('click', (e) => handleDeleteHabit(e.target.dataset.habitId));
+                li.className = 'flex flex-col sm:flex-row justify-between sm:items-center p-3 bg-gray-700 rounded-md shadow';
+                
+                const habitInfoDiv = document.createElement('div');
+                const habitNameSpan = document.createElement('span');
+                habitNameSpan.className = 'font-medium block text-gray-100';
+                habitNameSpan.textContent = `${habit.name}`;
+                habitInfoDiv.appendChild(habitNameSpan);
+
+                const habitDetailsSpan = document.createElement('span');
+                habitDetailsSpan.className = 'text-xs text-gray-400 block';
+                habitDetailsSpan.textContent = `(Goal: ${habit.monthlyGoal}, Phase: ${habit.phase})`;
+                habitInfoDiv.appendChild(habitDetailsSpan);
+
+                if (habit.motivation) {
+                    const motivationP = document.createElement('p');
+                    motivationP.className = 'habit-motivation-display mt-1';
+                    motivationP.textContent = `Motivation: ${habit.motivation}`;
+                    habitInfoDiv.appendChild(motivationP);
+                }
+                
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'mt-2 sm:mt-0';
+                const editBtn = document.createElement('button');
+                editBtn.className = 'action-btn edit-btn text-xs mr-2'; editBtn.dataset.habitId = habit.id; editBtn.textContent = 'Edit';
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'action-btn delete-btn text-xs'; deleteBtn.dataset.habitId = habit.id; deleteBtn.textContent = 'Delete';
+                
+                buttonsDiv.appendChild(editBtn); buttonsDiv.appendChild(deleteBtn);
+                li.appendChild(habitInfoDiv); li.appendChild(buttonsDiv);
+
+                editBtn.addEventListener('click', (e) => openHabitModalForEdit(e.target.dataset.habitId));
+                deleteBtn.addEventListener('click', (e) => handleDeleteHabit(e.target.dataset.habitId));
                 ul.appendChild(li);
             });
             habitListContainer.appendChild(ul);
         }
-
 
         function renderMonth(monthIndex, monthName, year) {
             const monthDiv = document.createElement('div');
@@ -484,24 +526,23 @@
                 if (isCurrentMonthForToday && day === todayDate) { thDayNum.classList.add('today'); thDayName.classList.add('today'); }
                 headerRowTop.appendChild(thDayNum); headerRowBottom.appendChild(thDayName);
             }
-            ['Total', 'Current', 'Longest', 'Goal', 'Phase', '✨ AI Tip'].forEach(statName => {
+            ['Total', 'Current', 'Longest', 'Goal', 'Progress', 'Phase', '✨ AI Tip'].forEach(statName => { // Added Progress
                 const thStat = document.createElement('th'); thStat.textContent = statName; thStat.rowSpan = 2;
-                thStat.className = statName === '✨ AI Tip' ? 'action-col' : 'stats-col'; headerRowTop.appendChild(thStat);
+                thStat.className = statName === '✨ AI Tip' ? 'action-col' : (statName === 'Progress' ? 'progress-col' : 'stats-col'); 
+                headerRowTop.appendChild(thStat);
             });
             const tbody = table.createTBody();
             if (habitsConfig.length === 0) {
-                const trEmpty = tbody.insertRow();
-                const tdEmpty = trEmpty.insertCell();
-                tdEmpty.colSpan = daysInThisMonth + 1 + 5; // Habit name + days + stats + AI tip
-                tdEmpty.textContent = `No habits defined for ${year}. Add habits in the 'Manage Habits' section.`;
+                const trEmpty = tbody.insertRow(); const tdEmpty = trEmpty.insertCell();
+                tdEmpty.colSpan = daysInThisMonth + 1 + 6; // Adjusted colspan for Progress
+                tdEmpty.textContent = `No habits defined for ${year}. Add habits in 'Manage Habits'.`;
                 tdEmpty.className = "text-center py-4 text-gray-400";
             } else {
                 habitsConfig.forEach(habitDef => {
                     const monthKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
                     const habitTracking = allHabitDataForYear[habitDef.id];
                     const habitMonthData = habitTracking?.months?.[monthKey];
-
-                    if (!habitMonthData) { console.warn(`No month data for ${habitDef.id} in ${monthKey}`); return; } // Should be initialized
+                    if (!habitMonthData) { console.warn(`No month data for ${habitDef.id} in ${monthKey}`); return; }
 
                     const tr = tbody.insertRow();
                     const tdHabitName = tr.insertCell(); tdHabitName.textContent = habitDef.name; tdHabitName.className = 'sticky-col habit-name-col text-left py-2 px-3 text-sm';
@@ -516,11 +557,24 @@
                     }
                     tr.insertCell().textContent = habitMonthData.total; tr.insertCell().textContent = habitMonthData.currentStreak;
                     tr.insertCell().textContent = habitMonthData.longestStreak; tr.insertCell().textContent = habitDef.monthlyGoal;
+                    
+                    // Progress Bar Cell
+                    const tdProgress = tr.insertCell(); tdProgress.className = 'progress-col';
+                    const progressPercent = habitDef.monthlyGoal > 0 ? (habitMonthData.total / habitDef.monthlyGoal) * 100 : 0;
+                    const progressBarContainer = document.createElement('div'); progressBarContainer.className = 'progress-bar-container';
+                    const progressBarFill = document.createElement('div'); progressBarFill.className = 'progress-bar-fill';
+                    progressBarFill.style.width = `${Math.min(progressPercent, 100)}%`; // Cap at 100%
+                    progressBarContainer.appendChild(progressBarFill);
+                    tdProgress.appendChild(progressBarContainer);
+                    const progressText = document.createElement('span'); progressText.className = 'block text-xs mt-1';
+                    progressText.textContent = `${habitMonthData.total}/${habitDef.monthlyGoal}`;
+                    tdProgress.appendChild(progressText);
+
                     tr.insertCell().textContent = habitDef.phase;
                     const tdAction = tr.insertCell(); tdAction.className = 'action-cell';
                     const tipButton = document.createElement('button'); tipButton.innerHTML = 'Get Tip ✨'; tipButton.className = 'ai-tip-btn';
-                    Object.assign(tipButton.dataset, { habitId: habitDef.id, habitName: habitDef.name, habitPhase: habitDef.phase });
-                    tipButton.addEventListener('click', () => fetchMotivationalTip(tipButton.dataset.habitId, tipButton.dataset.habitName, tipButton.dataset.habitPhase, tipButton));
+                    Object.assign(tipButton.dataset, { habitId: habitDef.id, habitName: habitDef.name, habitPhase: habitDef.phase, habitMotivation: habitDef.motivation || "" });
+                    tipButton.addEventListener('click', () => fetchMotivationalTip(tipButton.dataset.habitId, tipButton.dataset.habitName, tipButton.dataset.habitPhase, tipButton.dataset.habitMotivation, tipButton));
                     tdAction.appendChild(tipButton);
                 });
             }
@@ -537,11 +591,16 @@
             }
         }
 
-        async function fetchMotivationalTip(habitId, habitName, habitPhase, buttonElement) {
+        async function fetchMotivationalTip(habitId, habitName, habitPhase, habitMotivation, buttonElement) {
             tipModalContent.textContent = "Generating your motivational tip..."; tipModal.style.display = "block";
             buttonElement.disabled = true; buttonElement.textContent = "Loading...";
-            const promptType = habitPhase === "Breaking" ? "breaking" : "building";
-            const prompt = `Generate a short, actionable, and encouraging tip for someone trying to ${promptType === "breaking" ? "break the habit" : "build the habit"} of "${habitName}". Keep the tip to 1-2 concise sentences.`;
+            const promptType = habitPhase === "Breaking" ? "breaking" : "build the habit";
+            let prompt = `Generate a short, actionable, and encouraging tip for someone trying to ${promptType} of "${habitName}".`;
+            if (habitMotivation) {
+                prompt += ` Their motivation is: "${habitMotivation}". Try to incorporate this motivation into the tip.`;
+            }
+            prompt += " Keep the tip to 1-2 concise sentences. Be positive and supportive.";
+
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; const payload = { contents: chatHistory };
             const apiKey = ""; const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             try {
@@ -549,7 +608,7 @@
                 if (!response.ok) { const errorData = await response.json(); throw new Error(`API Error ${response.status}: ${errorData.error?.message || 'Unknown'}`); }
                 const result = await response.json();
                 if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                    tipModalContent.textContent = result.candidates[0].content.parts[0].text;
+                    tipModalContent.innerHTML = result.candidates[0].content.parts[0].text.replace(/\n/g, '<br>'); // Support newlines in tip
                 } else { throw new Error("Unexpected API response structure."); }
             } catch (error) { console.error('Error fetching tip:', error); tipModalContent.textContent = `Sorry, couldn't fetch a tip. ${error.message}`; }
             finally { buttonElement.disabled = false; buttonElement.innerHTML = 'Get Tip ✨'; }
