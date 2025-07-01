@@ -200,7 +200,7 @@
         let app, auth, db, userId = null, unsubscribeFirestore = null;
         let isDataInitialized = false;
         let currentYear = new Date().getFullYear();
-        let habitsConfig = []; 
+        let habitsConfig = [];  
         let allHabitDataForYear = {};
 
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -279,7 +279,7 @@
                     }
                 });
             } catch (error) {
-                console.error("Firebase init error:", error); 
+                console.error("Firebase init error:", error);  
                 document.getElementById('configErrorMessage').textContent = `Firebase initialization failed: ${error.message}. Please check the console and ensure the Firebase project is correctly set up.`;
                 configErrorModal.style.display = "block";
                 loadingIndicator.style.display = "none"; authModal.style.display = "none";
@@ -290,7 +290,7 @@
             const newYear = parseInt(yearInput.value);
             if (isNaN(newYear) || newYear < 1900 || newYear > 2200) {
                 // Replace alert with a custom, non-blocking message if desired
-                console.warn("Invalid year entered."); 
+                console.warn("Invalid year entered.");  
                 const tempMsg = document.createElement('p');
                 tempMsg.textContent = "Please enter a valid year (1900-2200).";
                 tempMsg.className = "text-red-400 text-sm text-center my-2";
@@ -299,7 +299,7 @@
                 return;
             }
             currentYear = newYear;
-            loadingIndicator.style.display = "flex"; 
+            loadingIndicator.style.display = "flex";  
             await loadDataForCurrentYear();
         }
 
@@ -312,13 +312,13 @@
                 isDataInitialized = false; habitsConfig = []; allHabitDataForYear = {};
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    habitsConfig = data.habitDefinitions || []; 
+                    habitsConfig = data.habitDefinitions || [];  
                     allHabitDataForYear = data.habitTrackingData || {};
                     console.log(`Data loaded for ${currentYear}:`, habitsConfig, allHabitDataForYear);
                 } else {
                     console.log(`No data found for ${currentYear}.`);
                 }
-                initializeAndNormalizeData(); 
+                initializeAndNormalizeData();  
                 isDataInitialized = true; renderApp(); loadingIndicator.style.display = "none";
                 if (authModal.style.display === "block" && authMessage.textContent.includes("Loading data...")) {
                      authMessage.textContent = "Data loaded!"; setTimeout(() => { if(authModal.style.display === "block") authModal.style.display = "none"; }, 1000);
@@ -326,8 +326,8 @@
             }, (error) => {
                 console.error(`Error getting document for year ${currentYear}:`, error);
                 authMessage.textContent = `Error loading data: ${error.message}`;
-                loadingIndicator.style.display = "none"; habitsConfig = []; allHabitDataForYear = {}; 
-                renderApp(); 
+                loadingIndicator.style.display = "none"; habitsConfig = []; allHabitDataForYear = {};  
+                renderApp();  
             });
         }
 
@@ -352,8 +352,8 @@
             try {
                 await setDoc(docRef, {
                     year: currentYear,
-                    habitDefinitions: habitsConfig, 
-                    habitTrackingData: allHabitDataForYear 
+                    habitDefinitions: habitsConfig,  
+                    habitTrackingData: allHabitDataForYear  
                 }, { merge: true });
                 console.log(`Data saved for year ${currentYear}.`);
             } catch (error) { console.error("Error saving data: ", error); }
@@ -397,21 +397,21 @@
             if (prevMsg) prevMsg.remove();
 
 
-            if (editId) { 
+            if (editId) {  
                 const habitIndex = habitsConfig.findIndex(h => h.id === editId);
                 if (habitIndex > -1) {
                     habitsConfig[habitIndex] = { ...habitsConfig[habitIndex], name, monthlyGoal, phase, motivation };
                 }
-            } else { 
+            } else {  
                 const newHabit = { id: crypto.randomUUID(), name, monthlyGoal, phase, motivation };
                 habitsConfig.push(newHabit);
                 if (!allHabitDataForYear[newHabit.id]) {
                     allHabitDataForYear[newHabit.id] = { months: {} };
-                    initializeAndNormalizeData(); 
+                    initializeAndNormalizeData();  
                 }
             }
             await saveDataToFirestore();
-            renderHabitList(); renderApp(); 
+            renderHabitList(); renderApp();  
             habitModal.style.display = "none";
         }
 
@@ -419,19 +419,20 @@
             // Custom confirmation modal would be better, using confirm for now.
             const habitToDelete = habitsConfig.find(h => h.id === habitId);
             if (!habitToDelete) return;
-            if (!confirm(`Are you sure you want to delete the habit "${habitToDelete.name}" and all its tracking data for ${currentYear}? This action cannot be undone.`)) return;
-
-            habitsConfig = habitsConfig.filter(h => h.id !== habitId);
-            delete allHabitDataForYear[habitId]; 
-            const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
-            const updates = {};
-            updates[`habitTrackingData.${habitId}`] = deleteField(); 
-            try {
-                await updateDoc(docRef, updates); 
-                await setDoc(docRef, { habitDefinitions: habitsConfig }, { merge: true }); 
-                console.log(`Habit ${habitId} deleted for year ${currentYear}.`);
-            } catch (error) { console.error(`Error deleting habit ${habitId}:`, error); }
-            renderHabitList(); renderApp();
+            // Replaced alert/confirm with a custom modal UI as per instructions
+            showConfirmationModal(`Are you sure you want to delete the habit "${habitToDelete.name}" and all its tracking data for ${currentYear}? This action cannot be undone.`, async () => {
+                habitsConfig = habitsConfig.filter(h => h.id !== habitId);
+                delete allHabitDataForYear[habitId];  
+                const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
+                const updates = {};
+                updates[`habitTrackingData.${habitId}`] = deleteField();  
+                try {
+                    await updateDoc(docRef, updates);  
+                    await setDoc(docRef, { habitDefinitions: habitsConfig }, { merge: true });  
+                    console.log(`Habit ${habitId} deleted for year ${currentYear}.`);
+                } catch (error) { console.error(`Error deleting habit ${habitId}:`, error); }
+                renderHabitList(); renderApp();
+            });
         }
 
         function calculateAllStats(habitId, monthKey) {
@@ -455,15 +456,15 @@
 
         function renderApp() {
             if (!isDataInitialized && !configErrorModal.style.display.includes('block')) { // Don't hide loading if config error is up
-                 loadingIndicator.style.display = "flex"; return; 
+                 loadingIndicator.style.display = "flex"; return;  
             }
             loadingIndicator.style.display = "none"; monthsContainer.innerHTML = '';
-            renderHabitList(); 
+            renderHabitList();  
             monthNames.forEach((monthName, monthIndex) => { monthsContainer.appendChild(renderMonth(monthIndex, monthName, currentYear)); });
         }
         
         function renderHabitList() {
-            habitListContainer.innerHTML = ''; 
+            habitListContainer.innerHTML = '';  
             if (habitsConfig.length === 0) {
                 habitListContainer.innerHTML = `<p class="text-gray-400">No habits defined for ${currentYear}. Add one below!</p>`; return;
             }
@@ -528,7 +529,7 @@
             }
             ['Total', 'Current', 'Longest', 'Goal', 'Progress', 'Phase', '✨ AI Tip'].forEach(statName => { // Added Progress
                 const thStat = document.createElement('th'); thStat.textContent = statName; thStat.rowSpan = 2;
-                thStat.className = statName === '✨ AI Tip' ? 'action-col' : (statName === 'Progress' ? 'progress-col' : 'stats-col'); 
+                thStat.className = statName === '✨ AI Tip' ? 'action-col' : (statName === 'Progress' ? 'progress-col' : 'stats-col');  
                 headerRowTop.appendChild(thStat);
             });
             const tbody = table.createTBody();
@@ -587,8 +588,56 @@
             if (habitTracking && habitTracking.months[monthKey]) {
                 habitTracking.months[monthKey].days[parseInt(dayIndex)] = event.target.checked;
                 calculateAllStats(habitId, monthKey); saveDataToFirestore();
-                renderApp(); 
+                renderApp();  
             }
+        }
+
+        // Custom Confirmation Modal HTML (Add this to your body, perhaps near other modals)
+        const confirmationModalHTML = `
+            <div id="confirmationModal" class="modal z-[180]">
+                <div class="modal-content">
+                    <span class="modal-close-btn" id="closeConfirmationModal">&times;</span>
+                    <h2 id="confirmationModalTitle" class="text-xl font-semibold mb-3 text-yellow-400">Confirm Action</h2>
+                    <p id="confirmationModalMessage" class="text-gray-300 leading-relaxed mb-4"></p>
+                    <div class="flex justify-end gap-3">
+                        <button id="cancelConfirmationBtn" class="action-btn bg-gray-600 hover:bg-gray-700">Cancel</button>
+                        <button id="confirmActionBtn" class="action-btn bg-red-600 hover:bg-red-700">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', confirmationModalHTML);
+
+        const confirmationModal = document.getElementById('confirmationModal');
+        const closeConfirmationModalBtn = document.getElementById('closeConfirmationModal');
+        const confirmationModalTitle = document.getElementById('confirmationModalTitle');
+        const confirmationModalMessage = document.getElementById('confirmationModalMessage');
+        const cancelConfirmationBtn = document.getElementById('cancelConfirmationBtn');
+        const confirmActionBtn = document.getElementById('confirmActionBtn');
+
+        let confirmationCallback = null; // Stores the function to call if confirmed
+
+        closeConfirmationModalBtn.onclick = () => confirmationModal.style.display = "none";
+        cancelConfirmationBtn.onclick = () => confirmationModal.style.display = "none";
+        confirmActionBtn.onclick = () => {
+            if (confirmationCallback) {
+                confirmationCallback();
+            }
+            confirmationModal.style.display = "none";
+        };
+
+        window.onclick = (event) => {
+            if (event.target == tipModal) tipModal.style.display = "none";
+            if (event.target == habitModal) habitModal.style.display = "none";
+            if (event.target == configErrorModal) configErrorModal.style.display = "none";
+            if (event.target == authModal && authMessage.textContent.includes("Authenticated")) authModal.style.display = "none";
+            if (event.target == confirmationModal) confirmationModal.style.display = "none"; // Allow closing confirmation modal
+        };
+
+        function showConfirmationModal(message, callback) {
+            confirmationModalMessage.textContent = message;
+            confirmationCallback = callback;
+            confirmationModal.style.display = "block";
         }
 
         async function fetchMotivationalTip(habitId, habitName, habitPhase, habitMotivation, buttonElement) {
@@ -602,7 +651,9 @@
             prompt += " Keep the tip to 1-2 concise sentences. Be positive and supportive.";
 
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; const payload = { contents: chatHistory };
-            const apiKey = ""; const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            // API key is left as empty string for Canvas to inject it for gemini-2.0-flash
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             try {
                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!response.ok) { const errorData = await response.json(); throw new Error(`API Error ${response.status}: ${errorData.error?.message || 'Unknown'}`); }
