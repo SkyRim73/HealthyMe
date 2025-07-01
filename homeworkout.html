@@ -50,7 +50,7 @@
             max-width: 400px; /* Adjusted for potentially smaller charts */
             margin-left: auto;
             margin-right: auto;
-            height: 280px; 
+            height: 280px;
             max-height: 320px;
         }
         h1, h2, h3 {
@@ -95,11 +95,52 @@
         .badge-core { background-color: #FEF08A; color: #A16207; } /* yellow-200, yellow-700 */
         .badge-recovery { background-color: #E0E7FF; color: #4338CA; } /* indigo-200, indigo-700 */
 
-        /* Placeholder comments required by prompt */
-        /* */
-        /* */
-        /* */
-        /* */
+        /* CSS for the new Gallery Section */
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem; /* Equivalent to Tailwind's gap-6 */
+            justify-content: center; /* Center images in the grid */
+            padding-top: 1rem; /* Some space from the heading */
+        }
+
+        .gallery-item {
+            flex: 1 1 calc(50% - 1.5rem); /* Allows two items per row on larger screens, considering gap */
+            max-width: 400px; /* Max width for each image container */
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            overflow: hidden; /* Ensures image corners match card border radius */
+            border: 1px solid #E2E8F0; /* light gray border */
+            padding: 1rem; /* Padding inside the card */
+            text-align: center; /* Center image and caption */
+        }
+
+        .gallery-item img {
+            width: 100%; /* Make image fill its container */
+            height: auto;
+            display: block; /* Remove extra space below image */
+            border-radius: 0.25rem; /* Slightly rounded corners for the image itself */
+            margin-bottom: 0.75rem; /* Space between image and caption */
+        }
+
+        .gallery-item-caption {
+            font-size: 0.875rem; /* text-sm */
+            color: #57534E; /* text-stone-600 */
+            line-height: 1.4;
+        }
+
+        @media (min-width: 768px) { /* Medium screens and up */
+            .gallery-item {
+                flex: 1 1 calc(33.333% - 1.5rem); /* Three items per row */
+            }
+        }
+        @media (max-width: 640px) { /* Small screens (like mobile) */
+            .gallery-item {
+                flex: 1 1 100%; /* One item per row */
+            }
+        }
+
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
@@ -118,11 +159,13 @@
             <a href="#progression" class="nav-link" data-section="progression">📈 Progression Guide</a>
             <a href="#nutrition" class="nav-link" data-section="nutrition">🥗 Nutrition Insights (Kerala)</a>
             <a href="#motivation" class="nav-link" data-section="motivation">💡 Motivation & Tracking</a>
+            <!-- NEW GALLERY LINK -->
+            <a href="#gallery" class="nav-link" data-section="gallery">📸 Exercise Gallery</a>
         </nav>
     </aside>
 
     <main class="flex-1 h-full overflow-y-auto p-6 md:p-8">
-        
+
         <section id="overview" class="content-section active">
             <h2>📋 Overview & Plan Philosophy</h2>
             <div class="card">
@@ -311,18 +354,18 @@
                         <p class="text-xs text-stone-600 mt-1">Kerala Sources: Fish (മീൻ), chicken (കോഴിയിറച്ചി), eggs (മുട്ട), lentils (പരിപ്പ്), chickpeas (കടല), green gram (ചെറുപയർ), curd (തൈര്).</p>
                     </li>
                     <li><strong class="text-stone-800">Carbohydrates:</strong> Primary fuel source. Prioritize complex carbs.
-                         <p class="text-xs text-stone-600 mt-1">Kerala Sources: Kerala red rice (മട്ട അരി), puttu (പുട്ട്), appam (അപ്പം), idiyappam (ഇടിയപ്പം), dosa (ദോശ), fruits, vegetables.</p>
+                            <p class="text-xs text-stone-600 mt-1">Kerala Sources: Kerala red rice (മട്ട അരി), puttu (പുട്ട്), appam (അപ്പം), idiyappam (ഇടിയപ്പം), dosa (ദോശ), fruits, vegetables.</p>
                     </li>
                     <li><strong class="text-stone-800">Fats:</strong> Vital for hormones and energy. Emphasize healthy unsaturated fats.
                         <p class="text-xs text-stone-600 mt-1">Kerala Sources: Coconut oil (വെളിച്ചെണ്ണ - in moderation), avocados, nuts (ഉണങ്ങിയ കായകൾ), seeds, fatty fish.</p>
                     </li>
                 </ul>
                 <h3 class="mt-6 text-teal-600">Hydration & Meal Timing:</h3>
-                 <ul class="list-disc text-stone-700">
-                    <li><strong>Hydration:</strong> Minimum 3-4 liters water daily. Tender coconut water (കരിക്ക്) is excellent.</li>
-                    <li><strong>Pre-Workout (1-2 hours before):</strong> Easily digestible carbs (e.g., banana).</li>
-                    <li><strong>Post-Workout (within 30-60 mins):</strong> Protein and carbs (e.g., fish curry with matta rice).</li>
-                </ul>
+                    <ul class="list-disc text-stone-700">
+                        <li><strong>Hydration:</strong> Minimum 3-4 liters water daily. Tender coconut water (കരിക്ക്) is excellent.</li>
+                        <li><strong>Pre-Workout (1-2 hours before):</strong> Easily digestible carbs (e.g., banana).</li>
+                        <li><strong>Post-Workout (within 30-60 mins):</strong> Protein and carbs (e.g., fish curry with matta rice).</li>
+                    </ul>
             </div>
             <div class="card">
                 <h3>Kerala-Inspired Meal Ideas</h3>
@@ -359,6 +402,51 @@
                 </ul>
             </div>
         </section>
+
+        <!-- NEW GALLERY SECTION -->
+        <section id="gallery" class="content-section">
+            <h2>📸 Exercise Gallery</h2>
+            <div class="card">
+                <p class="text-stone-700 leading-relaxed mb-4">
+                    Visual demonstrations for key calisthenics exercises. This section helps you understand proper form and execution.
+                </p>
+                <div class="gallery-container">
+                    <!-- Your Bulletproof Knees Image -->
+                    <div class="gallery-item">
+                        <img src="image/ACL.jpg" alt="Bulletproof Knees Exercises - Push-up, Squat, Lunge variations for knee health.">
+                        <p class="gallery-item-caption"><strong>Bulletproof Knees (No ACL):</strong> Demonstrating exercises focused on building knee resilience and strength, even without an ACL.</p>
+                    </div>
+
+                    <!-- Placeholder images for demonstration -->
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/400x300/a7f3d0/0d9488?text=Push-up+Progression" alt="Person performing a push-up.">
+                        <p class="gallery-item-caption"><strong>Push-up Progression:</strong> Start with incline push-ups and work your way to full push-ups for chest and triceps strength.</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/400x300/bfdbfe/1d4ed8?text=Squat+Form" alt="Person performing a bodyweight squat.">
+                        <p class="gallery-item-caption"><strong>Bodyweight Squat:</strong> Focus on keeping your chest up and descending until your thighs are parallel to the floor.</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/400x300/fef08a/a16207?text=Plank+Hold" alt="Person holding a plank position.">
+                        <p class="gallery-item-caption"><strong>Perfect Plank:</strong> Engage your core, keep your body in a straight line from head to heels, and breathe steadily.</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/400x300/e0e7ff/4338ca?text=Australian+Row" alt="Person performing an Australian row.">
+                        <p class="gallery-item-caption"><strong>Australian Rows:</strong> An excellent exercise for building back strength, suitable for beginners before pull-ups.</p>
+                    </div>
+
+                    <div class="gallery-item">
+                        <img src="https://via.placeholder.com/400x300/fed7aa/c2410c?text=Bench+Dips" alt="Person performing bench dips.">
+                        <p class="gallery-item-caption"><strong>Bench Dips:</strong> A great exercise to target your triceps using a sturdy bench or chair.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- END NEW GALLERY SECTION -->
 
     </main>
 
@@ -460,7 +548,7 @@
                 showSection(sectionId);
             });
         });
-        
+
         function displayWorkout(day) {
             const workout = dailyWorkoutsData[day];
             if (!workout) {
@@ -497,7 +585,7 @@
         showSection('overview');
         // Activate first day button by default if on daily workouts page
         if (document.querySelector('.day-selector button[data-day="1"]')) {
-             // document.querySelector('.day-selector button[data-day="1"]').click(); // Auto-click or set initial display
+               // document.querySelector('.day-selector button[data-day="1"]').click(); // Auto-click or set initial display
         }
 
 
@@ -534,7 +622,7 @@
               return label;
             }
         };
-        
+
         new Chart(workoutRestCtx, {
             type: 'doughnut',
             data: {
