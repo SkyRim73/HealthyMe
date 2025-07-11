@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Power Routine - Productivity Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles matching the Productivity Hub theme */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        .container {
+            max-width: 1400px; /* Wider container for two columns */
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            height: 100%; /* Make cards in a grid take full height */
+        }
+        .section-title {
+            color: #1f2937;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.75rem;
+        }
+        /* Interactive collapsible section */
+        details {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: #f9fafb; /* Gray-50 */
+            border: 1px solid #e5e7eb;
+        }
+        summary {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: #4f46e5; /* Indigo-600 */
+            padding: 1rem;
+            cursor: pointer;
+            list-style: none; /* Remove default marker */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary::after {
+            content: '▼';
+            font-size: 0.8rem;
+            transition: transform 0.2s;
+        }
+        details[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 0 1rem 1rem 1rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 1rem; /* text-base */
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+        }
+        .task-item input[type="checkbox"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+            accent-color: #4f46e5;
+            flex-shrink: 0;
+        }
+        .task-item label {
+            flex-grow: 1;
+        }
+        .task-item.completed label {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+        .button {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: bold;
+            padding: 0.6rem 1.2rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .button:hover {
+            background-color: #4338ca;
+            transform: scale(1.05);
+        }
+         .button-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        .button-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #4f46e5;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container">
+        <header class="text-center py-8">
+            <h1 class="text-5xl font-extrabold text-gray-900 mb-4">Brain Power Routine</h1>
+            <p class="text-xl text-gray-600">Your daily plan to build a sharper, faster, and more focused mind.</p>
+        </header>
+
+        <a href="index.html" class="back-link">&larr; Back to Productivity Hub</a>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left Column: Daily Routine -->
+            <section class="card">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-3xl section-title flex-grow" style="border: none; margin: 0;">✅ Daily Routine</h2>
+                    <button id="resetDailyBtn" class="button button-secondary text-sm">Reset Daily</button>
+                </div>
+                
+                <details id="daily-fuel-section">
+                    <summary>🧠 1. Brain Fuel (Morning)</summary>
+                    <div class="details-content task-list" id="daily-fuel">
+                        <div class="task-item"><input type="checkbox" id="task-water"><label for="task-water">Drink water after waking</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-breakfast"><label for="task-breakfast">Eat a brain-boosting breakfast</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-omega3"><label for="task-omega3">Take Omega-3s or eat fish/flax</label></div>
+                    </div>
+                </details>
+
+                <details id="daily-learning-section">
+                    <summary>📖 2. Morning Learning (30-60 mins)</summary>
+                    <div class="details-content task-list" id="daily-learning">
+                        <div class="task-item"><input type="checkbox" id="task-study"><label for="task-study">Study something new</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-recall"><label for="task-recall">Use Active Recall / Spaced Repetition</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-read"><label for="task-read">Read 10 pages of a deep book</label></div>
+                    </div>
+                </details>
+
+                <details id="daily-workouts-section">
+                    <summary>✍️ 3. Brain Workouts (20-30 mins)</summary>
+                    <div class="details-content task-list" id="daily-workouts">
+                        <div class="task-item"><input type="checkbox" id="task-math"><label for="task-math">Practice Mental Math</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-puzzles"><label for="task-puzzles">Puzzles, Sudoku, or Chess</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-memory"><label for="task-memory">Memory games (e.g., new words)</label></div>
+                    </div>
+                </details>
+
+                <details id="daily-exercise-section">
+                    <summary>💪 4. Physical Exercise (30-45 mins)</summary>
+                    <div class="details-content task-list" id="daily-exercise">
+                        <div class="task-item"><input type="checkbox" id="task-exercise"><label for="task-exercise">Walk, run, or strength train</label></div>
+                    </div>
+                </details>
+
+                <details id="daily-meditation-section">
+                    <summary>🧘 5. Meditation & Focus (10-15 mins)</summary>
+                    <div class="details-content task-list" id="daily-meditation">
+                        <div class="task-item"><input type="checkbox" id="task-mindfulness"><label for="task-mindfulness">Practice mindfulness / deep breathing</label></div>
+                    </div>
+                </details>
+
+                <details id="daily-journal-section">
+                    <summary>✍️ 6. Reflect & Journal (5-10 mins)</summary>
+                    <div class="details-content task-list" id="daily-journal">
+                        <div class="task-item"><input type="checkbox" id="task-journal"><label for="task-journal">Write 3 learnings, 1 mistake, 1 gratitude</label></div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- Right Column: Weekly Plan & Bonus Tips -->
+            <div class="space-y-8">
+                <section class="card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-3xl section-title flex-grow" style="border: none; margin: 0;">🗓️ Weekly Plan</h2>
+                        <button id="resetWeeklyBtn" class="button button-secondary text-sm">Reset Weekly</button>
+                    </div>
+                    <div class="task-list" id="weekly-plan">
+                        <div class="task-item"><input type="checkbox" id="task-mon"><label for="task-mon"><b>Mon:</b> Learn a new concept deeply & teach it</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-tue"><label for="task-tue"><b>Tue:</b> Focus on emotional control (pause before reacting)</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-wed"><label for="task-wed"><b>Wed:</b> Physical + mental challenge (e.g., cold shower + puzzle)</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-thu"><label for="task-thu"><b>Thu:</b> Create something (write, draw, build)</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-fri"><label for="task-fri"><b>Fri:</b> Social brain (deep talk, active listening)</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-sat"><label for="task-sat"><b>Sat:</b> Review everything learned this week</label></div>
+                        <div class="task-item"><input type="checkbox" id="task-sun"><label for="task-sun"><b>Sun:</b> Digital detox for 4-8 hours</label></div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2 class="text-3xl section-title" style="border: none; margin: 0; margin-bottom: 1rem;">🧩 Bonus Tips</h2>
+                    <ul class="list-disc list-inside text-gray-700 space-y-3">
+                        <li><b>Sleep 7-9 hours daily:</b> non-negotiable for memory & creativity.</li>
+                        <li><b>Avoid multitasking:</b> focus on one task at a time for deeper work.</li>
+                        <li><b>Surround yourself with mentors:</b> learn from those ahead of you.</li>
+                        <li><b>Consider intermittent fasting:</b> can sharpen thinking and focus.</li>
+                        <li><b>Avoid junk content:</b> protect your attention span from doomscrolling.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-6 text-gray-500 text-sm mt-auto">
+        <p>&copy; 2025 Productivity Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dailyCheckboxes = document.querySelectorAll('#daily-fuel input, #daily-learning input, #daily-workouts input, #daily-exercise input, #daily-meditation input, #daily-journal input');
+            const weeklyCheckboxes = document.querySelectorAll('#weekly-plan input');
+            const dailyStorageKey = 'brainPowerDailyProgress';
+            const weeklyStorageKey = 'brainPowerWeeklyProgress';
+
+            // Generic function to load progress
+            function loadProgress(checkboxes, storageKey) {
+                const savedProgress = JSON.parse(localStorage.getItem(storageKey)) || {};
+                checkboxes.forEach(checkbox => {
+                    if (savedProgress[checkbox.id]) {
+                        checkbox.checked = true;
+                        checkbox.closest('.task-item').classList.add('completed');
+                    }
+                });
+            }
+
+            // Generic function to save progress
+            function saveProgress(checkboxes, storageKey) {
+                const progress = {};
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        progress[checkbox.id] = true;
+                    }
+                });
+                localStorage.setItem(storageKey, JSON.stringify(progress));
+            }
+
+            // Generic function to handle checkbox changes
+            function handleCheckboxChange(e, checkboxes, storageKey) {
+                const taskItem = e.target.closest('.task-item');
+                taskItem.classList.toggle('completed', e.target.checked);
+                saveProgress(checkboxes, storageKey);
+            }
+            
+            // Add event listeners
+            dailyCheckboxes.forEach(cb => cb.addEventListener('change', (e) => handleCheckboxChange(e, dailyCheckboxes, dailyStorageKey)));
+            weeklyCheckboxes.forEach(cb => cb.addEventListener('change', (e) => handleCheckboxChange(e, weeklyCheckboxes, weeklyStorageKey)));
+            
+            // Reset button functionality
+            document.getElementById('resetDailyBtn').addEventListener('click', () => {
+                if (confirm('Reset all daily progress?')) {
+                    dailyCheckboxes.forEach(cb => {
+                        cb.checked = false;
+                        cb.closest('.task-item').classList.remove('completed');
+                    });
+                    localStorage.removeItem(dailyStorageKey);
+                }
+            });
+
+            document.getElementById('resetWeeklyBtn').addEventListener('click', () => {
+                if (confirm('Reset all weekly progress?')) {
+                    weeklyCheckboxes.forEach(cb => {
+                        cb.checked = false;
+                        cb.closest('.task-item').classList.remove('completed');
+                    });
+                    localStorage.removeItem(weeklyStorageKey);
+                }
+            });
+
+            // Initial load
+            loadProgress(dailyCheckboxes, dailyStorageKey);
+            loadProgress(weeklyCheckboxes, weeklyStorageKey);
+        });
+    </script>
+</body>
+</html>
