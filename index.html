@@ -9,6 +9,7 @@
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Base styles for the body */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6; /* Light gray background */
@@ -17,12 +18,14 @@
             display: flex;
             flex-direction: column;
         }
+        /* Main container for content */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 1.5rem;
             flex-grow: 1; /* Allow container to grow and push footer down */
         }
+        /* Card styling for content sections */
         .card {
             background-color: #ffffff;
             border-radius: 0.75rem; /* rounded-lg */
@@ -30,24 +33,26 @@
             padding: 2rem;
             margin-bottom: 2rem;
         }
+        /* Section title styling */
         .section-title {
             color: #1f2937; /* Darker gray for titles */
             font-weight: 700; /* font-bold */
             margin-bottom: 1.5rem;
         }
+        /* Styling for the green interactive box */
         .interactive-box {
             background-color: #ecfdf5; /* Light green for interactive elements */
             border-left: 4px solid #10b981; /* Green-500 border */
             border-radius: 0.5rem;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            text-align: center;
         }
         .interactive-box p {
             font-size: 1.125rem; /* text-lg */
             font-weight: 500; /* font-medium */
             color: #065f46; /* Green-800 */
         }
+        /* Responsive grid for navigation items */
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr); /* Default to 1 column */
@@ -60,9 +65,10 @@
         }
         @media (min-width: 1024px) { /* lg breakpoint */
             .nav-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns on large screens */
+                grid-template-columns: repeat(4, 1fr); /* 4 columns for better layout with icons */
             }
         }
+        /* Navigation item styling */
         .nav-item {
             background-color: #a5b4fc; /* Indigo-300 */
             color: #ffffff;
@@ -70,7 +76,7 @@
             border-radius: 0.75rem; /* rounded-lg */
             text-align: center;
             font-weight: 600; /* font-semibold */
-            font-size: 1.25rem; /* text-xl */
+            font-size: 1.125rem; /* text-xl */
             transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
             display: flex;
             flex-direction: column;
@@ -85,20 +91,121 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         .nav-item-description {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 400;
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
             opacity: 0.9;
+            line-height: 1.2;
         }
+        .nav-item svg {
+            width: 2.5rem; /* 40px */
+            height: 2.5rem; /* 40px */
+            margin-bottom: 0.75rem;
+        }
+        /* Welcome message styling */
         .welcome-message {
             font-size: 1.5rem;
             font-weight: 600;
             color: #4b5563;
-            margin-bottom: 1rem;
         }
         .welcome-subtext {
             font-size: 1.125rem;
             color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        /* Task item styling for the checklist */
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+            gap: 0.75rem;
+        }
+        .task-item input[type="checkbox"] {
+            width: 1.5rem;
+            height: 1.5rem;
+            cursor: pointer;
+            accent-color: #4f46e5; /* Indigo-600 */
+            flex-shrink: 0;
+        }
+        .task-item input[type="text"] {
+            flex-grow: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            transition: border-color 0.2s;
+        }
+        .task-item input[type="text"]:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        .task-item.completed input[type="text"] {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+        .delete-task-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            line-height: 1;
+            width: 30px;
+            height: 30px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .delete-task-btn:hover {
+            background-color: #fee2e2; /* Red-100 */
+            color: #ef4444; /* Red-500 */
+        }
+        /* General button styling */
+        .button {
+            background-color: #4f46e5; /* Indigo-600 */
+            color: white;
+            font-weight: bold;
+            padding: 0.6rem 1.2rem;
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .button:hover {
+            background-color: #4338ca; /* Indigo-700 */
+            transform: scale(1.05);
+        }
+        /* Secondary button styling */
+        .button-secondary {
+            background-color: #e5e7eb; /* Gray-200 */
+            color: #374151;
+        }
+        .button-secondary:hover {
+            background-color: #d1d5db; /* Gray-300 */
+        }
+
+        /* Pomodoro Timer Styles */
+        #pomodoroTimerDisplay {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #1f2937;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .timer-btn {
+             padding: 0.5rem 1rem;
+             border-radius: 0.5rem;
+             border: 1px solid #d1d5db;
+             background-color: #fff;
+             cursor: pointer;
+             transition: background-color 0.2s, color 0.2s;
+             font-weight: 500;
+        }
+        .timer-btn.active {
+            background-color: #4f46e5;
+            color: #fff;
+            border-color: #4f46e5;
         }
     </style>
 </head>
@@ -111,42 +218,75 @@
 
         <!-- Dynamic Welcome Message & Daily Tip -->
         <section class="interactive-box">
-            <p class="welcome-message" id="welcomeMessage">Hello!</p>
-            <p class="welcome-subtext" id="dailyTip">"Consistency is key to unlocking your potential."</p>
-        </section>
-
-        <!-- Navigation Section -->
-        <section class="card">
-            <h2 class="text-3xl section-title">Explore Your Routine & Tools</h2>
-            <div class="nav-grid">
-                <a href="routine.html" class="nav-item">
-                    <span>My Optimized Daily Routine</span>
-                    <span class="nav-item-description">View your personalized, scientifically-backed daily schedule.</span>
-                </a>
-                <a href="homeworkout.html" class="nav-item">
-                    <span>Home Workout Plan</span>
-                    <span class="nav-item-description">Access your dedicated home exercise routines.</span>
-                </a>
-                <a href="nutrition.html" class="nav-item">
-                    <span>Nutrition Guide</span>
-                    <span class="nav-item-description">Explore healthy eating principles and meal ideas.</span>
-                </a>
-                <a href="track.html" class="nav-item">
-                    <span>Progress Tracker</span>
-                    <span class="nav-item-description">Monitor your steps, workouts, and skill development.</span>
-                </a>
-                <!-- Add more links as needed -->
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="welcome-message" id="welcomeMessage">Hello!</p>
+                    <p class="welcome-subtext" id="dailyTip">"Consistency is key to unlocking your potential."</p>
+                </div>
+                <button id="newTipBtn" class="button">New Tip</button>
             </div>
         </section>
+        
+        <!-- Main content grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
+            <!-- Left Column: Tasks and Tools -->
+            <div>
+                <!-- Interactive Daily Focus Checklist -->
+                <section class="card">
+                    <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                         <h2 class="text-3xl section-title" style="margin-bottom: 0;">Today's Focus</h2>
+                         <div class="flex gap-2">
+                            <button id="addTaskBtn" class="button">Add Task</button>
+                            <button id="clearTasksBtn" class="button button-secondary">Clear List</button>
+                         </div>
+                    </div>
+                    <div id="taskList">
+                        <!-- Tasks will be dynamically inserted here by JavaScript -->
+                    </div>
+                </section>
 
-        <!-- Quick Access / Call to Action -->
-        <section class="card text-center">
-            <h2 class="text-3xl section-title">Ready to Boost Your Day?</h2>
-            <p class="text-lg text-gray-700 mb-6">Dive into your routine or track your progress directly from here.</p>
-            <a href="routine.html" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
-                Start Your Day
-            </a>
-        </section>
+                <!-- NEW: Pomodoro Timer -->
+                <section class="card">
+                    <h2 class="text-3xl section-title">Pomodoro Timer</h2>
+                    <div id="pomodoroTimerDisplay">25:00</div>
+                    <div class="flex justify-center gap-4 mb-6">
+                        <button id="workBtn" class="timer-btn active">Work</button>
+                        <button id="breakBtn" class="timer-btn">Short Break</button>
+                    </div>
+                    <div class="flex justify-center gap-4">
+                        <button id="startPauseBtn" class="button">Start</button>
+                        <button id="resetBtn" class="button button-secondary">Reset</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Navigation -->
+            <section class="card">
+                <h2 class="text-3xl section-title">Explore Your Tools</h2>
+                <div class="nav-grid">
+                    <a href="#" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Daily Routine...');">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>Daily Routine</span>
+                        <span class="nav-item-description">View your personalized daily schedule.</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Workout Plan...');">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a5.25 5.25 0 016.385 5.513l-1.228 1.228a.75.75 0 001.06 1.061l1.228-1.228A7.5 7.5 0 104.5 12.25a7.5 7.5 0 005.472 7.221 22.483 22.483 0 01-4.122.976.75.75 0 00-.53 1.394c.366.42.796.811 1.275 1.173a.75.75 0 001.08-.216 22.89 22.89 0 004.288-4.126 7.5 7.5 0 006.385-5.513zM2.25 12a9.75 9.75 0 0116.06-6.442" /></svg>
+                        <span>Workout Plan</span>
+                        <span class="nav-item-description">Access your dedicated home exercises.</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Nutrition Guide...');">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9.75v4.542c0 .828-.672 1.5-1.5 1.5H6.75a1.5 1.5 0 01-1.5-1.5V9.75M21.75 9.75A2.25 2.25 0 0019.5 7.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 11.91a2.25 2.25 0 01-1.07-1.916V9.75" /></svg>
+                        <span>Nutrition Guide</span>
+                        <span class="nav-item-description">Explore healthy eating & meal ideas.</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Progress Tracker...');">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.75-.625m3.75.625l.625 3.75" /></svg>
+                        <span>Progress Tracker</span>
+                        <span class="nav-item-description">Monitor steps, workouts, and skills.</span>
+                    </a>
+                </div>
+            </section>
+        </div>
     </div>
 
     <footer class="text-center py-6 text-gray-500 text-sm mt-auto">
@@ -154,47 +294,188 @@
     </footer>
 
     <script>
-        // JavaScript for dynamic welcome message and daily tips
         document.addEventListener('DOMContentLoaded', () => {
+            // --- General Element References ---
             const welcomeMessageElement = document.getElementById('welcomeMessage');
             const dailyTipElement = document.getElementById('dailyTip');
-
-            const now = new Date();
-            const hour = now.getHours();
-            let welcomeText = "Hello!";
-
-            if (hour < 12) {
-                welcomeText = "Good Morning!";
-            } else if (hour < 18) {
-                welcomeText = "Good Afternoon!";
-            } else {
-                welcomeText = "Good Evening!";
-            }
-            welcomeMessageElement.textContent = welcomeText;
-
+            const newTipBtn = document.getElementById('newTipBtn');
+            const originalTitle = document.title;
+            
+            // --- State Management ---
+            let userName = localStorage.getItem('userName') || '';
             const tips = [
-                "Consistency is key to unlocking your potential.",
-                "Stay hydrated throughout the day for optimal brain function.",
-                "Even a short break can significantly boost your focus.",
-                "Prioritize deep work in your most alert hours.",
-                "Blue light filtering in the evening supports better sleep.",
-                "Movement throughout the day contributes to overall well-being.",
-                // New Health Tips!
-                "Aim for at least 7-9 hours of quality sleep each night.",
-                "Incorporate a variety of fruits and vegetables into your diet daily.",
-                "Practice mindful eating – savor your food and listen to your body's hunger cues.",
-                "Take short stretching breaks every hour to improve circulation and reduce stiffness.",
-                "Limit processed foods and sugary drinks for better energy levels.",
-                "Spend time outdoors daily to boost Vitamin D and improve mood.",
-                "Prioritize stress reduction techniques like meditation or deep breathing.",
-                "Ensure your dinner is light and consumed a few hours before bedtime.",
-                "Listen to your body's signals for rest and recovery.",
-                "Connect with loved ones regularly for emotional well-being."
+                "Consistency is key to unlocking your potential.", "Stay hydrated for optimal brain function.", "A short break can significantly boost your focus.", "Prioritize deep work in your most alert hours.", "Blue light filtering in the evening supports better sleep.", "Movement throughout the day contributes to well-being.", "Aim for 7-9 hours of quality sleep each night.", "Incorporate a variety of fruits and vegetables into your diet.", "Practice mindful eating – savor your food.", "Take short stretching breaks every hour.", "Limit processed foods and sugary drinks for better energy.", "Spend time outdoors daily to boost Vitamin D and mood.", "Prioritize stress reduction techniques like meditation.", "Ensure your dinner is light and consumed hours before bedtime.", "Listen to your body's signals for rest and recovery.", "Connect with loved ones regularly for emotional well-being."
             ];
 
-            // Display a random tip
-            const randomTip = tips[Math.floor(Math.random() * tips.length)];
-            dailyTipElement.textContent = `"${randomTip}"`;
+            // --- 1. Personalization & Welcome ---
+            function setWelcomeMessage() {
+                const hour = new Date().getHours();
+                let greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
+                welcomeMessageElement.textContent = `${greeting}, ${userName || 'friend'}!`;
+            }
+
+            function askForName() {
+                const name = prompt("Welcome! What's your name?");
+                if (name && name.trim()) {
+                    userName = name.trim();
+                    localStorage.setItem('userName', userName);
+                    setWelcomeMessage();
+                }
+            }
+
+            function displayRandomTip() {
+                dailyTipElement.textContent = `"${tips[Math.floor(Math.random() * tips.length)]}"`;
+            }
+
+            // --- 2. Interactive Task List ---
+            const taskListContainer = document.getElementById('taskList');
+            const addTaskBtn = document.getElementById('addTaskBtn');
+            const clearTasksBtn = document.getElementById('clearTasksBtn');
+            let tasks = JSON.parse(localStorage.getItem('dailyTasks')) || [];
+
+            function saveTasks() {
+                localStorage.setItem('dailyTasks', JSON.stringify(tasks));
+            }
+
+            function renderTasks() {
+                taskListContainer.innerHTML = '';
+                if (tasks.length === 0) {
+                    taskListContainer.innerHTML = `<p class="text-gray-500 text-center">No tasks yet. Add one to get started!</p>`;
+                }
+                tasks.forEach((task, index) => {
+                    const taskItem = document.createElement('div');
+                    taskItem.className = 'task-item' + (task.completed ? ' completed' : '');
+                    
+                    taskItem.innerHTML = `
+                        <input type="checkbox" data-index="${index}" ${task.completed ? 'checked' : ''}>
+                        <input type="text" data-index="${index}" value="${task.text}" placeholder="Describe your task...">
+                        <button class="delete-task-btn" data-index="${index}">×</button>
+                    `;
+                    
+                    taskListContainer.appendChild(taskItem);
+                });
+            }
+
+            taskListContainer.addEventListener('click', (e) => {
+                const index = e.target.dataset.index;
+                if (e.target.type === 'checkbox') {
+                    tasks[index].completed = e.target.checked;
+                    saveTasks();
+                    renderTasks();
+                }
+                if (e.target.classList.contains('delete-task-btn')) {
+                    tasks.splice(index, 1);
+                    saveTasks();
+                    renderTasks();
+                }
+            });
+            
+            taskListContainer.addEventListener('input', (e) => {
+                if (e.target.type === 'text') {
+                    tasks[e.target.dataset.index].text = e.target.value;
+                    saveTasks();
+                }
+            });
+
+            addTaskBtn.addEventListener('click', () => {
+                tasks.push({ text: '', completed: false });
+                saveTasks();
+                renderTasks();
+            });
+
+            clearTasksBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear your entire focus list?')) {
+                    tasks = [];
+                    saveTasks();
+                    renderTasks();
+                }
+            });
+
+            // --- 3. Pomodoro Timer ---
+            const timerDisplay = document.getElementById('pomodoroTimerDisplay');
+            const startPauseBtn = document.getElementById('startPauseBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const workBtn = document.getElementById('workBtn');
+            const breakBtn = document.getElementById('breakBtn');
+
+            const WORK_MINUTES = 25;
+            const BREAK_MINUTES = 5;
+            let timerId = null;
+            let isPaused = true;
+            let currentMode = 'work'; // 'work' or 'break'
+            let timeLeft = WORK_MINUTES * 60;
+
+            function updateTimerDisplay() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.title = `${timerDisplay.textContent} - ${originalTitle}`;
+            }
+
+            function startTimer() {
+                if (isPaused) {
+                    isPaused = false;
+                    startPauseBtn.textContent = 'Pause';
+                    timerId = setInterval(() => {
+                        timeLeft--;
+                        updateTimerDisplay();
+                        if (timeLeft <= 0) {
+                            clearInterval(timerId);
+                            document.title = `Time's up! - ${originalTitle}`;
+                            // Optional: Add a sound or more prominent visual cue
+                            alert(`${currentMode === 'work' ? 'Work' : 'Break'} session finished!`);
+                            switchMode(currentMode === 'work' ? 'break' : 'work');
+                        }
+                    }, 1000);
+                }
+            }
+
+            function pauseTimer() {
+                if (!isPaused) {
+                    isPaused = true;
+                    startPauseBtn.textContent = 'Start';
+                    clearInterval(timerId);
+                }
+            }
+            
+            function switchMode(mode) {
+                pauseTimer();
+                currentMode = mode;
+                if (mode === 'work') {
+                    timeLeft = WORK_MINUTES * 60;
+                    workBtn.classList.add('active');
+                    breakBtn.classList.remove('active');
+                } else {
+                    timeLeft = BREAK_MINUTES * 60;
+                    breakBtn.classList.add('active');
+                    workBtn.classList.remove('active');
+                }
+                updateTimerDisplay();
+            }
+
+            startPauseBtn.addEventListener('click', () => {
+                isPaused ? startTimer() : pauseTimer();
+            });
+
+            resetBtn.addEventListener('click', () => {
+                pauseTimer();
+                switchMode(currentMode);
+            });
+            
+            workBtn.addEventListener('click', () => switchMode('work'));
+            breakBtn.addEventListener('click', () => switchMode('break'));
+
+            // --- Initial Application Setup ---
+            function initialize() {
+                if (!userName) askForName();
+                setWelcomeMessage();
+                displayRandomTip();
+                renderTasks();
+                updateTimerDisplay();
+                newTipBtn.addEventListener('click', displayRandomTip);
+            }
+            
+            initialize();
         });
     </script>
 </body>
