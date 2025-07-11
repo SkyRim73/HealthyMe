@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Daily Routine Hub</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base styles for the body */
@@ -214,6 +216,7 @@
             <p class="text-xl text-gray-600">Your centralized dashboard for a balanced and productive life.</p>
         </header>
 
+        <!-- Dynamic Welcome Message & Daily Tip -->
         <section class="interactive-box">
             <div class="flex justify-between items-center">
                 <div>
@@ -224,8 +227,11 @@
             </div>
         </section>
         
+        <!-- Main content grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
+            <!-- Left Column: Tasks and Tools -->
             <div>
+                <!-- Interactive Daily Focus Checklist -->
                 <section class="card">
                     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                          <h2 class="text-3xl section-title" style="margin-bottom: 0;">Today's Focus</h2>
@@ -235,9 +241,11 @@
                          </div>
                     </div>
                     <div id="taskList">
-                        </div>
+                        <!-- Tasks will be dynamically inserted here by JavaScript -->
+                    </div>
                 </section>
 
+                <!-- Pomodoro Timer -->
                 <section class="card">
                     <h2 class="text-3xl section-title">Pomodoro Timer</h2>
                     <div id="pomodoroTimerDisplay">25:00</div>
@@ -252,30 +260,32 @@
                 </section>
             </div>
 
+            <!-- Right Column: Navigation -->
             <section class="card">
                 <h2 class="text-3xl section-title">Explore Your Tools</h2>
                 <div class="nav-grid">
-                    <a href="routine.html" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Daily Routine...');">
+                    <!-- Navigation links now navigate directly without alerts -->
+                    <a href="routine.html" class="nav-item">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         <span>Daily Routine</span>
                         <span class="nav-item-description">View your personalized daily schedule.</span>
                     </a>
-                    <a href="track.html" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Workout Plan...');">
+                    <a href="track.html" class="nav-item">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a5.25 5.25 0 016.385 5.513l-1.228 1.228a.75.75 0 001.06 1.061l1.228-1.228A7.5 7.5 0 104.5 12.25a7.5 7.5 0 005.472 7.221 22.483 22.483 0 01-4.122.976.75.75 0 00-.53 1.394c.366.42.796.811 1.275 1.173a.75.75 0 001.08-.216 22.89 22.89 0 004.288-4.126 7.5 7.5 0 006.385-5.513zM2.25 12a9.75 9.75 0 0116.06-6.442" /></svg>
                         <span>Workout Plan</span>
                         <span class="nav-item-description">Access your dedicated home exercises.</span>
                     </a>
-                    <a href="nutrition.html" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Nutrition Guide...');">
+                    <a href="nutrition.html" class="nav-item">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9.75v4.542c0 .828-.672 1.5-1.5 1.5H6.75a1.5 1.5 0 01-1.5-1.5V9.75M21.75 9.75A2.25 2.25 0 0019.5 7.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 11.91a2.25 2.25 0 01-1.07-1.916V9.75" /></svg>
                         <span>Nutrition Guide</span>
                         <span class="nav-item-description">Explore healthy eating & meal ideas.</span>
                     </a>
-                    <a href="homeworkout.html" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Progress Tracker...');">
+                    <a href="homeworkout.html" class="nav-item">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.75-.625m3.75.625l.625 3.75" /></svg>
                         <span>Progress Tracker</span>
                         <span class="nav-item-description">Monitor steps, workouts, and skills.</span>
                     </a>
-                    <a href="for-brain.html" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Brain Functionality...');">
+                    <a href="for-brain.html" class="nav-item">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25a9.75 9.75 0 018.667 5.215l-3.32 3.32a3.75 3.75 0 00-5.856-2.553 3.75 3.75 0 00-.566 5.857 3.75 3.75 0 005.856 2.553l3.32-3.32A9.75 9.75 0 0112 21.75a9.75 9.75 0 01-9.75-9.75A9.75 9.75 0 0112 2.25z" />
                         </svg>
@@ -309,16 +319,19 @@
             function setWelcomeMessage() {
                 const hour = new Date().getHours();
                 let greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
+                // Use 'friend' as a default if no name is stored.
                 welcomeMessageElement.textContent = `${greeting}, ${userName || 'friend'}!`;
             }
 
             function askForName() {
-                const name = prompt("Welcome! What's your name?");
-                if (name && name.trim()) {
-                    userName = name.trim();
-                    localStorage.setItem('userName', userName);
-                    setWelcomeMessage();
+                // Removed the prompt to avoid disruptive pop-ups.
+                // You could implement a non-blocking modal here if desired.
+                const name = localStorage.getItem('userName');
+                if (!name) {
+                    // Let's set a default name if one isn't found.
+                    // This part is now handled by setWelcomeMessage.
                 }
+                setWelcomeMessage();
             }
 
             function displayRandomTip() {
@@ -371,7 +384,7 @@
             taskListContainer.addEventListener('input', (e) => {
                 if (e.target.type === 'text') {
                     tasks[e.target.dataset.index].text = e.target.value;
-                    saveTasks();
+                    saveTasks(); // Save on input change
                 }
             });
 
@@ -382,11 +395,10 @@
             });
 
             clearTasksBtn.addEventListener('click', () => {
-                if (confirm('Are you sure you want to clear your entire focus list?')) {
-                    tasks = [];
-                    saveTasks();
-                    renderTasks();
-                }
+                // Removed the confirm() dialog for a smoother experience.
+                tasks = [];
+                saveTasks();
+                renderTasks();
             });
 
             // --- 3. Pomodoro Timer ---
@@ -420,8 +432,8 @@
                         if (timeLeft <= 0) {
                             clearInterval(timerId);
                             document.title = `Time's up! - ${originalTitle}`;
-                            // Optional: Add a sound or more prominent visual cue
-                            alert(`${currentMode === 'work' ? 'Work' : 'Break'} session finished!`);
+                            // Removed the alert for a less intrusive notification.
+                            // A sound or a more prominent visual cue could be added here.
                             switchMode(currentMode === 'work' ? 'break' : 'work');
                         }
                     }, 1000);
@@ -465,8 +477,7 @@
 
             // --- Initial Application Setup ---
             function initialize() {
-                if (!userName) askForName();
-                setWelcomeMessage();
+                askForName(); // This will now just set the welcome message
                 displayRandomTip();
                 renderTasks();
                 updateTimerDisplay();
