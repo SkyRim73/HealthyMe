@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Base styles for the body */
         body {
@@ -57,6 +59,13 @@
             display: grid;
             grid-template-columns: repeat(1, 1fr); /* Default to 1 column */
             gap: 1.5rem; /* gap-6 */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+        }
+        .nav-grid.open {
+            max-height: 1000px; /* Large enough to show all content */
+            margin-top: 1.5rem; /* Add space when open */
         }
         @media (min-width: 640px) { /* sm breakpoint */
             .nav-grid {
@@ -207,6 +216,21 @@
             color: #fff;
             border-color: #4f46e5;
         }
+        
+        /* Dropdown Toggle Button */
+        #tools-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.75rem 1.25rem;
+        }
+        #tools-toggle-btn .fa-chevron-down {
+            transition: transform 0.3s ease-in-out;
+        }
+        #tools-toggle-btn.open .fa-chevron-down {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body>
@@ -263,8 +287,12 @@
             <!-- Right Column: Navigation -->
             <section class="card">
                 <h2 class="text-3xl section-title">Explore Your Tools</h2>
-                <div class="nav-grid">
-                    <!-- Navigation links now navigate directly without alerts -->
+                <!-- START: Dropdown Implementation -->
+                <button id="tools-toggle-btn" class="button">
+                    <span>Explore Tools</span>
+                    <i class="fas fa-chevron-down text-sm ml-2"></i>
+                </button>
+                <div id="nav-grid" class="nav-grid">
                     <a href="routine.html" class="nav-item">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         <span>Daily Routine</span>
@@ -287,20 +315,20 @@
                     </a>
                     <a href="for-brain.html" class="nav-item">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25a9.75 9.75 0 018.667 5.215l-3.32 3.32a3.75 3.75 0 00-5.856-2.553 3.75 3.75 0 00-.566 5.857 3.75 3.75 0 005.856 2.553l3.32-3.32A9.75 9.75 0 0112 21.75a9.75 9.75 0 01-9.75-9.75A9.75 9.75 0 0112 2.25z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25a9.75 9.75 0 018.667 5.215l-3.32 3.32a3.75 3.75 0 00-5.856-2.553 3.75 3.75 0 00-.566 5.857 3.75 3.75 0 005.856 2.553l3.32-3.32A9.75 9.75 0 0112 21.75a9.75 9.75 0 01-9.75-9.75A9.75 9.75 0 0112 2.25z" />
                         </svg>
                         <span>Brain Functionality</span>
                         <span class="nav-item-description">Engage in cognitive exercises.</span>
                     </a>
                     <a href="man-of-the-house.html" class="nav-item">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17 s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4 c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562 C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829 c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91 v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4 s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665 C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2 S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4 s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2 s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17 s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4 c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562 C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829 c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91 v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4 s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665 C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2 S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4 s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2 s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z" />
                         </svg>
                         <span>How to Be a Man of the House: A Complete Guide</span>
                         <span class="nav-item-description">Man of the house</span>
                     </a>
-                    
                 </div>
+                <!-- END: Dropdown Implementation -->
             </section>
         </div>
     </div>
@@ -327,17 +355,13 @@
             function setWelcomeMessage() {
                 const hour = new Date().getHours();
                 let greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
-                // Use 'friend' as a default if no name is stored.
                 welcomeMessageElement.textContent = `${greeting}, ${userName || 'friend'}!`;
             }
 
             function askForName() {
-                // Removed the prompt to avoid disruptive pop-ups.
-                // You could implement a non-blocking modal here if desired.
                 const name = localStorage.getItem('userName');
                 if (!name) {
-                    // Let's set a default name if one isn't found.
-                    // This part is now handled by setWelcomeMessage.
+                    // This is handled by the default in setWelcomeMessage
                 }
                 setWelcomeMessage();
             }
@@ -403,10 +427,11 @@
             });
 
             clearTasksBtn.addEventListener('click', () => {
-                // Removed the confirm() dialog for a smoother experience.
-                tasks = [];
-                saveTasks();
-                renderTasks();
+                if(confirm('Are you sure you want to clear your entire focus list?')) {
+                    tasks = [];
+                    saveTasks();
+                    renderTasks();
+                }
             });
 
             // --- 3. Pomodoro Timer ---
@@ -440,7 +465,6 @@
                         if (timeLeft <= 0) {
                             clearInterval(timerId);
                             document.title = `Time's up! - ${originalTitle}`;
-                            // Removed the alert for a less intrusive notification.
                             // A sound or a more prominent visual cue could be added here.
                             switchMode(currentMode === 'work' ? 'break' : 'work');
                         }
@@ -483,9 +507,18 @@
             workBtn.addEventListener('click', () => switchMode('work'));
             breakBtn.addEventListener('click', () => switchMode('break'));
 
+            // --- Dropdown Navigation ---
+            const toolsToggleBtn = document.getElementById('tools-toggle-btn');
+            const navGrid = document.getElementById('nav-grid');
+
+            toolsToggleBtn.addEventListener('click', () => {
+                navGrid.classList.toggle('open');
+                toolsToggleBtn.classList.toggle('open');
+            });
+
             // --- Initial Application Setup ---
             function initialize() {
-                askForName(); // This will now just set the welcome message
+                askForName();
                 displayRandomTip();
                 renderTasks();
                 updateTimerDisplay();
