@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Daily Routine Hub</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base styles for the body */
@@ -65,7 +63,7 @@
         }
         @media (min-width: 1024px) { /* lg breakpoint */
             .nav-grid {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns for better layout with icons */
+                grid-template-columns: repeat(3, 1fr); /* 3 columns for better layout with icons */
             }
         }
         /* Navigation item styling */
@@ -216,7 +214,6 @@
             <p class="text-xl text-gray-600">Your centralized dashboard for a balanced and productive life.</p>
         </header>
 
-        <!-- Dynamic Welcome Message & Daily Tip -->
         <section class="interactive-box">
             <div class="flex justify-between items-center">
                 <div>
@@ -227,25 +224,20 @@
             </div>
         </section>
         
-        <!-- Main content grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
-            <!-- Left Column: Tasks and Tools -->
             <div>
-                <!-- Interactive Daily Focus Checklist -->
                 <section class="card">
                     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                          <h2 class="text-3xl section-title" style="margin-bottom: 0;">Today's Focus</h2>
                          <div class="flex gap-2">
-                            <button id="addTaskBtn" class="button">Add Task</button>
-                            <button id="clearTasksBtn" class="button button-secondary">Clear List</button>
+                             <button id="addTaskBtn" class="button">Add Task</button>
+                             <button id="clearTasksBtn" class="button button-secondary">Clear List</button>
                          </div>
                     </div>
                     <div id="taskList">
-                        <!-- Tasks will be dynamically inserted here by JavaScript -->
-                    </div>
+                        </div>
                 </section>
 
-                <!-- NEW: Pomodoro Timer -->
                 <section class="card">
                     <h2 class="text-3xl section-title">Pomodoro Timer</h2>
                     <div id="pomodoroTimerDisplay">25:00</div>
@@ -260,7 +252,6 @@
                 </section>
             </div>
 
-            <!-- Right Column: Navigation -->
             <section class="card">
                 <h2 class="text-3xl section-title">Explore Your Tools</h2>
                 <div class="nav-grid">
@@ -283,6 +274,13 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.75-.625m3.75.625l.625 3.75" /></svg>
                         <span>Progress Tracker</span>
                         <span class="nav-item-description">Monitor steps, workouts, and skills.</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="event.preventDefault(); alert('Navigating to Brain Functionality...');">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25a9.75 9.75 0 018.667 5.215l-3.32 3.32a3.75 3.75 0 00-5.856-2.553 3.75 3.75 0 00-.566 5.857 3.75 3.75 0 005.856 2.553l3.32-3.32A9.75 9.75 0 0112 21.75a9.75 9.75 0 01-9.75-9.75A9.75 9.75 0 0112 2.25z" />
+                        </svg>
+                        <span>Brain Functionality</span>
+                        <span class="nav-item-description">Engage in cognitive exercises.</span>
                     </a>
                 </div>
             </section>
