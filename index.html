@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Daily Routine Hub</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Base styles for the body */
@@ -56,9 +53,6 @@
         }
         /* Responsive grid for navigation items */
         .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr); /* Default to 1 column */
-            gap: 1.5rem; /* gap-6 */
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out;
@@ -66,50 +60,6 @@
         .nav-grid.open {
             max-height: 1000px; /* Large enough to show all content */
             margin-top: 1.5rem; /* Add space when open */
-        }
-        @media (min-width: 640px) { /* sm breakpoint */
-            .nav-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
-            }
-        }
-        @media (min-width: 1024px) { /* lg breakpoint */
-            .nav-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns for better layout with icons */
-            }
-        }
-        /* Navigation item styling */
-        .nav-item {
-            background-color: #a5b4fc; /* Indigo-300 */
-            color: #ffffff;
-            padding: 1.5rem;
-            border-radius: 0.75rem; /* rounded-lg */
-            text-align: center;
-            font-weight: 600; /* font-semibold */
-            font-size: 1.125rem; /* text-xl */
-            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none; /* Remove underline from links */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .nav-item:hover {
-            transform: translateY(-5px);
-            background-color: #818cf8; /* Indigo-400 on hover */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .nav-item-description {
-            font-size: 0.8rem;
-            font-weight: 400;
-            margin-top: 0.75rem;
-            opacity: 0.9;
-            line-height: 1.2;
-        }
-        .nav-item svg {
-            width: 2.5rem; /* 40px */
-            height: 2.5rem; /* 40px */
-            margin-bottom: 0.75rem;
         }
         /* Welcome message styling */
         .welcome-message {
@@ -203,13 +153,13 @@
             margin: 1.5rem 0;
         }
         .timer-btn {
-             padding: 0.5rem 1rem;
-             border-radius: 0.5rem;
-             border: 1px solid #d1d5db;
-             background-color: #fff;
-             cursor: pointer;
-             transition: background-color 0.2s, color 0.2s;
-             font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            background-color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            font-weight: 500;
         }
         .timer-btn.active {
             background-color: #4f46e5;
@@ -218,13 +168,6 @@
         }
         
         /* Dropdown Toggle Button */
-        #tools-toggle-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0.75rem 1.25rem;
-        }
         #tools-toggle-btn .fa-chevron-down {
             transition: transform 0.3s ease-in-out;
         }
@@ -240,7 +183,6 @@
             <p class="text-xl text-gray-600">Your centralized dashboard for a balanced and productive life.</p>
         </header>
 
-        <!-- Dynamic Welcome Message & Daily Tip -->
         <section class="interactive-box">
             <div class="flex justify-between items-center">
                 <div>
@@ -251,25 +193,20 @@
             </div>
         </section>
         
-        <!-- Main content grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
-            <!-- Left Column: Tasks and Tools -->
             <div>
-                <!-- Interactive Daily Focus Checklist -->
                 <section class="card">
                     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-                         <h2 class="text-3xl section-title" style="margin-bottom: 0;">Today's Focus</h2>
-                         <div class="flex gap-2">
-                             <button id="addTaskBtn" class="button">Add Task</button>
-                             <button id="clearTasksBtn" class="button button-secondary">Clear List</button>
-                         </div>
+                        <h2 class="text-3xl section-title" style="margin-bottom: 0;">Today's Focus</h2>
+                        <div class="flex gap-2">
+                            <button id="addTaskBtn" class="button">Add Task</button>
+                            <button id="clearTasksBtn" class="button button-secondary">Clear List</button>
+                        </div>
                     </div>
                     <div id="taskList">
-                        <!-- Tasks will be dynamically inserted here by JavaScript -->
-                    </div>
+                        </div>
                 </section>
 
-                <!-- Pomodoro Timer -->
                 <section class="card">
                     <h2 class="text-3xl section-title">Pomodoro Timer</h2>
                     <div id="pomodoroTimerDisplay">25:00</div>
@@ -284,95 +221,90 @@
                 </section>
             </div>
 
-<!-- Right Column: Navigation -->
-<section class="card bg-white shadow-lg rounded-xl p-6 space-y-4">
-  <h2 class="text-3xl font-semibold text-gray-800">Explore Your Tools</h2>
+            <section class="card bg-white shadow-lg rounded-xl p-6 space-y-4">
+                <h2 class="text-3xl font-semibold text-gray-800">Explore Your Tools</h2>
 
-  <!-- Dropdown Button -->
-  <button id="tools-toggle-btn" class="flex items-center justify-between w-full px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-    <span class="font-medium">Explore Tools</span>
-    <i class="fas fa-chevron-down ml-2"></i>
-  </button>
+                <button id="tools-toggle-btn" class="flex items-center justify-between w-full px-4 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">
+                    <span class="font-medium">Explore Tools Menu</span>
+                    <i class="fas fa-chevron-down ml-2"></i>
+                </button>
 
-  <!-- Navigation Grid -->
-  <div id="nav-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-    
-    <!-- Item Template -->
-    <a href="routine.html" class="nav-item group p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 transition">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 text-blue-600 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <div>
-          <h3 class="text-lg font-medium">Daily Routine</h3>
-          <p class="text-sm text-gray-600">View your personalized daily schedule.</p>
-        </div>
-      </div>
-    </a>
+                <div id="nav-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+                    <a href="routine.html" class="nav-item group p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-400 transition">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-indigo-600 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div>
+                                <h3 class="text-base font-medium text-gray-800">Daily Routine</h3>
+                                <p class="text-xs text-gray-600">View your personalized daily schedule.</p>
+                            </div>
+                        </div>
+                    </a>
 
-    <a href="homeworkout.html" class="nav-item group p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 transition">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 text-red-500 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.75a5.25 5.25 0 016.385 5.513..."/>
-        </svg>
-        <div>
-          <h3 class="text-lg font-medium">Workout Plan</h3>
-          <p class="text-sm text-gray-600">Access your dedicated home exercises.</p>
-        </div>
-      </div>
-    </a>
+                    <a href="homeworkout.html" class="nav-item group p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-400 transition">
+                        <div class="flex items-center gap-3">
+                           <svg class="w-5 h-5 text-red-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <div>
+                                <h3 class="text-base font-medium text-gray-800">Workout Plan</h3>
+                                <p class="text-xs text-gray-600">Access your dedicated home exercises.</p>
+                            </div>
+                        </div>
+                    </a>
 
-    <a href="track.html" class="nav-item group p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 transition">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 text-green-600 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 9.75v4.542..."/>
-        </svg>
-        <div>
-          <h3 class="text-lg font-medium">Nutrition Guide</h3>
-          <p class="text-sm text-gray-600">Explore healthy eating & meal ideas.</p>
-        </div>
-      </div>
-    </a>
+                    <a href="track.html" class="nav-item group p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-400 transition">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                            <div>
+                                <h3 class="text-base font-medium text-gray-800">Nutrition Guide</h3>
+                                <p class="text-xs text-gray-600">Explore healthy eating & meal ideas.</p>
+                            </div>
+                        </div>
+                    </a>
 
-    <a href="homeworkout.html" class="nav-item group p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 transition">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 text-purple-600 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 18L9 11.25..."/>
-        </svg>
-        <div>
-          <h3 class="text-lg font-medium">Progress Tracker</h3>
-          <p class="text-sm text-gray-600">Monitor steps, workouts, and skills.</p>
-        </div>
-      </div>
-    </a>
+                    <a href="homeworkout.html" class="nav-item group p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-400 transition">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-purple-600 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <div>
+                                <h3 class="text-base font-medium text-gray-800">Progress Tracker</h3>
+                                <p class="text-xs text-gray-600">Monitor steps, workouts, and skills.</p>
+                            </div>
+                        </div>
+                    </a>
 
-    <a href="for-brain.html" class="nav-item group p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 transition">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 text-yellow-600 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.042 21.672L13.684 16.6..."/>
-        </svg>
-        <div>
-          <h3 class="text-lg font-medium">Brain Functionality</h3>
-          <p class="text-sm text-gray-600">Engage in cognitive exercises.</p>
-        </div>
-      </div>
-    </a>
+                    <a href="for-brain.html" class="nav-item group p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-400 transition">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-yellow-500 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 16.84c.464 0 .84.376.84.84s-.376.84-.84.84-.84-.376-.84-.84.376-.84.84-.84zM14.337 16.84c.464 0 .84.376.84.84s-.376.84-.84.84-.84-.376-.84-.84.376-.84.84-.84zM4.5 12.55a8 8 0 1115 0" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 10h.01M15 10h.01" />
+                            </svg>
+                            <div>
+                                <h3 class="text-base font-medium text-gray-800">Brain Functionality</h3>
+                                <p class="text-xs text-gray-600">Engage in cognitive exercises.</p>
+                            </div>
+                        </div>
+                    </a>
 
-    <a href="man-of-the-house.html" class="nav-item group p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-blue-50 transition">
-      <div class="flex items-center gap-3">
-        <svg class="w-6 h-6 text-indigo-600 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="... (simplified)"/>
-        </svg>
-        <div>
-          <h3 class="text-lg font-medium">Man of the House</h3>
-          <p class="text-sm text-gray-600">How to take responsibility and lead well.</p>
-        </div>
-      </div>
-    </a>
+                    <a href="man-of-the-house.html" class="nav-item group p-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-indigo-50 hover:border-indigo-400 transition">
+                        <div class="flex items-center gap-3">
+                           <svg class="w-5 h-5 text-gray-700 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <div>
+                                <h3 class="text-base font-medium text-gray-800">Man of the House</h3>
+                                <p class="text-xs text-gray-600">How to take responsibility and lead well.</p>
+                            </div>
+                        </div>
+                    </a>
 
-  </div>
-</section>
-                <!-- END: Dropdown Implementation -->
+                </div>
             </section>
         </div>
     </div>
@@ -401,11 +333,15 @@
                 let greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
                 welcomeMessageElement.textContent = `${greeting}, ${userName || 'friend'}!`;
             }
-
-            function askForName() {
-                const name = localStorage.getItem('userName');
-                if (!name) {
-                    // This is handled by the default in setWelcomeMessage
+            
+            // CORRECTED: This function now prompts for a name if one isn't stored
+            function checkAndSetName() {
+                if (!userName) {
+                    const name = prompt("Welcome! What's your name?");
+                    if (name) {
+                        userName = name;
+                        localStorage.setItem('userName', userName);
+                    }
                 }
                 setWelcomeMessage();
             }
@@ -427,16 +363,17 @@
             function renderTasks() {
                 taskListContainer.innerHTML = '';
                 if (tasks.length === 0) {
-                    taskListContainer.innerHTML = `<p class="text-gray-500 text-center">No tasks yet. Add one to get started!</p>`;
+                    taskListContainer.innerHTML = `<p class="text-gray-500 text-center py-4">No tasks yet. Add one to get started!</p>`;
+                    return; // exit early
                 }
                 tasks.forEach((task, index) => {
                     const taskItem = document.createElement('div');
                     taskItem.className = 'task-item' + (task.completed ? ' completed' : '');
                     
                     taskItem.innerHTML = `
-                        <input type="checkbox" data-index="${index}" ${task.completed ? 'checked' : ''}>
+                        <input type="checkbox" data-index="${index}" ${task.completed ? 'checked' : ''} aria-label="Mark task as complete">
                         <input type="text" data-index="${index}" value="${task.text}" placeholder="Describe your task...">
-                        <button class="delete-task-btn" data-index="${index}">×</button>
+                        <button class="delete-task-btn" data-index="${index}" aria-label="Delete task">×</button>
                     `;
                     
                     taskListContainer.appendChild(taskItem);
@@ -445,10 +382,13 @@
 
             taskListContainer.addEventListener('click', (e) => {
                 const index = e.target.dataset.index;
+                if (!index) return;
+
                 if (e.target.type === 'checkbox') {
                     tasks[index].completed = e.target.checked;
+                    // Toggling parent class for immediate visual feedback before re-render
+                    e.target.closest('.task-item').classList.toggle('completed', e.target.checked);
                     saveTasks();
-                    renderTasks();
                 }
                 if (e.target.classList.contains('delete-task-btn')) {
                     tasks.splice(index, 1);
@@ -468,6 +408,8 @@
                 tasks.push({ text: '', completed: false });
                 saveTasks();
                 renderTasks();
+                // Focus the new task's input field
+                taskListContainer.querySelector('.task-item:last-child input[type="text"]').focus();
             });
 
             clearTasksBtn.addEventListener('click', () => {
@@ -495,8 +437,9 @@
             function updateTimerDisplay() {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
-                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                document.title = `${timerDisplay.textContent} - ${originalTitle}`;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timerDisplay.textContent = timeString;
+                document.title = `${timeString} - ${originalTitle}`;
             }
 
             function startTimer() {
@@ -509,8 +452,8 @@
                         if (timeLeft <= 0) {
                             clearInterval(timerId);
                             document.title = `Time's up! - ${originalTitle}`;
-                            // A sound or a more prominent visual cue could be added here.
-                            switchMode(currentMode === 'work' ? 'break' : 'work');
+                            // Add a sound or a more prominent visual cue here if desired
+                            switchMode(currentMode === 'work' ? 'break' : 'work', true); // auto-start next mode
                         }
                     }, 1000);
                 }
@@ -521,10 +464,11 @@
                     isPaused = true;
                     startPauseBtn.textContent = 'Start';
                     clearInterval(timerId);
+                    document.title = originalTitle;
                 }
             }
             
-            function switchMode(mode) {
+            function switchMode(mode, autoStart = false) {
                 pauseTimer();
                 currentMode = mode;
                 if (mode === 'work') {
@@ -537,6 +481,10 @@
                     workBtn.classList.remove('active');
                 }
                 updateTimerDisplay();
+
+                if (autoStart) {
+                    startTimer();
+                }
             }
 
             startPauseBtn.addEventListener('click', () => {
@@ -562,7 +510,7 @@
 
             // --- Initial Application Setup ---
             function initialize() {
-                askForName();
+                checkAndSetName();
                 displayRandomTip();
                 renderTasks();
                 updateTimerDisplay();
