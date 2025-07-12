@@ -3,421 +3,510 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Daily Routine Hub</title>
+    <title>Your Calm Focus Hub</title>
+    
+    <!-- Google Fonts: Sora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
-        /* Base Styles */
+        :root {
+            --bg-primary: #F0F2F5;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #1A202C;
+            --text-secondary: #4A5568;
+            --accent-primary: #4A90E2;
+            --accent-secondary: #50E3C2;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #374151;
-            min-height: 100vh;
+            font-family: 'Sora', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.5s ease;
+        }
+
+        /* Custom Modal Styling */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
-            flex-direction: column;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            flex-grow: 1;
-        }
-
-        /* Card & Section Styles */
-        .card {
-            background-color: #ffffff;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .section-title {
-            color: #1f2937;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-
-        .interactive-box {
-            background-color: #ecfdf5;
-            border-left: 4px solid #10b981;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        /* Button Styles */
-        .button {
-            background-color: #4f46e5;
-            color: white;
-            font-weight: 600;
-            padding: 0.6rem 1.2rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            border: none;
-        }
-        .button:hover {
-            background-color: #4338ca;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 10px -3px rgba(0,0,0,0.1);
-        }
-        .button:active {
-            transform: translateY(-1px) scale(0.98);
-        }
-        
-        .button-secondary {
-            background-color: #e5e7eb;
-            color: #374151;
-        }
-        .button-secondary:hover {
-            background-color: #d1d5db;
-        }
-
-        /* Task List Styles */
-        .task-item {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 1rem;
-            gap: 0.75rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
-        .task-item input[type="checkbox"] {
-            width: 1.5rem;
-            height: 1.5rem;
-            cursor: pointer;
-            accent-color: #4f46e5;
-            flex-shrink: 0;
+        .modal-backdrop.visible {
+            opacity: 1;
+            pointer-events: all;
         }
-        .task-item input[type="text"] {
-            flex-grow: 1;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            transition: all 0.2s;
+        .modal-content {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
         }
-        .task-item input[type="text"]:focus {
-            outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-        }
-        .task-item.completed input[type="text"] {
-            text-decoration: line-through;
-            color: #9ca3af;
-        }
-        .delete-task-btn {
-            background: none; border: none; color: #9ca3af;
-            cursor: pointer; padding: 0.5rem; border-radius: 50%;
-            width: 32px; height: 32px;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .delete-task-btn:hover {
-            background-color: #fee2e2;
-            color: #ef4444;
+        .modal-backdrop.visible .modal-content {
+            transform: scale(1);
         }
 
-        /* Pomodoro Timer Styles */
-        #pomodoroTimerDisplay {
-            font-size: 4rem;
-            font-weight: 700;
-            color: #1f2937;
-            text-align: center;
-            margin: 1.5rem 0;
+        /* Custom Task Item Styling */
+        .task-item { transition: all 0.3s ease; }
+        .task-item.completed { opacity: 0.5; }
+        .task-item.completed .task-text { text-decoration: line-through; }
+        .task-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #CBD5E0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
         }
-        .timer-btn {
-            padding: 0.5rem 1rem; border-radius: 0.5rem;
-            border: 1px solid #d1d5db; background-color: #fff;
-            cursor: pointer; transition: all 0.2s; font-weight: 500;
+        .task-checkbox:checked {
+            background-color: var(--accent-secondary);
+            border-color: var(--accent-secondary);
         }
-        .timer-btn:hover {
-             border-color: #4f46e5;
-             color: #4f46e5;
+        .task-checkbox:checked::after {
+            content: '\f00c'; /* Font Awesome check icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
-        .timer-btn.active {
-            background-color: #4f46e5;
-            color: #fff;
-            border-color: #4f46e5;
+
+        /* Pomodoro Timer SVG Styling */
+        #pomodoro-svg circle { transition: stroke-dashoffset 1s linear; }
+
+        /* General Card Styling */
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
-        /* Dropdown Navigation Styles */
-        .nav-grid {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out;
-        }
-        .nav-grid.open {
-            max-height: 1000px;
-            margin-top: 1rem;
-        }
-        #tools-toggle-btn .fa-chevron-down {
-            transition: transform 0.3s ease-in-out;
-        }
-        #tools-toggle-btn.open .fa-chevron-down {
-            transform: rotate(180deg);
-        }
-        .nav-item:hover {
-            border-color: #a5b4fc;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.07);
-            transform: translateY(-2px);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow-color);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header class="text-center py-8">
-            <h1 class="text-5xl font-extrabold text-gray-900 mb-4">Productivity Hub</h1>
-            <p class="text-xl text-gray-600">Your dashboard for a balanced and productive life.</p>
+<body class="text-gray-800">
+
+    <!-- Welcome Modal -->
+    <div id="welcomeModal" class="modal-backdrop">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-bold mb-2">Welcome to your Hub</h2>
+            <p class="text-gray-600 mb-6">What should I call you?</p>
+            <input type="text" id="nameInput" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your name...">
+            <button id="saveNameBtn" class="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">Continue</button>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal-backdrop">
+        <div class="modal-content text-center">
+            <h2 id="confirmTitle" class="text-xl font-bold mb-2">Are you sure?</h2>
+            <p id="confirmMessage" class="text-gray-600 mb-6">This action cannot be undone.</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirmCancelBtn" class="w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+                <button id="confirmOkBtn" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Header Section -->
+        <header id="dynamic-header" class="relative text-white h-64 md:h-80 rounded-2xl p-8 md:p-12 flex flex-col justify-between bg-cover bg-center transition-all duration-500 shadow-lg mb-8">
+            <div class="absolute inset-0 bg-black bg-opacity-40 rounded-2xl"></div>
+            <div class="relative z-10">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 id="greeting" class="text-3xl md:text-5xl font-bold">Good Morning</h1>
+                        <p id="userNameDisplay" class="text-lg md:text-xl opacity-80 mt-1">Let's make today productive.</p>
+                    </div>
+                    <div id="weather-widget" class="text-right hidden md:block">
+                        <p class="font-bold text-lg">Palakkad, Kerala</p>
+                        <div class="flex items-center justify-end">
+                            <i id="weather-icon" class="text-2xl mr-2"></i>
+                            <p id="weather-temp" class="text-xl"></p>
+                        </div>
+                        <p id="weather-desc" class="text-sm opacity-80"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="quote-container" class="relative z-10 text-center md:text-left">
+                <p id="quote-text" class="text-lg italic opacity-90">"The secret of getting ahead is getting started."</p>
+                <p id="quote-author" class="font-semibold mt-1 opacity-70">- Mark Twain</p>
+            </div>
         </header>
 
-        <section class="interactive-box">
-            <div class="flex flex-wrap justify-between items-center gap-4">
-                <div>
-                    <p id="welcomeMessage" class="text-2xl font-semibold text-green-800">Hello!</p>
-                    <p id="dailyTip" class="text-lg text-green-700 mt-1">"Consistency is key to unlocking your potential."</p>
-                </div>
-                <button id="newTipBtn" class="button">New Tip</button>
-            </div>
-        </section>
-        
-        <main class="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
-            <div>
-                <section class="card">
-                    <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-                        <h2 class="text-3xl section-title" style="margin-bottom: 0;">Today's Focus</h2>
-                        <div class="flex gap-2">
-                            <button id="addTaskBtn" class="button">Add Task</button>
-                            <button id="clearTasksBtn" class="button button-secondary">Clear List</button>
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Main Tools -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Today's Intention -->
+                <section class="card p-6 md:p-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold">Today's Intention</h2>
+                        <button id="addTaskBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-transform hover:scale-105 flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <div class="space-y-3 mt-6" id="taskList">
+                        <!-- Tasks will be dynamically inserted here -->
+                    </div>
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm font-medium text-gray-500 mb-1">
+                            <span>Progress</span>
+                            <span id="progress-text">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div id="progress-bar" class="bg-green-400 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
-                    <div id="taskList">
-                        </div>
                 </section>
 
-                <section class="card">
-                    <h2 class="text-3xl section-title">Pomodoro Timer</h2>
-                    <div id="pomodoroTimerDisplay">25:00</div>
-                    <div class="flex justify-center gap-4 mb-6">
-                        <button id="workBtn" class="timer-btn active">Work</button>
-                        <button id="breakBtn" class="timer-btn">Short Break</button>
+                <!-- Toolbox -->
+                <section class="card p-6 md:p-8">
+                    <h2 class="text-2xl font-bold mb-6">Toolbox</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
+                            <i class="fas fa-calendar-alt text-3xl text-blue-500"></i>
+                            <p class="mt-2 font-semibold">Routine</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
+                            <i class="fas fa-dumbbell text-3xl text-red-500"></i>
+                            <p class="mt-2 font-semibold">Workout</p>
+                        </div>
+                         <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
+                            <i class="fas fa-chart-line text-3xl text-purple-500"></i>
+                            <p class="mt-2 font-semibold">Progress</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
+                            <i class="fas fa-brain text-3xl text-yellow-500"></i>
+                            <p class="mt-2 font-semibold">Brain</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Column: Pomodoro Timer -->
+            <aside class="space-y-8">
+                <section class="card p-6 md:p-8 text-center sticky top-8">
+                    <h2 class="text-2xl font-bold mb-4">Focus Timer</h2>
+                    <div class="relative my-6">
+                        <svg id="pomodoro-svg" class="w-48 h-48 mx-auto transform -rotate-90" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="8" />
+                            <circle id="pomodoro-progress" cx="60" cy="60" r="54" fill="none" stroke="var(--accent-primary)" stroke-width="8" stroke-linecap="round"/>
+                        </svg>
+                        <div id="pomodoro-display" class="absolute inset-0 flex flex-col items-center justify-center">
+                            <p class="text-4xl font-bold">25:00</p>
+                            <p id="pomodoro-mode" class="text-sm text-gray-500 font-semibold uppercase tracking-wider">Focus</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-2 mb-6">
+                        <button id="workBtn" class="px-4 py-1.5 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">Focus</button>
+                        <button id="breakBtn" class="px-4 py-1.5 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">Break</button>
                     </div>
                     <div class="flex justify-center gap-4">
-                        <button id="startPauseBtn" class="button">Start</button>
-                        <button id="resetBtn" class="button button-secondary">Reset</button>
+                        <button id="startPauseBtn" class="bg-blue-500 text-white w-24 h-12 rounded-full font-bold text-lg hover:bg-blue-600 transition-colors">Start</button>
+                        <button id="resetBtn" class="bg-gray-200 text-gray-700 w-12 h-12 rounded-full hover:bg-gray-300 transition-colors"><i class="fas fa-redo"></i></button>
                     </div>
                 </section>
-            </div>
-
-            <aside class="card p-6">
-                <h2 class="text-3xl font-semibold text-gray-800">Explore Your Tools</h2>
-                <button id="tools-toggle-btn" class="flex items-center justify-between w-full px-4 py-3 mt-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300">
-                    <span class="font-medium">Tools Menu</span>
-                    <i class="fas fa-chevron-down ml-2"></i>
-                </button>
-                <div id="nav-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <a href="routine.html" class="nav-item group p-3 bg-gray-50 rounded-lg border transition-all duration-300">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <div>
-                                <h3 class="text-base font-medium text-gray-800">Daily Routine</h3>
-                                <p class="text-sm text-gray-500">View your schedule.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="homeworkout.html" class="nav-item group p-3 bg-gray-50 rounded-lg border transition-all duration-300">
-                         <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                            <div>
-                                <h3 class="text-base font-medium text-gray-800">Workout Plan</h3>
-                                <p class="text-sm text-gray-500">Access home exercises.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="track.html" class="nav-item group p-3 bg-gray-50 rounded-lg border transition-all duration-300">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" /></svg>
-                            <div>
-                                <h3 class="text-base font-medium text-gray-800">Nutrition Guide</h3>
-                                <p class="text-sm text-gray-500">Find healthy meal ideas.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="progress.html" class="nav-item group p-3 bg-gray-50 rounded-lg border transition-all duration-300">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                            <div>
-                                <h3 class="text-base font-medium text-gray-800">Progress Tracker</h3>
-                                <p class="text-sm text-gray-500">Monitor your growth.</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
             </aside>
+
         </main>
     </div>
 
-    <footer class="text-center py-6 text-gray-500 text-sm mt-auto">
-        <p>&copy; 2025 Productivity Hub. All rights reserved.</p>
-    </footer>
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Element References ---
-            const welcomeMessageElement = document.getElementById('welcomeMessage');
-            const dailyTipElement = document.getElementById('dailyTip');
-            const newTipBtn = document.getElementById('newTipBtn');
-            const originalTitle = document.title;
-            const taskListContainer = document.getElementById('taskList');
-            const addTaskBtn = document.getElementById('addTaskBtn');
-            const clearTasksBtn = document.getElementById('clearTasksBtn');
-            const timerDisplay = document.getElementById('pomodoroTimerDisplay');
-            const startPauseBtn = document.getElementById('startPauseBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const workBtn = document.getElementById('workBtn');
-            const breakBtn = document.getElementById('breakBtn');
-            const toolsToggleBtn = document.getElementById('tools-toggle-btn');
-            const navGrid = document.getElementById('nav-grid');
-            
-            // --- State Management ---
-            let userName = localStorage.getItem('userName');
-            let tasks = JSON.parse(localStorage.getItem('dailyTasks')) || [];
-            const tips = ["Consistency is key.", "Stay hydrated.", "A short break boosts focus.", "Prioritize deep work.", "Filter blue light in the evening.", "Move throughout the day.", "Aim for 7-9 hours of sleep.", "Eat whole foods.", "Practice mindful eating.", "Take stretch breaks.", "Limit processed foods.", "Get daily sunlight.", "Practice meditation.", "Eat a light dinner."];
-            const notificationSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGliAv4/Gg'); // A simple beep sound
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Element References ---
+        const welcomeModal = document.getElementById('welcomeModal');
+        const nameInput = document.getElementById('nameInput');
+        const saveNameBtn = document.getElementById('saveNameBtn');
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmTitle = document.getElementById('confirmTitle');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const confirmOkBtn = document.getElementById('confirmOkBtn');
+        const confirmCancelBtn = document.getElementById('confirmCancelBtn');
 
-            // --- 1. Personalization & Welcome ---
-            function setWelcomeMessage() {
-                const hour = new Date().getHours();
-                const greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
-                welcomeMessageElement.textContent = `${greeting}, ${userName || 'friend'}!`;
+        const greetingEl = document.getElementById('greeting');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const headerEl = document.getElementById('dynamic-header');
+        
+        const weatherIcon = document.getElementById('weather-icon');
+        const weatherTemp = document.getElementById('weather-temp');
+        const weatherDesc = document.getElementById('weather-desc');
+
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+
+        const taskListContainer = document.getElementById('taskList');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+
+        const pomodoroDisplay = document.getElementById('pomodoro-display').querySelector('p');
+        const pomodoroModeDisplay = document.getElementById('pomodoro-mode');
+        const pomodoroProgress = document.getElementById('pomodoro-progress');
+        const startPauseBtn = document.getElementById('startPauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const workBtn = document.getElementById('workBtn');
+        const breakBtn = document.getElementById('breakBtn');
+        
+        const circumference = 2 * Math.PI * 54;
+        pomodoroProgress.style.strokeDasharray = circumference;
+
+        // --- State Management ---
+        let userName = localStorage.getItem('userName');
+        let tasks = JSON.parse(localStorage.getItem('dailyTasks')) || [];
+        let pomodoroState = {
+            timerId: null,
+            isPaused: true,
+            mode: 'work', // 'work' or 'break'
+            durations: { work: 25, break: 5 },
+            timeLeft: 25 * 60,
+        };
+        
+        // **FIX**: Local quotes array to prevent fetch errors
+        const quotes = [
+            { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+            { text: "Act as if what you do makes a difference. It does.", author: "William James" },
+            { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" }
+        ];
+
+        // --- Modals ---
+        let confirmCallback = null;
+        function showConfirmModal(title, message, callback) {
+            confirmTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmCallback = callback;
+            confirmModal.classList.add('visible');
+        }
+        function hideConfirmModal() {
+            confirmModal.classList.remove('visible');
+            confirmCallback = null;
+        }
+        confirmOkBtn.addEventListener('click', () => {
+            if (confirmCallback) confirmCallback();
+            hideConfirmModal();
+        });
+        confirmCancelBtn.addEventListener('click', hideConfirmModal);
+
+        // --- Personalization ---
+        function handleUserName() {
+            if (!userName) {
+                welcomeModal.classList.add('visible');
+            } else {
+                userNameDisplay.textContent = userName;
             }
-
-            function checkAndSetName() {
-                if (!userName) {
-                    const name = prompt("Welcome! What should I call you?");
-                    if (name && name.trim()) {
-                        userName = name.trim();
-                        localStorage.setItem('userName', userName);
-                    }
-                }
-                setWelcomeMessage();
+        }
+        saveNameBtn.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            if (name) {
+                userName = name;
+                localStorage.setItem('userName', userName);
+                userNameDisplay.textContent = userName;
+                welcomeModal.classList.remove('visible');
             }
+        });
+        nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') saveNameBtn.click();
+        });
 
-            function displayRandomTip() { dailyTipElement.textContent = `"${tips[Math.floor(Math.random() * tips.length)]}"`; }
+        // --- Dynamic Header & Greeting ---
+        function updateHeader() {
+            const hour = new Date().getHours();
+            let greeting, image;
+            if (hour < 5) { greeting = "Late Night"; image = 'https://images.unsplash.com/photo-1507499739999-097706ad8914?w=800'; }
+            else if (hour < 12) { greeting = "Good Morning"; image = 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800'; }
+            else if (hour < 18) { greeting = "Good Afternoon"; image = 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800'; }
+            else { greeting = "Good Evening"; image = 'https://images.unsplash.com/photo-1505322022379-7c3353ee6291?w=800'; }
+            greetingEl.textContent = greeting;
+            headerEl.style.backgroundImage = `url(${image})`;
+        }
 
-            // --- 2. Interactive Task List ---
-            function saveTasks() { localStorage.setItem('dailyTasks', JSON.stringify(tasks)); }
+        // --- API Fetches: Weather & Quotes ---
+        function fetchWeather() {
+            // NOTE: Using static data as a fallback.
+            const weatherData = { temp: 31, description: 'Partly Cloudy', icon: 'fa-cloud-sun' };
+            weatherIcon.className = `fas ${weatherData.icon}`;
+            weatherTemp.textContent = `${weatherData.temp}°C`;
+            weatherDesc.textContent = weatherData.description;
+            document.getElementById('weather-widget').classList.remove('hidden');
+        }
+        
+        // **FIX**: Changed from fetch to local array
+        function displayRandomQuote() {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            quoteText.textContent = `"${randomQuote.text}"`;
+            quoteAuthor.textContent = `- ${randomQuote.author}`;
+        }
 
-            function renderTasks() {
-                taskListContainer.innerHTML = '';
-                if (tasks.length === 0) {
-                    taskListContainer.innerHTML = `
-                        <div class="text-center py-6 text-gray-500">
-                            <i class="fas fa-check-circle fa-2x mb-2 text-gray-300"></i>
-                            <p>All clear! Add a task to get started.</p>
-                        </div>`;
-                    return;
-                }
+        // --- Task List ---
+        function saveTasks() { localStorage.setItem('dailyTasks', JSON.stringify(tasks)); }
+
+        function updateProgress() {
+            const completedTasks = tasks.filter(t => t.completed).length;
+            const totalTasks = tasks.length;
+            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}%`;
+        }
+
+        function renderTasks() {
+            taskListContainer.innerHTML = '';
+            if (tasks.length === 0) {
+                taskListContainer.innerHTML = `<p class="text-center text-gray-500 py-4">Set your intentions for the day.</p>`;
+            } else {
                 tasks.forEach((task, index) => {
-                    const taskItem = document.createElement('div');
-                    taskItem.className = 'task-item' + (task.completed ? ' completed' : '');
-                    taskItem.innerHTML = `
-                        <input type="checkbox" data-index="${index}" ${task.completed ? 'checked' : ''} aria-label="Mark task as complete">
-                        <input type="text" data-index="${index}" value="${task.text.replace(/"/g, '&quot;')}" placeholder="Describe your task...">
-                        <button class="delete-task-btn" data-index="${index}" aria-label="Delete task">×</button>`;
-                    taskListContainer.appendChild(taskItem);
+                    const taskEl = document.createElement('div');
+                    taskEl.className = `task-item flex items-center p-3 bg-gray-50 rounded-lg ${task.completed ? 'completed' : ''}`;
+                    taskEl.innerHTML = `
+                        <input type="checkbox" class="task-checkbox mr-4" data-index="${index}" ${task.completed ? 'checked' : ''}>
+                        <input type="text" class="task-text flex-grow bg-transparent focus:outline-none" value="${task.text}" data-index="${index}" placeholder="New intention...">
+                        <button class="delete-task-btn text-gray-400 hover:text-red-500 ml-4 px-2" data-index="${index}"><i class="fas fa-times"></i></button>
+                    `;
+                    taskListContainer.appendChild(taskEl);
                 });
             }
+            updateProgress();
+        }
 
-            taskListContainer.addEventListener('click', (e) => {
-                const target = e.target;
-                const index = target.dataset.index;
-                if (!index) return;
-                if (target.type === 'checkbox') {
-                    tasks[index].completed = target.checked;
-                    target.closest('.task-item').classList.toggle('completed', target.checked);
-                    saveTasks();
-                }
-                if (target.classList.contains('delete-task-btn')) {
-                    tasks.splice(index, 1);
-                    saveTasks();
-                    renderTasks();
-                }
-            });
-            
-            taskListContainer.addEventListener('input', (e) => {
-                if (e.target.type === 'text') { tasks[e.target.dataset.index].text = e.target.value; saveTasks(); }
-            });
+        addTaskBtn.addEventListener('click', () => {
+            tasks.push({ text: '', completed: false });
+            renderTasks();
+            taskListContainer.querySelector('.task-item:last-child .task-text').focus();
+        });
 
-            addTaskBtn.addEventListener('click', () => {
-                tasks.push({ text: '', completed: false });
+        taskListContainer.addEventListener('change', e => {
+            if (e.target.matches('.task-checkbox')) {
+                tasks[e.target.dataset.index].completed = e.target.checked;
                 saveTasks();
                 renderTasks();
-                taskListContainer.querySelector('.task-item:last-child input[type="text"]').focus();
-            });
-
-            clearTasksBtn.addEventListener('click', () => {
-                if(tasks.length > 0 && confirm('Are you sure you want to clear your entire focus list?')) {
-                    tasks = []; saveTasks(); renderTasks();
-                }
-            });
-
-            // --- 3. Pomodoro Timer ---
-            const WORK_MINUTES = 25, BREAK_MINUTES = 5;
-            let timerId = null, isPaused = true, currentMode = 'work', timeLeft = WORK_MINUTES * 60;
-
-            function updateTimerDisplay() {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                timerDisplay.textContent = timeString;
-                document.title = `${timeString} - ${originalTitle}`;
             }
-
-            function pauseTimer() {
-                if (!isPaused) { isPaused = true; startPauseBtn.textContent = 'Start'; clearInterval(timerId); document.title = originalTitle; }
-            }
-
-            function switchMode(mode, autoStart = false) {
-                pauseTimer(); currentMode = mode;
-                if (mode === 'work') { timeLeft = WORK_MINUTES * 60; workBtn.classList.add('active'); breakBtn.classList.remove('active'); } 
-                else { timeLeft = BREAK_MINUTES * 60; breakBtn.classList.add('active'); workBtn.classList.remove('active'); }
-                updateTimerDisplay();
-                if (autoStart) startTimer();
-            }
-
-            function startTimer() {
-                if (isPaused) {
-                    isPaused = false; startPauseBtn.textContent = 'Pause';
-                    timerId = setInterval(() => {
-                        timeLeft--;
-                        updateTimerDisplay();
-                        if (timeLeft <= 0) {
-                            clearInterval(timerId);
-                            notificationSound.play();
-                            const nextMode = currentMode === 'work' ? 'break' : 'work';
-                            alert(`${currentMode.charAt(0).toUpperCase() + currentMode.slice(1)} session finished! Time for a ${nextMode}.`);
-                            switchMode(nextMode, true);
-                        }
-                    }, 1000);
-                }
-            }
-
-            startPauseBtn.addEventListener('click', () => isPaused ? startTimer() : pauseTimer());
-            resetBtn.addEventListener('click', () => switchMode(currentMode));
-            workBtn.addEventListener('click', () => switchMode('work'));
-            breakBtn.addEventListener('click', () => switchMode('break'));
-            toolsToggleBtn.addEventListener('click', () => { navGrid.classList.toggle('open'); toolsToggleBtn.classList.toggle('open'); });
-
-            // --- Initial Application Setup ---
-            function initialize() {
-                checkAndSetName(); displayRandomTip(); renderTasks(); updateTimerDisplay();
-                newTipBtn.addEventListener('click', displayRandomTip);
-            }
-            
-            initialize();
         });
+        
+        taskListContainer.addEventListener('input', e => {
+            if (e.target.matches('.task-text')) {
+                tasks[e.target.dataset.index].text = e.target.value;
+                saveTasks();
+            }
+        });
+
+        taskListContainer.addEventListener('click', e => {
+            if (e.target.closest('.delete-task-btn')) {
+                const index = e.target.closest('.delete-task-btn').dataset.index;
+                tasks.splice(index, 1);
+                saveTasks();
+                renderTasks();
+            }
+        });
+
+        // --- Pomodoro Timer ---
+        function updateTimerDisplay() {
+            const minutes = Math.floor(pomodoroState.timeLeft / 60);
+            const seconds = pomodoroState.timeLeft % 60;
+            pomodoroDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            const totalDuration = pomodoroState.durations[pomodoroState.mode] * 60;
+            const progress = (totalDuration - pomodoroState.timeLeft) / totalDuration;
+            pomodoroProgress.style.strokeDashoffset = circumference * (1 - progress);
+        }
+
+        function switchPomodoroMode(mode) {
+            clearInterval(pomodoroState.timerId);
+            pomodoroState.isPaused = true;
+            pomodoroState.mode = mode;
+            pomodoroState.timeLeft = pomodoroState.durations[mode] * 60;
+            startPauseBtn.textContent = 'Start';
+            pomodoroModeDisplay.textContent = mode === 'work' ? 'Focus' : 'Break';
+            
+            workBtn.classList.toggle('bg-blue-100', mode === 'work');
+            workBtn.classList.toggle('text-blue-800', mode === 'work');
+            workBtn.classList.toggle('bg-gray-100', mode !== 'work');
+            workBtn.classList.toggle('text-gray-800', mode !== 'work');
+
+            breakBtn.classList.toggle('bg-green-100', mode === 'break');
+            breakBtn.classList.toggle('text-green-800', mode === 'break');
+            breakBtn.classList.toggle('bg-gray-100', mode !== 'break');
+            breakBtn.classList.toggle('text-gray-800', mode !== 'break');
+
+            pomodoroProgress.style.stroke = mode === 'work' ? 'var(--accent-primary)' : 'var(--accent-secondary)';
+            
+            updateTimerDisplay();
+        }
+
+        function tick() {
+            pomodoroState.timeLeft--;
+            updateTimerDisplay();
+            if (pomodoroState.timeLeft <= 0) {
+                clearInterval(pomodoroState.timerId);
+                new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3').play();
+                const nextMode = pomodoroState.mode === 'work' ? 'break' : 'work';
+                switchPomodoroMode(nextMode);
+            }
+        }
+
+        startPauseBtn.addEventListener('click', () => {
+            pomodoroState.isPaused = !pomodoroState.isPaused;
+            if (pomodoroState.isPaused) {
+                clearInterval(pomodoroState.timerId);
+                startPauseBtn.textContent = 'Start';
+            } else {
+                pomodoroState.timerId = setInterval(tick, 1000);
+                startPauseBtn.textContent = 'Pause';
+            }
+        });
+
+        resetBtn.addEventListener('click', () => switchPomodoroMode(pomodoroState.mode));
+        workBtn.addEventListener('click', () => switchPomodoroMode('work'));
+        breakBtn.addEventListener('click', () => switchPomodoroMode('break'));
+
+        // --- Initialization ---
+        function init() {
+            handleUserName();
+            updateHeader();
+            fetchWeather();
+            displayRandomQuote(); // **FIX**: Call local quote function
+            renderTasks();
+            updateTimerDisplay();
+        }
+
+        init();
+    });
     </script>
 </body>
 </html>
