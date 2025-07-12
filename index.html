@@ -23,6 +23,7 @@
             line-height: 1.6;
         }
         button, input { font-family: inherit; }
+        a { text-decoration: none; color: inherit; }
 
         /* --- Layout --- */
         .container {
@@ -145,6 +146,7 @@
             text-align: center; padding: 1rem;
             background-color: #F9FAFB; border-radius: 0.5rem;
             transition: background-color 0.2s ease; cursor: pointer;
+            display: block;
         }
         .tool-item:hover { background-color: #F3F4F6; }
         .tool-item i { font-size: 1.875rem; line-height: 2.25rem; }
@@ -284,22 +286,22 @@
                 <section class="card">
                     <h2 class="card-title">Toolbox</h2>
                     <div class="toolbox-grid">
-                        <div class="tool-item">
+                        <a href="/routine" class="tool-item">
                             <i class="fas fa-calendar-alt" style="color: #3B82F6;"></i>
                             <p>Routine</p>
-                        </div>
-                        <div class="tool-item">
+                        </a>
+                        <a href="/workout" class="tool-item">
                             <i class="fas fa-dumbbell" style="color: #EF4444;"></i>
                             <p>Workout</p>
-                        </div>
-                         <div class="tool-item">
+                        </a>
+                         <a href="/progress" class="tool-item">
                             <i class="fas fa-chart-line" style="color: #8B5CF6;"></i>
                             <p>Progress</p>
-                        </div>
-                        <div class="tool-item">
+                        </a>
+                        <a href="/brain" class="tool-item">
                             <i class="fas fa-brain" style="color: #F59E0B;"></i>
                             <p>Brain</p>
-                        </div>
+                        </a>
                     </div>
                 </section>
             </div>
