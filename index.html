@@ -13,237 +13,320 @@
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
-        :root {
-            --bg-primary: #F0F2F5;
-            --bg-secondary: #FFFFFF;
-            --text-primary: #1A202C;
-            --text-secondary: #4A5568;
-            --accent-primary: #4A90E2;
-            --accent-secondary: #50E3C2;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-        }
-
+        /* --- Base & Reset --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Sora', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            transition: background-color 0.5s ease;
+            background-color: #F0F2F5;
+            color: #1A202C;
+            line-height: 1.6;
         }
+        button, input { font-family: inherit; }
 
-        /* Custom Modal Styling */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
         }
-        .modal-backdrop.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .modal-content {
-            background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 400px;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        .modal-backdrop.visible .modal-content {
-            transform: scale(1);
-        }
+        @media (min-width: 640px) { .container { padding: 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 2rem; } }
 
-        /* Custom Task Item Styling */
-        .task-item { transition: all 0.3s ease; }
-        .task-item.completed { opacity: 0.5; }
-        .task-item.completed .task-text { text-decoration: line-through; }
-        .task-checkbox {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #CBD5E0;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        @media (min-width: 1024px) {
+            .main-grid { grid-template-columns: repeat(3, 1fr); }
+            .main-grid .left-column { grid-column: span 2 / span 2; }
+        }
+        .space-y-8 > * + * { margin-top: 2rem; }
+
+        /* --- Header --- */
+        .dynamic-header {
             position: relative;
-        }
-        .task-checkbox:checked {
-            background-color: var(--accent-secondary);
-            border-color: var(--accent-secondary);
-        }
-        .task-checkbox:checked::after {
-            content: '\f00c'; /* Font Awesome check icon */
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
             color: white;
-            font-size: 12px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* Pomodoro Timer SVG Styling */
-        #pomodoro-svg circle { transition: stroke-dashoffset 1s linear; }
-
-        /* General Card Styling */
-        .card {
-            background-color: var(--bg-secondary);
+            height: 16rem;
             border-radius: 1rem;
-            box-shadow: 0 4px 12px var(--shadow-color);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-size: cover;
+            background-position: center;
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 768px) { .dynamic-header { height: 20rem; padding: 3rem; } }
+        .dynamic-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 1rem;
+            z-index: 1;
+        }
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .greeting-title { font-size: 1.875rem; line-height: 2.25rem; font-weight: 700; }
+        .greeting-user { font-size: 1.125rem; line-height: 1.75rem; opacity: 0.8; margin-top: 0.25rem; }
+        @media (min-width: 768px) {
+            .greeting-title { font-size: 3rem; line-height: 1; }
+            .greeting-user { font-size: 1.25rem; line-height: 1.75rem; }
+        }
+        .weather-widget { text-align: right; }
+        .quote-container { text-align: center; }
+        @media (min-width: 768px) { .quote-container { text-align: left; } }
+        .quote-text { font-size: 1.125rem; line-height: 1.75rem; font-style: italic; opacity: 0.9; }
+        .quote-author { font-weight: 600; margin-top: 0.25rem; opacity: 0.7; }
+
+        /* --- Cards --- */
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px var(--shadow-color);
+        @media (min-width: 768px) { .card { padding: 2rem; } }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07); }
+        .card-title { font-size: 1.5rem; line-height: 2rem; font-weight: 700; margin-bottom: 1rem; }
+
+        /* --- Task List --- */
+        .task-list-container { margin-top: 1.5rem; }
+        .task-item {
+            display: flex; align-items: center;
+            padding: 0.75rem; background-color: #F9FAFB;
+            border-radius: 0.5rem; transition: all 0.3s ease;
         }
+        .task-item + .task-item { margin-top: 0.75rem; }
+        .task-item.completed { opacity: 0.6; }
+        .task-item.completed .task-text { text-decoration: line-through; }
+        .task-checkbox {
+            appearance: none; width: 20px; height: 20px;
+            border: 2px solid #CBD5E0; border-radius: 50%;
+            cursor: pointer; transition: all 0.2s ease; position: relative;
+            margin-right: 1rem; flex-shrink: 0;
+        }
+        .task-checkbox:checked { background-color: #50E3C2; border-color: #50E3C2; }
+        .task-checkbox:checked::after {
+            content: '\f00c'; font-family: 'Font Awesome 6 Free';
+            font-weight: 900; color: white; font-size: 12px;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .task-text { flex-grow: 1; background: transparent; border: none; outline: none; }
+        .delete-task-btn {
+            background: none; border: none; color: #9CA3AF;
+            cursor: pointer; margin-left: 1rem; padding: 0.5rem;
+            transition: color 0.2s ease;
+        }
+        .delete-task-btn:hover { color: #EF4444; }
+        .progress-container { margin-top: 1.5rem; }
+        .progress-bar-bg { width: 100%; background-color: #E5E7EB; border-radius: 9999px; height: 0.625rem; }
+        .progress-bar-fg {
+            background-color: #34D399; height: 0.625rem;
+            border-radius: 9999px; transition: width 0.5s ease;
+        }
+
+        /* --- Toolbox --- */
+        .toolbox-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 1rem; margin-top: 1.5rem;
+        }
+        @media (min-width: 768px) { .toolbox-grid { grid-template-columns: repeat(4, 1fr); } }
+        .tool-item {
+            text-align: center; padding: 1rem;
+            background-color: #F9FAFB; border-radius: 0.5rem;
+            transition: background-color 0.2s ease; cursor: pointer;
+        }
+        .tool-item:hover { background-color: #F3F4F6; }
+        .tool-item i { font-size: 1.875rem; line-height: 2.25rem; }
+        .tool-item p { margin-top: 0.5rem; font-weight: 600; }
+
+        /* --- Pomodoro Timer --- */
+        .pomodoro-container { position: relative; margin: 1.5rem auto; width: 12rem; height: 12rem; }
+        .pomodoro-svg {
+            width: 100%; height: 100%;
+            transform: rotate(-90deg);
+        }
+        #pomodoro-progress { transition: stroke-dashoffset 1s linear; }
+        .pomodoro-display {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .pomodoro-time { font-size: 2.25rem; line-height: 2.5rem; font-weight: 700; }
+        .pomodoro-mode {
+            font-size: 0.875rem; line-height: 1.25rem;
+            font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; color: #6B7280;
+        }
+        .pomodoro-controls { display: flex; justify-content: center; gap: 1rem; }
+        .pomodoro-main-btn {
+            background-color: #3B82F6; color: white;
+            width: 6rem; height: 3rem; border-radius: 9999px;
+            font-weight: 700; font-size: 1.125rem; line-height: 1.75rem;
+            border: none; cursor: pointer; transition: background-color 0.2s ease;
+        }
+        .pomodoro-main-btn:hover { background-color: #2563EB; }
+
+        /* --- Modals --- */
+        .modal-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .modal-backdrop.visible { opacity: 1; pointer-events: all; }
+        .modal-content {
+            background: #FFFFFF; padding: 2rem; border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            width: 90%; max-width: 400px; text-align: center;
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-backdrop.visible .modal-content { transform: scale(1); }
+        .modal-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .modal-text { color: #4B5563; margin-bottom: 1.5rem; }
+        .modal-input {
+            width: 100%; padding: 0.75rem; border: 1px solid #D1D5DB;
+            border-radius: 0.5rem; margin-bottom: 1rem;
+        }
+        .modal-input:focus { outline: none; box-shadow: 0 0 0 2px #93C5FD; }
+        .modal-button {
+            width: 100%; background-color: #3B82F6; color: white;
+            font-weight: 700; padding: 0.75rem 1rem; border-radius: 0.5rem;
+            border: none; cursor: pointer; transition: background-color 0.2s ease;
+        }
+        .modal-button:hover { background-color: #2563EB; }
+        
+        /* --- Utility Classes --- */
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .hidden { display: none; }
+        @media (min-width: 768px) { .md-block { display: block; } }
+
     </style>
 </head>
-<body class="text-gray-800">
+<body>
 
-    <!-- Welcome Modal -->
     <div id="welcomeModal" class="modal-backdrop">
-        <div class="modal-content text-center">
-            <h2 class="text-2xl font-bold mb-2">Welcome to your Hub</h2>
-            <p class="text-gray-600 mb-6">What should I call you?</p>
-            <input type="text" id="nameInput" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Enter your name...">
-            <button id="saveNameBtn" class="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">Continue</button>
+        <div class="modal-content">
+            <h2 class="modal-title">Welcome to your Hub</h2>
+            <p class="modal-text">What should I call you?</p>
+            <input type="text" id="nameInput" class="modal-input" placeholder="Enter your name...">
+            <button id="saveNameBtn" class="modal-button">Continue</button>
         </div>
     </div>
     
-    <!-- Confirmation Modal -->
     <div id="confirmModal" class="modal-backdrop">
-        <div class="modal-content text-center">
-            <h2 id="confirmTitle" class="text-xl font-bold mb-2">Are you sure?</h2>
-            <p id="confirmMessage" class="text-gray-600 mb-6">This action cannot be undone.</p>
-            <div class="flex justify-center gap-4">
-                <button id="confirmCancelBtn" class="w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
-                <button id="confirmOkBtn" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">Confirm</button>
+        <div class="modal-content">
+            <h2 id="confirmTitle" class="modal-title">Are you sure?</h2>
+            <p id="confirmMessage" class="modal-text">This action cannot be undone.</p>
+            <div style="display: flex; gap: 1rem;">
+                <button id="confirmCancelBtn" class="modal-button" style="background-color: #E5E7EB; color: #1F2937;">Cancel</button>
+                <button id="confirmOkBtn" class="modal-button" style="background-color: #EF4444;">Confirm</button>
             </div>
         </div>
     </div>
 
-
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        
-        <!-- Header Section -->
-        <header id="dynamic-header" class="relative text-white h-64 md:h-80 rounded-2xl p-8 md:p-12 flex flex-col justify-between bg-cover bg-center transition-all duration-500 shadow-lg mb-8">
-            <div class="absolute inset-0 bg-black bg-opacity-40 rounded-2xl"></div>
-            <div class="relative z-10">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h1 id="greeting" class="text-3xl md:text-5xl font-bold">Good Morning</h1>
-                        <p id="userNameDisplay" class="text-lg md:text-xl opacity-80 mt-1">Let's make today productive.</p>
+    <div class="container">
+        <header id="dynamic-header" class="dynamic-header">
+            <div class="header-content header-top">
+                <div>
+                    <h1 id="greeting" class="greeting-title">Good Morning</h1>
+                    <p id="userNameDisplay" class="greeting-user">Let's make today productive.</p>
+                </div>
+                <div id="weather-widget" class="weather-widget hidden md-block">
+                    <p style="font-weight: 700; font-size: 1.125rem;">Palakkad, Kerala</p>
+                    <div class="flex items-center" style="justify-content: flex-end;">
+                        <i id="weather-icon" style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
+                        <p id="weather-temp" style="font-size: 1.25rem;"></p>
                     </div>
-                    <div id="weather-widget" class="text-right hidden md:block">
-                        <p class="font-bold text-lg">Palakkad, Kerala</p>
-                        <div class="flex items-center justify-end">
-                            <i id="weather-icon" class="text-2xl mr-2"></i>
-                            <p id="weather-temp" class="text-xl"></p>
-                        </div>
-                        <p id="weather-desc" class="text-sm opacity-80"></p>
-                    </div>
+                    <p id="weather-desc" style="font-size: 0.875rem; opacity: 0.8;"></p>
                 </div>
             </div>
-            <div id="quote-container" class="relative z-10 text-center md:text-left">
-                <p id="quote-text" class="text-lg italic opacity-90">"The secret of getting ahead is getting started."</p>
-                <p id="quote-author" class="font-semibold mt-1 opacity-70">- Mark Twain</p>
+            <div class="header-content quote-container">
+                <p id="quote-text" class="quote-text">"The secret of getting ahead is getting started."</p>
+                <p id="quote-author" class="quote-author">- Mark Twain</p>
             </div>
         </header>
 
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- Left Column: Main Tools -->
-            <div class="lg:col-span-2 space-y-8">
-                
-                <!-- Today's Intention -->
-                <section class="card p-6 md:p-8">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold">Today's Intention</h2>
-                        <button id="addTaskBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-transform hover:scale-105 flex items-center gap-2">
+        <main class="main-grid">
+            <div class="left-column space-y-8">
+                <section class="card">
+                    <div class="flex justify-between items-center">
+                        <h2 class="card-title">Today's Intention</h2>
+                        <button id="addTaskBtn" class="modal-button" style="width: auto; display: flex; align-items: center; gap: 0.5rem;">
                             <i class="fas fa-plus"></i> Add
                         </button>
                     </div>
-                    <div class="space-y-3 mt-6" id="taskList">
-                        <!-- Tasks will be dynamically inserted here -->
-                    </div>
-                    <div class="mt-6">
-                        <div class="flex justify-between text-sm font-medium text-gray-500 mb-1">
+                    <div id="taskList" class="task-list-container"></div>
+                    <div class="progress-container">
+                        <div class="flex justify-between" style="font-size: 0.875rem; font-weight: 500; color: #6B7280; margin-bottom: 0.25rem;">
                             <span>Progress</span>
                             <span id="progress-text">0%</span>
                         </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div id="progress-bar" class="bg-green-400 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        <div class="progress-bar-bg">
+                            <div id="progress-bar" class="progress-bar-fg" style="width: 0%"></div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Toolbox -->
-                <section class="card p-6 md:p-8">
-                    <h2 class="text-2xl font-bold mb-6">Toolbox</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-                            <i class="fas fa-calendar-alt text-3xl text-blue-500"></i>
-                            <p class="mt-2 font-semibold">Routine</p>
+                <section class="card">
+                    <h2 class="card-title">Toolbox</h2>
+                    <div class="toolbox-grid">
+                        <div class="tool-item">
+                            <i class="fas fa-calendar-alt" style="color: #3B82F6;"></i>
+                            <p>Routine</p>
                         </div>
-                        <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-                            <i class="fas fa-dumbbell text-3xl text-red-500"></i>
-                            <p class="mt-2 font-semibold">Workout</p>
+                        <div class="tool-item">
+                            <i class="fas fa-dumbbell" style="color: #EF4444;"></i>
+                            <p>Workout</p>
                         </div>
-                         <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-                            <i class="fas fa-chart-line text-3xl text-purple-500"></i>
-                            <p class="mt-2 font-semibold">Progress</p>
+                         <div class="tool-item">
+                            <i class="fas fa-chart-line" style="color: #8B5CF6;"></i>
+                            <p>Progress</p>
                         </div>
-                        <div class="text-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
-                            <i class="fas fa-brain text-3xl text-yellow-500"></i>
-                            <p class="mt-2 font-semibold">Brain</p>
+                        <div class="tool-item">
+                            <i class="fas fa-brain" style="color: #F59E0B;"></i>
+                            <p>Brain</p>
                         </div>
                     </div>
                 </section>
-
             </div>
 
-            <!-- Right Column: Pomodoro Timer -->
             <aside class="space-y-8">
-                <section class="card p-6 md:p-8 text-center sticky top-8">
-                    <h2 class="text-2xl font-bold mb-4">Focus Timer</h2>
-                    <div class="relative my-6">
-                        <svg id="pomodoro-svg" class="w-48 h-48 mx-auto transform -rotate-90" viewBox="0 0 120 120">
+                <section class="card" style="text-align: center; position: sticky; top: 2rem;">
+                    <h2 class="card-title">Focus Timer</h2>
+                    <div class="pomodoro-container">
+                        <svg class="pomodoro-svg" viewBox="0 0 120 120">
                             <circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6" stroke-width="8" />
-                            <circle id="pomodoro-progress" cx="60" cy="60" r="54" fill="none" stroke="var(--accent-primary)" stroke-width="8" stroke-linecap="round"/>
+                            <circle id="pomodoro-progress" cx="60" cy="60" r="54" fill="none" stroke="#4A90E2" stroke-width="8" stroke-linecap="round"/>
                         </svg>
-                        <div id="pomodoro-display" class="absolute inset-0 flex flex-col items-center justify-center">
-                            <p class="text-4xl font-bold">25:00</p>
-                            <p id="pomodoro-mode" class="text-sm text-gray-500 font-semibold uppercase tracking-wider">Focus</p>
+                        <div class="pomodoro-display">
+                            <p class="pomodoro-time">25:00</p>
+                            <p id="pomodoro-mode" class="pomodoro-mode">Focus</p>
                         </div>
                     </div>
-                    <div class="flex justify-center gap-2 mb-6">
-                        <button id="workBtn" class="px-4 py-1.5 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">Focus</button>
-                        <button id="breakBtn" class="px-4 py-1.5 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">Break</button>
+                    <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                        <button id="workBtn" class="modal-button" style="width: auto; background-color: #DBEAFE; color: #1E40AF;">Focus</button>
+                        <button id="breakBtn" class="modal-button" style="width: auto; background-color: #F3F4F6; color: #1F2937;">Break</button>
                     </div>
-                    <div class="flex justify-center gap-4">
-                        <button id="startPauseBtn" class="bg-blue-500 text-white w-24 h-12 rounded-full font-bold text-lg hover:bg-blue-600 transition-colors">Start</button>
-                        <button id="resetBtn" class="bg-gray-200 text-gray-700 w-12 h-12 rounded-full hover:bg-gray-300 transition-colors"><i class="fas fa-redo"></i></button>
+                    <div class="pomodoro-controls">
+                        <button id="startPauseBtn" class="pomodoro-main-btn">Start</button>
+                        <button id="resetBtn" class="modal-button" style="width: 3rem; height: 3rem; background-color: #E5E7EB; color: #374151;"><i class="fas fa-redo"></i></button>
                     </div>
                 </section>
             </aside>
-
         </main>
     </div>
 
@@ -275,7 +358,7 @@
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
 
-        const pomodoroDisplay = document.getElementById('pomodoro-display').querySelector('p');
+        const pomodoroTime = document.querySelector('.pomodoro-time');
         const pomodoroModeDisplay = document.getElementById('pomodoro-mode');
         const pomodoroProgress = document.getElementById('pomodoro-progress');
         const startPauseBtn = document.getElementById('startPauseBtn');
@@ -297,7 +380,6 @@
             timeLeft: 25 * 60,
         };
         
-        // **FIX**: Local quotes array to prevent fetch errors
         const quotes = [
             { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
             { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -360,7 +442,6 @@
 
         // --- API Fetches: Weather & Quotes ---
         function fetchWeather() {
-            // NOTE: Using static data as a fallback.
             const weatherData = { temp: 31, description: 'Partly Cloudy', icon: 'fa-cloud-sun' };
             weatherIcon.className = `fas ${weatherData.icon}`;
             weatherTemp.textContent = `${weatherData.temp}°C`;
@@ -368,7 +449,6 @@
             document.getElementById('weather-widget').classList.remove('hidden');
         }
         
-        // **FIX**: Changed from fetch to local array
         function displayRandomQuote() {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             quoteText.textContent = `"${randomQuote.text}"`;
@@ -389,15 +469,15 @@
         function renderTasks() {
             taskListContainer.innerHTML = '';
             if (tasks.length === 0) {
-                taskListContainer.innerHTML = `<p class="text-center text-gray-500 py-4">Set your intentions for the day.</p>`;
+                taskListContainer.innerHTML = `<p style="text-align: center; color: #6B7280; padding: 1rem 0;">Set your intentions for the day.</p>`;
             } else {
                 tasks.forEach((task, index) => {
                     const taskEl = document.createElement('div');
-                    taskEl.className = `task-item flex items-center p-3 bg-gray-50 rounded-lg ${task.completed ? 'completed' : ''}`;
+                    taskEl.className = `task-item ${task.completed ? 'completed' : ''}`;
                     taskEl.innerHTML = `
-                        <input type="checkbox" class="task-checkbox mr-4" data-index="${index}" ${task.completed ? 'checked' : ''}>
-                        <input type="text" class="task-text flex-grow bg-transparent focus:outline-none" value="${task.text}" data-index="${index}" placeholder="New intention...">
-                        <button class="delete-task-btn text-gray-400 hover:text-red-500 ml-4 px-2" data-index="${index}"><i class="fas fa-times"></i></button>
+                        <input type="checkbox" class="task-checkbox" data-index="${index}" ${task.completed ? 'checked' : ''}>
+                        <input type="text" class="task-text" value="${task.text}" data-index="${index}" placeholder="New intention...">
+                        <button class="delete-task-btn" data-index="${index}"><i class="fas fa-times"></i></button>
                     `;
                     taskListContainer.appendChild(taskEl);
                 });
@@ -429,9 +509,11 @@
         taskListContainer.addEventListener('click', e => {
             if (e.target.closest('.delete-task-btn')) {
                 const index = e.target.closest('.delete-task-btn').dataset.index;
-                tasks.splice(index, 1);
-                saveTasks();
-                renderTasks();
+                showConfirmModal('Delete Task?', 'Are you sure you want to delete this intention?', () => {
+                    tasks.splice(index, 1);
+                    saveTasks();
+                    renderTasks();
+                });
             }
         });
 
@@ -439,7 +521,7 @@
         function updateTimerDisplay() {
             const minutes = Math.floor(pomodoroState.timeLeft / 60);
             const seconds = pomodoroState.timeLeft % 60;
-            pomodoroDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            pomodoroTime.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             
             const totalDuration = pomodoroState.durations[pomodoroState.mode] * 60;
             const progress = (totalDuration - pomodoroState.timeLeft) / totalDuration;
@@ -454,17 +536,12 @@
             startPauseBtn.textContent = 'Start';
             pomodoroModeDisplay.textContent = mode === 'work' ? 'Focus' : 'Break';
             
-            workBtn.classList.toggle('bg-blue-100', mode === 'work');
-            workBtn.classList.toggle('text-blue-800', mode === 'work');
-            workBtn.classList.toggle('bg-gray-100', mode !== 'work');
-            workBtn.classList.toggle('text-gray-800', mode !== 'work');
+            workBtn.style.backgroundColor = mode === 'work' ? '#DBEAFE' : '#F3F4F6';
+            workBtn.style.color = mode === 'work' ? '#1E40AF' : '#1F2937';
+            breakBtn.style.backgroundColor = mode === 'break' ? '#D1FAE5' : '#F3F4F6';
+            breakBtn.style.color = mode === 'break' ? '#065F46' : '#1F2937';
 
-            breakBtn.classList.toggle('bg-green-100', mode === 'break');
-            breakBtn.classList.toggle('text-green-800', mode === 'break');
-            breakBtn.classList.toggle('bg-gray-100', mode !== 'break');
-            breakBtn.classList.toggle('text-gray-800', mode !== 'break');
-
-            pomodoroProgress.style.stroke = mode === 'work' ? 'var(--accent-primary)' : 'var(--accent-secondary)';
+            pomodoroProgress.style.stroke = mode === 'work' ? '#4A90E2' : '#50E3C2';
             
             updateTimerDisplay();
         }
@@ -500,7 +577,7 @@
             handleUserName();
             updateHeader();
             fetchWeather();
-            displayRandomQuote(); // **FIX**: Call local quote function
+            displayRandomQuote();
             renderTasks();
             updateTimerDisplay();
         }
