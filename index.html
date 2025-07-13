@@ -22,7 +22,7 @@
             color: #1A202C;
             line-height: 1.6;
         }
-        button, input { font-family: inherit; }
+        button, input, select { font-family: inherit; }
         a { text-decoration: none; color: inherit; }
 
         /* --- Layout --- */
@@ -122,13 +122,13 @@
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
-        .task-text { flex-grow: 1; background: transparent; border: none; outline: none; }
-        .delete-task-btn {
+        .task-text { flex-grow: 1; background: transparent; border: none; outline: none; font-size: 1rem;}
+        .delete-btn {
             background: none; border: none; color: #9CA3AF;
             cursor: pointer; margin-left: 1rem; padding: 0.5rem;
             transition: color 0.2s ease;
         }
-        .delete-task-btn:hover { color: #EF4444; }
+        .delete-btn:hover { color: #EF4444; }
         .progress-container { margin-top: 1.5rem; }
         .progress-bar-bg { width: 100%; background-color: #E5E7EB; border-radius: 9999px; height: 0.625rem; }
         .progress-bar-fg {
@@ -141,7 +141,7 @@
             display: grid; grid-template-columns: repeat(2, 1fr);
             gap: 1rem; margin-top: 1.5rem;
         }
-        @media (min-width: 768px) { .toolbox-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 768px) { .toolbox-grid { grid-template-columns: repeat(3, 1fr); } }
         .tool-item {
             text-align: center; padding: 1rem;
             background-color: #F9FAFB; border-radius: 0.5rem;
@@ -152,6 +152,27 @@
         .tool-item i { font-size: 1.875rem; line-height: 2.25rem; }
         .tool-item p { margin-top: 0.5rem; font-weight: 600; }
 
+        /* --- Expense Tracker --- */
+        .expense-table-wrapper { overflow-x: auto; margin-top: 1.5rem; }
+        .expense-table { width: 100%; border-collapse: collapse; }
+        .expense-table th, .expense-table td {
+            padding: 0.75rem; text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+            white-space: nowrap;
+        }
+        .expense-table th { font-weight: 600; color: #4B5563; font-size: 0.875rem; }
+        .expense-table td { vertical-align: middle; }
+        .expense-table input, .expense-table select {
+            width: 100%; padding: 0.5rem; font-size: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.375rem; background-color: #F9FAFB;
+        }
+        .expense-table input:focus, .expense-table select:focus {
+             background-color: white; border-color: #A5B4FC;
+             outline: none; box-shadow: 0 0 0 1px #A5B4FC;
+        }
+        .expense-table .delete-btn { padding: 0.25rem 0.5rem; }
+        
         /* --- Pomodoro Timer --- */
         .pomodoro-container { position: relative; margin: 1.5rem auto; width: 12rem; height: 12rem; }
         .pomodoro-svg {
@@ -203,11 +224,51 @@
         }
         .modal-input:focus { outline: none; box-shadow: 0 0 0 2px #93C5FD; }
         .modal-button {
-            width: 100%; background-color: #3B82F6; color: white;
+            background-color: #3B82F6; color: white;
             font-weight: 700; padding: 0.75rem 1rem; border-radius: 0.5rem;
             border: none; cursor: pointer; transition: background-color 0.2s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            justify-content: center;
         }
         .modal-button:hover { background-color: #2563EB; }
+
+        /* --- Better Man Features --- */
+        .learning-content p { margin: 0.25rem 0; }
+        .learning-content .word { font-weight: 700; font-size: 1.25rem; color: #3B82F6; }
+        .learning-content .pronunciation { font-style: italic; color: #6B7280; }
+        .learning-content .definition { color: #4B5563; }
+        
+        .breathing-container { text-align: center; margin-top: 1.5rem; }
+        .breathing-circle {
+            width: 120px; height: 120px; margin: 0 auto 1rem;
+            background-color: #93C5FD; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 600;
+            transition: transform 4s ease-in-out, background-color 1s ease;
+        }
+        .breathing-circle.grow { transform: scale(1.5); }
+        #breathing-instruction { font-weight: 600; font-size: 1.125rem; }
+
+        .habit-list { margin-top: 1.5rem; }
+        .habit-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.75rem; background-color: #F9FAFB;
+            border-radius: 0.5rem;
+        }
+        .habit-item + .habit-item { margin-top: 0.75rem; }
+        .habit-name { font-weight: 500; }
+        .habit-checkbox {
+            appearance: none; width: 24px; height: 24px;
+            border: 2px solid #CBD5E0; border-radius: 0.375rem;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .habit-checkbox:checked {
+            background-color: #34D399;
+            border-color: #34D399;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+        }
+        .add-habit-form { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .add-habit-input { flex-grow: 1; padding: 0.5rem; border: 1px solid #D1D5DB; border-radius: 0.375rem; }
         
         /* --- Utility Classes --- */
         .flex { display: flex; }
@@ -234,8 +295,8 @@
             <h2 id="confirmTitle" class="modal-title">Are you sure?</h2>
             <p id="confirmMessage" class="modal-text">This action cannot be undone.</p>
             <div style="display: flex; gap: 1rem;">
-                <button id="confirmCancelBtn" class="modal-button" style="background-color: #E5E7EB; color: #1F2937;">Cancel</button>
-                <button id="confirmOkBtn" class="modal-button" style="background-color: #EF4444;">Confirm</button>
+                <button id="confirmCancelBtn" class="modal-button" style="background-color: #E5E7EB; color: #1F2937; width: 100%;">Cancel</button>
+                <button id="confirmOkBtn" class="modal-button" style="background-color: #EF4444; width: 100%;">Confirm</button>
             </div>
         </div>
     </div>
@@ -248,7 +309,7 @@
                     <p id="userNameDisplay" class="greeting-user">Let's make today productive.</p>
                 </div>
                 <div id="weather-widget" class="weather-widget hidden md-block">
-                    <p style="font-weight: 700; font-size: 1.125rem;">Palakkad, Kerala</p>
+                    <p style="font-weight: 700; font-size: 1.125rem;">Koppam, Kerala</p>
                     <div class="flex items-center" style="justify-content: flex-end;">
                         <i id="weather-icon" style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
                         <p id="weather-temp" style="font-size: 1.25rem;"></p>
@@ -257,8 +318,8 @@
                 </div>
             </div>
             <div class="header-content quote-container">
-                <p id="quote-text" class="quote-text">"The secret of getting ahead is getting started."</p>
-                <p id="quote-author" class="quote-author">- Mark Twain</p>
+                <p id="quote-text" class="quote-text">"The best revenge is not to be like your enemy."</p>
+                <p id="quote-author" class="quote-author">- Marcus Aurelius</p>
             </div>
         </header>
 
@@ -267,7 +328,7 @@
                 <section class="card">
                     <div class="flex justify-between items-center">
                         <h2 class="card-title">Today's Intention</h2>
-                        <button id="addTaskBtn" class="modal-button" style="width: auto; display: flex; align-items: center; gap: 0.5rem;">
+                        <button id="addTaskBtn" class="modal-button" style="width: auto;">
                             <i class="fas fa-plus"></i> Add
                         </button>
                     </div>
@@ -286,26 +347,67 @@
                 <section class="card">
                     <h2 class="card-title">Toolbox</h2>
                     <div class="toolbox-grid">
-                        <a href="routine.html" class="tool-item">
-                            <i class="fas fa-calendar-alt" style="color: #3B82F6;"></i>
-                            <p>Routine</p>
+                        <a href="#habit-tracker-card" class="tool-item">
+                            <i class="fas fa-check-double" style="color: #34D399;"></i>
+                            <p>Habits</p>
                         </a>
-                        <a href="homeworkout.html" class="tool-item">
+                        <a href="#daily-learning-card" class="tool-item">
+                            <i class="fas fa-book-open-reader" style="color: #8B5CF6;"></i>
+                            <p>Learning</p>
+                        </a>
+                         <a href="#mindful-moment-card" class="tool-item">
+                            <i class="fas fa-wind" style="color: #3B82F6;"></i>
+                            <p>Breathe</p>
+                        </a>
+                        <a href="#" class="tool-item">
                             <i class="fas fa-dumbbell" style="color: #EF4444;"></i>
                             <p>Workout</p>
                         </a>
-                         <a href="track.html" class="tool-item">
-                            <i class="fas fa-chart-line" style="color: #8B5CF6;"></i>
+                        <a href="#" class="tool-item">
+                           <i class="fas fa-person-digging" style="color: #6B7280;"></i>
+                           <p>Duties</p>
+                        </a>
+                         <a href="#" class="tool-item">
+                            <i class="fas fa-chart-line" style="color: #F59E0B;"></i>
                             <p>Progress</p>
                         </a>
-                        <a href="for-brain.html" class="tool-item">
-                            <i class="fas fa-brain" style="color: #F59E0B;"></i>
-                            <p>Brain</p>
-                        </a>
-                        <a href="man-of-the-house.html" class="tool-item">
-                            <i class="fa-solid fa-person-digging" style="color: #6B7280;"></i>
-                            <p>Man of the House</p>
-                        </a>
+                    </div>
+                </section>
+
+                <section class="card" id="habit-tracker-card">
+                    <div class="flex justify-between items-center">
+                        <h2 class="card-title">Habit Tracker</h2>
+                    </div>
+                    <div id="habitList" class="habit-list"></div>
+                    <form id="addHabitForm" class="add-habit-form">
+                        <input type="text" id="addHabitInput" class="add-habit-input" placeholder="Add a new daily habit...">
+                        <button type="submit" class="modal-button" style="width: auto;"><i class="fas fa-plus"></i></button>
+                    </form>
+                </section>
+                
+                <section class="card">
+                    <div class="flex justify-between items-center">
+                        <h2 class="card-title">Expense Tracker</h2>
+                        <button id="addExpenseBtn" class="modal-button" style="width: auto;">
+                            <i class="fas fa-plus"></i> Add Expense
+                        </button>
+                    </div>
+                    <div class="expense-table-wrapper">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Item / Description</th>
+                                    <th>For Whom</th>
+                                    <th>Amount (₹)</th>
+                                    <th>Purchase Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenseTableBody">
+                                <!-- Expense rows will be injected here by JavaScript -->
+                            </tbody>
+                        </table>
                     </div>
                 </section>
             </div>
@@ -330,6 +432,24 @@
                     <div class="pomodoro-controls">
                         <button id="startPauseBtn" class="pomodoro-main-btn">Start</button>
                         <button id="resetBtn" class="modal-button" style="width: 3rem; height: 3rem; background-color: #E5E7EB; color: #374151;"><i class="fas fa-redo"></i></button>
+                    </div>
+                </section>
+
+                 <section class="card" id="daily-learning-card">
+                    <h2 class="card-title">Daily Learning</h2>
+                    <div id="learningContent" class="learning-content">
+                        <p>Loading...</p>
+                    </div>
+                </section>
+
+                <section class="card" id="mindful-moment-card">
+                    <h2 class="card-title">Mindful Moment</h2>
+                    <div class="breathing-container">
+                        <div id="breathingCircle" class="breathing-circle">
+                            <span>Start</span>
+                        </div>
+                        <p id="breathing-instruction">Box Breathing</p>
+                        <button id="startBreathingBtn" class="modal-button" style="margin-top: 1rem;">Begin</button>
                     </div>
                 </section>
             </aside>
@@ -375,9 +495,31 @@
         const circumference = 2 * Math.PI * 54;
         pomodoroProgress.style.strokeDasharray = circumference;
 
+        // EXPENSE TRACKER REFS
+        const addExpenseBtn = document.getElementById('addExpenseBtn');
+        const expenseTableBody = document.getElementById('expenseTableBody');
+        
+        // BETTER MAN FEATURE REFS
+        const learningContent = document.getElementById('learningContent');
+        const breathingCircle = document.getElementById('breathingCircle');
+        const breathingInstruction = document.getElementById('breathing-instruction');
+        const startBreathingBtn = document.getElementById('startBreathingBtn');
+        const habitList = document.getElementById('habitList');
+        const addHabitForm = document.getElementById('addHabitForm');
+        const addHabitInput = document.getElementById('addHabitInput');
+
+
         // --- State Management ---
         let userName = localStorage.getItem('userName');
         let tasks = JSON.parse(localStorage.getItem('dailyTasks')) || [];
+        let expenses = JSON.parse(localStorage.getItem('expenseData')) || [];
+        let habits = JSON.parse(localStorage.getItem('habits')) || [
+            { name: 'Read 10 Pages', done: false },
+            { name: 'Morning Walk', done: false },
+            { name: 'No Social Media for 1hr', done: false }
+        ];
+        let lastHabitUpdate = localStorage.getItem('lastHabitUpdate');
+
         let pomodoroState = {
             timerId: null,
             isPaused: true,
@@ -386,15 +528,6 @@
             timeLeft: 25 * 60,
         };
         
-        const quotes = [
-            { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
-            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-            { text: "Act as if what you do makes a difference. It does.", author: "William James" },
-            { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
-            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" }
-        ];
-
         // --- Modals ---
         let confirmCallback = null;
         function showConfirmModal(title, message, callback) {
@@ -418,7 +551,7 @@
             if (!userName) {
                 welcomeModal.classList.add('visible');
             } else {
-                userNameDisplay.textContent = userName;
+                userNameDisplay.textContent = `Hi, ${userName}`;
             }
         }
         saveNameBtn.addEventListener('click', () => {
@@ -426,7 +559,7 @@
             if (name) {
                 userName = name;
                 localStorage.setItem('userName', userName);
-                userNameDisplay.textContent = userName;
+                userNameDisplay.textContent = `Hi, ${userName}`;
                 welcomeModal.classList.remove('visible');
             }
         });
@@ -438,28 +571,71 @@
         function updateHeader() {
             const hour = new Date().getHours();
             let greeting, image;
-            if (hour < 5) { greeting = "Late Night"; image = 'https://images.unsplash.com/photo-1507499739999-097706ad8914?w=800'; }
-            else if (hour < 12) { greeting = "Good Morning"; image = 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800'; }
-            else if (hour < 18) { greeting = "Good Afternoon"; image = 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800'; }
-            else { greeting = "Good Evening"; image = 'https://images.unsplash.com/photo-1505322022379-7c3353ee6291?w=800'; }
+            if (hour < 5) { greeting = "Late Night"; image = 'https://images.unsplash.com/photo-1507499739999-097706ad8914?w=800&auto=format&fit=crop'; }
+            else if (hour < 12) { greeting = "Good Morning"; image = 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800&auto=format&fit=crop'; }
+            else if (hour < 18) { greeting = "Good Afternoon"; image = 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&auto=format&fit=crop'; }
+            else { greeting = "Good Evening"; image = 'https://images.unsplash.com/photo-1505322022379-7c3353ee6291?w=800&auto=format&fit=crop'; }
             greetingEl.textContent = greeting;
             headerEl.style.backgroundImage = `url(${image})`;
         }
 
-        // --- API Fetches: Weather & Quotes ---
+        // --- API Fetches & Data ---
         function fetchWeather() {
-            const weatherData = { temp: 31, description: 'Partly Cloudy', icon: 'fa-cloud-sun' };
+            const weatherData = { temp: 29, description: 'Scattered Clouds', icon: 'fa-cloud-sun' };
             weatherIcon.className = `fas ${weatherData.icon}`;
             weatherTemp.textContent = `${weatherData.temp}°C`;
             weatherDesc.textContent = weatherData.description;
             document.getElementById('weather-widget').classList.remove('hidden');
         }
         
-        function displayRandomQuote() {
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            quoteText.textContent = `"${randomQuote.text}"`;
-            quoteAuthor.textContent = `- ${randomQuote.author}`;
+        function displayStoicQuote() {
+            const stoicQuotes = [
+                { quote: "The best revenge is not to be like your enemy.", author: "Marcus Aurelius" },
+                { quote: "Waste no more time arguing about what a good man should be. Be one.", author: "Marcus Aurelius" },
+                { quote: "You have power over your mind — not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
+                { quote: "The happiness of your life depends upon the quality of your thoughts.", author: "Marcus Aurelius" },
+                { quote: "We suffer more often in imagination than in reality.", author: "Seneca" },
+                { quote: "It is not the man who has too little, but the man who craves more, that is poor.", author: "Seneca" },
+                { quote: "First say to yourself what you would be; and then do what you have to do.", author: "Epictetus" },
+                { quote: "It's not what happens to you, but how you react to it that matters.", author: "Epictetus" },
+                { quote: "Wealth consists not in having great possessions, but in having few wants.", author: "Epictetus" }
+            ];
+            try {
+                const randomQuote = stoicQuotes[Math.floor(Math.random() * stoicQuotes.length)];
+                quoteText.textContent = `"${randomQuote.quote}"`;
+                quoteAuthor.textContent = `- ${randomQuote.author}`;
+            } catch (error) {
+                console.error("Error displaying Stoic quote:", error);
+                // Fallback in case of any unexpected error
+                quoteText.textContent = `"The best revenge is not to be like your enemy."`;
+                quoteAuthor.textContent = `- Marcus Aurelius`;
+            }
         }
+
+        async function fetchWordOfTheDay() {
+            try {
+                const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+                const word = (await response.json())[0];
+                const defResponse = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                const defData = await defResponse.json();
+                
+                if (defData.title === "No Definitions Found") {
+                    // If first word fails, try one more time.
+                    fetchWordOfTheDay();
+                } else {
+                    const firstMeaning = defData[0].meanings[0].definitions[0];
+                    learningContent.innerHTML = `
+                        <p class="word">${defData[0].word}</p>
+                        <p class="pronunciation">${defData[0].phonetic || ''}</p>
+                        <p class="definition">${firstMeaning.definition}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error fetching word of the day:", error);
+                learningContent.innerHTML = `<p>Could not load word. Please check your connection.</p>`;
+            }
+        }
+
 
         // --- Task List ---
         function saveTasks() { localStorage.setItem('dailyTasks', JSON.stringify(tasks)); }
@@ -483,7 +659,7 @@
                     taskEl.innerHTML = `
                         <input type="checkbox" class="task-checkbox" data-index="${index}" ${task.completed ? 'checked' : ''}>
                         <input type="text" class="task-text" value="${task.text}" data-index="${index}" placeholder="New intention...">
-                        <button class="delete-task-btn" data-index="${index}"><i class="fas fa-times"></i></button>
+                        <button class="delete-btn" data-index="${index}"><i class="fas fa-trash"></i></button>
                     `;
                     taskListContainer.appendChild(taskEl);
                 });
@@ -493,6 +669,7 @@
 
         addTaskBtn.addEventListener('click', () => {
             tasks.push({ text: '', completed: false });
+            saveTasks();
             renderTasks();
             taskListContainer.querySelector('.task-item:last-child .task-text').focus();
         });
@@ -508,18 +685,202 @@
         taskListContainer.addEventListener('input', e => {
             if (e.target.matches('.task-text')) {
                 tasks[e.target.dataset.index].text = e.target.value;
-                saveTasks();
+                setTimeout(saveTasks, 500);
             }
         });
 
         taskListContainer.addEventListener('click', e => {
-            if (e.target.closest('.delete-task-btn')) {
-                const index = e.target.closest('.delete-task-btn').dataset.index;
+            const deleteButton = e.target.closest('.delete-btn');
+            if (deleteButton) {
+                const index = deleteButton.dataset.index;
                 showConfirmModal('Delete Task?', 'Are you sure you want to delete this intention?', () => {
                     tasks.splice(index, 1);
                     saveTasks();
                     renderTasks();
                 });
+            }
+        });
+
+        // --- Habit Tracker ---
+        function saveHabits() {
+            localStorage.setItem('habits', JSON.stringify(habits));
+            localStorage.setItem('lastHabitUpdate', new Date().toLocaleDateString());
+        }
+
+        function checkAndResetHabits() {
+            const today = new Date().toLocaleDateString();
+            if (lastHabitUpdate !== today) {
+                habits.forEach(habit => habit.done = false);
+                saveHabits();
+            }
+        }
+
+        function renderHabits() {
+            habitList.innerHTML = '';
+            if (habits.length === 0) {
+                habitList.innerHTML = `<p style="text-align: center; color: #6B7280; padding: 1rem 0;">Add a habit to start tracking.</p>`;
+            } else {
+                habits.forEach((habit, index) => {
+                    const habitEl = document.createElement('div');
+                    habitEl.className = 'habit-item';
+                    habitEl.innerHTML = `
+                        <span class="habit-name">${habit.name}</span>
+                        <div class="flex items-center">
+                            <input type="checkbox" class="habit-checkbox" data-index="${index}" ${habit.done ? 'checked' : ''}>
+                            <button class="delete-btn" data-index="${index}"><i class="fas fa-times"></i></button>
+                        </div>
+                    `;
+                    habitList.appendChild(habitEl);
+                });
+            }
+        }
+
+        addHabitForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const newHabitName = addHabitInput.value.trim();
+            if (newHabitName) {
+                habits.push({ name: newHabitName, done: false });
+                saveHabits();
+                renderHabits();
+                addHabitInput.value = '';
+            }
+        });
+
+        habitList.addEventListener('change', e => {
+            if (e.target.matches('.habit-checkbox')) {
+                const index = e.target.dataset.index;
+                habits[index].done = e.target.checked;
+                saveHabits();
+            }
+        });
+
+        habitList.addEventListener('click', e => {
+            const deleteButton = e.target.closest('.delete-btn');
+            if (deleteButton) {
+                const index = deleteButton.dataset.index;
+                showConfirmModal('Delete Habit?', `Are you sure you want to delete the habit "${habits[index].name}"?`, () => {
+                    habits.splice(index, 1);
+                    saveHabits();
+                    renderHabits();
+                });
+            }
+        });
+
+        // --- Expense Tracker Logic ---
+        function saveExpenses() {
+            localStorage.setItem('expenseData', JSON.stringify(expenses));
+        }
+
+        function renderExpenses() {
+            expenseTableBody.innerHTML = '';
+            if (expenses.length === 0) {
+                expenseTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #6B7280; padding: 1rem;">No expenses logged yet. Click 'Add Expense' to start.</td></tr>`;
+            } else {
+                expenses.forEach((expense, index) => {
+                    const row = document.createElement('tr');
+                    row.dataset.index = index;
+                    row.innerHTML = `
+                        <td><input type="date" value="${expense.date}" data-field="date"></td>
+                        <td><input type="text" value="${expense.spend}" placeholder="e.g., Groceries" data-field="spend"></td>
+                        <td><input type="text" value="${expense.person}" placeholder="e.g., Family" data-field="person"></td>
+                        <td><input type="number" value="${expense.amount}" placeholder="0.00" step="0.01" data-field="amount"></td>
+                        <td>
+                            <select data-field="method">
+                                <option value="Cash" ${expense.method === 'Cash' ? 'selected' : ''}>Cash</option>
+                                <option value="Credit Card" ${expense.method === 'Credit Card' ? 'selected' : ''}>Credit Card</option>
+                                <option value="Debit Card" ${expense.method === 'Debit Card' ? 'selected' : ''}>Debit Card</option>
+                                <option value="UPI/Online" ${expense.method === 'UPI/Online' ? 'selected' : ''}>UPI/Online</option>
+                            </select>
+                        </td>
+                        <td><button class="delete-btn"><i class="fas fa-trash"></i></button></td>
+                    `;
+                    expenseTableBody.appendChild(row);
+                });
+            }
+        }
+
+        addExpenseBtn.addEventListener('click', () => {
+            const today = new Date().toISOString().split('T')[0];
+            expenses.unshift({ date: today, spend: '', person: '', amount: '', method: 'Cash' });
+            saveExpenses();
+            renderExpenses();
+            expenseTableBody.querySelector('tr:first-child input[data-field="spend"]').focus();
+        });
+
+        expenseTableBody.addEventListener('input', e => {
+            const target = e.target;
+            if (target.matches('input') || target.matches('select')) {
+                const index = target.closest('tr').dataset.index;
+                const field = target.dataset.field;
+                expenses[index][field] = target.value;
+                setTimeout(saveExpenses, 500);
+            }
+        });
+
+        expenseTableBody.addEventListener('click', e => {
+            const deleteButton = e.target.closest('.delete-btn');
+            if (deleteButton) {
+                const index = deleteButton.closest('tr').dataset.index;
+                showConfirmModal('Delete Expense?', 'Are you sure you want to delete this expense entry?', () => {
+                    expenses.splice(index, 1);
+                    saveExpenses();
+                    renderExpenses();
+                });
+            }
+        });
+
+        // --- Mindful Moment: Box Breathing ---
+        let breathingActive = false;
+        let breathingTimeout1, breathingTimeout2, breathingTimeout3, breathingTimeout4;
+
+        function stopBreathingCycle() {
+            breathingActive = false;
+            clearTimeout(breathingTimeout1);
+            clearTimeout(breathingTimeout2);
+            clearTimeout(breathingTimeout3);
+            clearTimeout(breathingTimeout4);
+            startBreathingBtn.textContent = 'Begin';
+            breathingInstruction.textContent = 'Box Breathing';
+            breathingCircle.classList.remove('grow');
+            breathingCircle.style.backgroundColor = '#93C5FD';
+            breathingCircle.textContent = 'Start';
+        }
+
+        function runBreathingCycle() {
+            if (!breathingActive) return;
+            breathingInstruction.textContent = 'Breathe In';
+            breathingCircle.classList.add('grow');
+            breathingCircle.style.backgroundColor = '#60A5FA';
+            breathingCircle.textContent = 'In';
+            breathingTimeout1 = setTimeout(() => {
+                if (!breathingActive) return;
+                breathingInstruction.textContent = 'Hold';
+                breathingCircle.style.backgroundColor = '#3B82F6';
+                breathingCircle.textContent = 'Hold';
+                breathingTimeout2 = setTimeout(() => {
+                    if (!breathingActive) return;
+                    breathingInstruction.textContent = 'Breathe Out';
+                    breathingCircle.classList.remove('grow');
+                    breathingCircle.style.backgroundColor = '#60A5FA';
+                    breathingCircle.textContent = 'Out';
+                    breathingTimeout3 = setTimeout(() => {
+                        if (!breathingActive) return;
+                        breathingInstruction.textContent = 'Hold';
+                        breathingCircle.style.backgroundColor = '#93C5FD';
+                        breathingCircle.textContent = 'Hold';
+                        breathingTimeout4 = setTimeout(runBreathingCycle, 4000); // Loop
+                    }, 4000);
+                }, 4000);
+            }, 4000);
+        }
+
+        startBreathingBtn.addEventListener('click', () => {
+            if (breathingActive) {
+                stopBreathingCycle();
+            } else {
+                breathingActive = true;
+                startBreathingBtn.textContent = 'Stop';
+                runBreathingCycle();
             }
         });
 
@@ -557,7 +918,7 @@
             updateTimerDisplay();
             if (pomodoroState.timeLeft <= 0) {
                 clearInterval(pomodoroState.timerId);
-                new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3').play();
+                new Audio('https://cdn.freesound.org/previews/242/242857_4284968-lq.mp3').play().catch(e => console.error("Error playing sound:", e));
                 const nextMode = pomodoroState.mode === 'work' ? 'break' : 'work';
                 switchPomodoroMode(nextMode);
             }
@@ -583,8 +944,12 @@
             handleUserName();
             updateHeader();
             fetchWeather();
-            displayRandomQuote();
+            displayStoicQuote();
+            fetchWordOfTheDay();
             renderTasks();
+            renderExpenses();
+            checkAndResetHabits();
+            renderHabits();
             updateTimerDisplay();
         }
 
