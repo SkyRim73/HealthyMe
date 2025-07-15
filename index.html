@@ -294,9 +294,9 @@
         <div class="modal-content">
             <h2 id="confirmTitle" class="modal-title">Are you sure?</h2>
             <p id="confirmMessage" class="modal-text">This action cannot be undone.</p>
-            <div style="display: flex; gap: 1rem;">
-                <button id="confirmCancelBtn" class="modal-button" style="background-color: #E5E7EB; color: #1F2937; width: 100%;">Cancel</button>
-                <button id="confirmOkBtn" class="modal-button" style="background-color: #EF4444; width: 100%;">Confirm</button>
+            <div style="display: flex; justify-content: center; gap: 1rem;">
+                <button id="confirmCancelBtn" class="modal-button" style="background-color: #E5E7EB; color: #1F2937; flex-grow: 1;">Cancel</button>
+                <button id="confirmOkBtn" class="modal-button" style="background-color: #EF4444; flex-grow: 1;">Confirm</button>
             </div>
         </div>
     </div>
@@ -388,9 +388,14 @@
                 <section class="card">
                     <div class="flex justify-between items-center">
                         <h2 class="card-title">Expense Tracker</h2>
-                        <button id="addExpenseBtn" class="modal-button" style="width: auto;">
-                            <i class="fas fa-plus"></i> Add Expense
-                        </button>
+                        <div class="flex items-center" style="gap: 0.75rem;">
+                            <button id="clearExpensesBtn" class="modal-button" style="width: auto; background-color: #FEE2E2; color: #991B1B;">
+                                <i class="fas fa-trash-alt"></i> Clear All
+                            </button>
+                            <button id="addExpenseBtn" class="modal-button" style="width: auto;">
+                                <i class="fas fa-plus"></i> Add Expense
+                            </button>
+                        </div>
                     </div>
                     <div class="expense-table-wrapper">
                         <table class="expense-table">
@@ -498,6 +503,7 @@
         // EXPENSE TRACKER REFS
         const addExpenseBtn = document.getElementById('addExpenseBtn');
         const expenseTableBody = document.getElementById('expenseTableBody');
+        const clearExpensesBtn = document.getElementById('clearExpensesBtn'); // New Ref
         
         // BETTER MAN FEATURE REFS
         const learningContent = document.getElementById('learningContent');
@@ -779,19 +785,13 @@
                 expenses.forEach((expense, index) => {
                     const row = document.createElement('tr');
                     row.dataset.index = index;
+                    // UPDATED: Changed select to input for payment method
                     row.innerHTML = `
                         <td><input type="date" value="${expense.date}" data-field="date"></td>
                         <td><input type="text" value="${expense.spend}" placeholder="e.g., Groceries" data-field="spend"></td>
                         <td><input type="text" value="${expense.person}" placeholder="e.g., Family" data-field="person"></td>
                         <td><input type="number" value="${expense.amount}" placeholder="0.00" step="0.01" data-field="amount"></td>
-                        <td>
-                            <select data-field="method">
-                                <option value="Cash" ${expense.method === 'Cash' ? 'selected' : ''}>Cash</option>
-                                <option value="Credit Card" ${expense.method === 'Credit Card' ? 'selected' : ''}>Credit Card</option>
-                                <option value="Debit Card" ${expense.method === 'Debit Card' ? 'selected' : ''}>Debit Card</option>
-                                <option value="UPI/Online" ${expense.method === 'UPI/Online' ? 'selected' : ''}>UPI/Online</option>
-                            </select>
-                        </td>
+                        <td><input type="text" value="${expense.method}" placeholder="e.g., UPI" data-field="method"></td>
                         <td><button class="delete-btn"><i class="fas fa-trash"></i></button></td>
                     `;
                     expenseTableBody.appendChild(row);
@@ -801,15 +801,34 @@
 
         addExpenseBtn.addEventListener('click', () => {
             const today = new Date().toISOString().split('T')[0];
-            expenses.unshift({ date: today, spend: '', person: '', amount: '', method: 'Cash' });
+            // UPDATED: Default method is now an empty string
+            expenses.unshift({ date: today, spend: '', person: '', amount: '', method: '' });
             saveExpenses();
             renderExpenses();
             expenseTableBody.querySelector('tr:first-child input[data-field="spend"]').focus();
         });
 
+        // NEW: Event listener for the "Clear All" button
+        clearExpensesBtn.addEventListener('click', () => {
+            if (expenses.length === 0) {
+                // Optional: Show a message that there's nothing to clear
+                return; 
+            }
+            showConfirmModal(
+                'Clear All Expenses?', 
+                'This will permanently delete all expense entries. This action cannot be undone.', 
+                () => {
+                    expenses = [];
+                    saveExpenses();
+                    renderExpenses();
+                }
+            );
+        });
+
         expenseTableBody.addEventListener('input', e => {
             const target = e.target;
-            if (target.matches('input') || target.matches('select')) {
+            // This listener now correctly handles the new text input for method
+            if (target.matches('input')) {
                 const index = target.closest('tr').dataset.index;
                 const field = target.dataset.field;
                 expenses[index][field] = target.value;
