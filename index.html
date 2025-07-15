@@ -16,6 +16,7 @@
     <style>
         /* --- Base & Reset --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; } /* Enables smooth scrolling for anchor links */
         body {
             font-family: 'Sora', sans-serif;
             background-color: #F0F2F5;
@@ -136,21 +137,36 @@
             border-radius: 9999px; transition: width 0.5s ease;
         }
 
-        /* --- Toolbox --- */
+        /* --- Toolbox (Updated) --- */
         .toolbox-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 1rem; margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
-        @media (min-width: 768px) { .toolbox-grid { grid-template-columns: repeat(3, 1fr); } }
         .tool-item {
-            text-align: center; padding: 1rem;
-            background-color: #F9FAFB; border-radius: 0.5rem;
-            transition: background-color 0.2s ease; cursor: pointer;
-            display: block;
+            padding: 1rem;
+            background-color: #F9FAFB;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
         }
         .tool-item:hover { background-color: #F3F4F6; }
-        .tool-item i { font-size: 1.875rem; line-height: 2.25rem; }
-        .tool-item p { margin-top: 0.5rem; font-weight: 600; }
+        .tool-item i {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+        .tool-item p {
+            margin-top: 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-align: center;
+        }
 
         /* --- Expense Tracker --- */
         .expense-table-wrapper { overflow-x: auto; margin-top: 1.5rem; }
@@ -162,12 +178,12 @@
         }
         .expense-table th { font-weight: 600; color: #4B5563; font-size: 0.875rem; }
         .expense-table td { vertical-align: middle; }
-        .expense-table input, .expense-table select {
+        .expense-table input {
             width: 100%; padding: 0.5rem; font-size: 1rem;
             border: 1px solid transparent;
             border-radius: 0.375rem; background-color: #F9FAFB;
         }
-        .expense-table input:focus, .expense-table select:focus {
+        .expense-table input:focus {
              background-color: white; border-color: #A5B4FC;
              outline: none; box-shadow: 0 0 0 1px #A5B4FC;
         }
@@ -232,11 +248,13 @@
         }
         .modal-button:hover { background-color: #2563EB; }
 
-        /* --- New Productivity Features --- */
-        .learning-content p { margin: 0.25rem 0; }
+        /* --- Productivity Features --- */
+        .learning-content p { margin: 0.5rem 0; }
         .learning-content .word { font-weight: 700; font-size: 1.25rem; color: #3B82F6; }
         .learning-content .pronunciation { font-style: italic; color: #6B7280; }
         .learning-content .definition { color: #4B5563; }
+        .learning-content .sub-heading { font-weight: 600; color: #1A202C; margin-top: 1rem; margin-bottom: 0.25rem; }
+        .learning-content .list { color: #4B5563; font-style: italic; }
         
         .breathing-container { text-align: center; margin-top: 1.5rem; }
         .breathing-circle {
@@ -348,6 +366,14 @@
             font-size: 0.9rem;
         }
 
+        /* World Clock & Ambiance */
+        .clock-container { text-align: center; margin-bottom: 1.5rem; }
+        .clock-time { font-size: 2rem; font-weight: 700; }
+        .clock-label { font-size: 0.875rem; color: #6B7280; }
+        #time-zone-select { width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #D1D5DB; margin-top: 0.5rem; }
+        .ambiance-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+        #volume-slider { width: 100px; }
+
         /* --- Utility Classes --- */
         .flex { display: flex; }
         .justify-between { justify-content: space-between; }
@@ -403,7 +429,58 @@
 
         <main class="main-grid">
             <div class="left-column space-y-8">
-                <section class="card">
+                <!-- Toolbox Card -->
+                <section class="card" id="toolbox-card">
+                    <h2 class="card-title">Navigation Toolbox</h2>
+                    <div class="toolbox-grid">
+                        <a href="#intention-card" class="tool-item">
+                            <i class="fas fa-bullseye" style="color: #EF4444;"></i>
+                            <p>Intention</p>
+                        </a>
+                        <a href="#goal-tracker-card" class="tool-item">
+                            <i class="fas fa-trophy" style="color: #F59E0B;"></i>
+                            <p>Goals</p>
+                        </a>
+                        <a href="#day-counter-card" class="tool-item">
+                            <i class="fas fa-calendar-days" style="color: #8B5CF6;"></i>
+                            <p>Counters</p>
+                        </a>
+                        <a href="#daily-journal-card" class="tool-item">
+                            <i class="fas fa-book-medical" style="color: #10B981;"></i>
+                            <p>Journal</p>
+                        </a>
+                        <a href="#habit-tracker-card" class="tool-item">
+                            <i class="fas fa-check-double" style="color: #34D399;"></i>
+                            <p>Habits</p>
+                        </a>
+                        <a href="#expense-tracker-card" class="tool-item">
+                            <i class="fas fa-wallet" style="color: #6366F1;"></i>
+                            <p>Expenses</p>
+                        </a>
+                         <a href="#focus-timer-card" class="tool-item">
+                            <i class="fas fa-clock" style="color: #3B82F6;"></i>
+                            <p>Focus Timer</p>
+                        </a>
+                        <a href="#stopwatch-card" class="tool-item">
+                           <i class="fas fa-stopwatch-20" style="color: #22C55E;"></i>
+                           <p>Stopwatch</p>
+                        </a>
+                         <a href="#world-clock-card" class="tool-item">
+                            <i class="fas fa-globe" style="color: #0EA5E9;"></i>
+                            <p>World Clock</p>
+                        </a>
+                        <a href="#daily-learning-card" class="tool-item">
+                            <i class="fas fa-book-open-reader" style="color: #A855F7;"></i>
+                            <p>Learning</p>
+                        </a>
+                        <a href="#mindful-moment-card" class="tool-item">
+                            <i class="fas fa-wind" style="color: #3B82F6;"></i>
+                            <p>Breathe</p>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="card" id="intention-card">
                     <div class="flex justify-between items-center">
                         <h2 class="card-title">Today's Intention</h2>
                         <button id="addTaskBtn" class="modal-button" style="width: auto;">
@@ -460,7 +537,7 @@
                     </form>
                 </section>
                 
-                <section class="card">
+                <section class="card" id="expense-tracker-card">
                     <div class="flex justify-between items-center">
                         <h2 class="card-title">Expense Tracker</h2>
                         <div class="flex items-center" style="gap: 0.75rem;">
@@ -493,7 +570,7 @@
             </div>
 
             <aside class="space-y-8">
-                <section class="card" style="text-align: center; position: sticky; top: 2rem;">
+                <section class="card" id="focus-timer-card" style="text-align: center; position: sticky; top: 2rem;">
                     <h2 class="card-title">Focus Timer</h2>
                     <div class="pomodoro-container">
                         <svg class="pomodoro-svg" viewBox="0 0 120 120">
@@ -517,13 +594,31 @@
 
                 <section class="card" id="stopwatch-card" style="text-align: center;">
                     <h2 class="card-title">Stopwatch</h2>
-                    <p id="stopwatch-display">00:00:00.000</p>
+                    <p id="stopwatch-display">00:00.00</p>
                     <div class="pomodoro-controls">
                         <button id="stopwatchStartPauseBtn" class="pomodoro-main-btn">Start</button>
                         <button id="stopwatchResetBtn" class="modal-button" style="background-color: #E5E7EB; color: #374151;">Reset</button>
                         <button id="stopwatchLapBtn" class="modal-button" style="background-color: #DBEAFE; color: #1E40AF;">Lap</button>
                     </div>
                     <ol id="laps-list"></ol>
+                </section>
+
+                <section class="card" id="world-clock-card">
+                    <h2 class="card-title" style="text-align:center;">World Clock & Ambiance</h2>
+                    <div class="clock-container">
+                        <div id="local-time" class="clock-time">--:--:--</div>
+                        <div class="clock-label">Your Time</div>
+                    </div>
+                    <div class="clock-container">
+                        <div id="selected-time" class="clock-time">--:--:--</div>
+                        <select id="time-zone-select"></select>
+                    </div>
+                    <div class="ambiance-controls">
+                        <button id="play-pause-audio" class="modal-button" style="width: 3rem; height: 3rem; background-color: #E5E7EB; color: #374151;"><i class="fas fa-play"></i></button>
+                        <i class="fas fa-volume-down" style="color: #6B7280;"></i>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                        <i class="fas fa-volume-up" style="color: #6B7280;"></i>
+                    </div>
                 </section>
 
                  <section class="card" id="daily-learning-card">
@@ -546,6 +641,8 @@
             </aside>
         </main>
     </div>
+    
+    <audio id="background-audio" loop src="https://archive.org/download/RainyMood/Rainy-Mood.mp3"></audio>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -604,18 +701,26 @@
         const journalEntry = document.getElementById('journalEntry');
         const saveJournalBtn = document.getElementById('saveJournalBtn');
         
-        // NEW: STOPWATCH REFS
+        // STOPWATCH REFS
         const stopwatchDisplay = document.getElementById('stopwatch-display');
         const stopwatchStartPauseBtn = document.getElementById('stopwatchStartPauseBtn');
         const stopwatchResetBtn = document.getElementById('stopwatchResetBtn');
         const stopwatchLapBtn = document.getElementById('stopwatchLapBtn');
         const lapsList = document.getElementById('laps-list');
 
-        // NEW: DAY COUNTER REFS
+        // DAY COUNTER REFS
         const dayCountersList = document.getElementById('dayCountersList');
         const addDayCounterForm = document.getElementById('addDayCounterForm');
         const dayCounterNameInput = document.getElementById('dayCounterNameInput');
         const dayCounterDateInput = document.getElementById('dayCounterDateInput');
+
+        // WORLD CLOCK & AMBIANCE REFS
+        const localTimeEl = document.getElementById('local-time');
+        const selectedTimeEl = document.getElementById('selected-time');
+        const timeZoneSelect = document.getElementById('time-zone-select');
+        const playPauseAudioBtn = document.getElementById('play-pause-audio');
+        const volumeSlider = document.getElementById('volume-slider');
+        const backgroundAudio = document.getElementById('background-audio');
 
 
         // --- State Management ---
@@ -630,6 +735,7 @@
         let goals = JSON.parse(localStorage.getItem('userGoals')) || [];
         let journalText = localStorage.getItem('dailyJournalEntry') || '';
         let dayCounters = JSON.parse(localStorage.getItem('dayCounters')) || [];
+        let selectedTimeZone = localStorage.getItem('selectedTimeZone') || 'Asia/Kolkata';
         let lastHabitUpdate = localStorage.getItem('lastHabitUpdate');
 
         let pomodoroState = {
@@ -740,14 +846,29 @@
                 
                 if (defData.title === "No Definitions Found") {
                     fetchWordOfTheDay();
-                } else {
-                    const firstMeaning = defData[0].meanings[0].definitions[0];
-                    learningContent.innerHTML = `
-                        <p class="word">${defData[0].word}</p>
-                        <p class="pronunciation">${defData[0].phonetic || ''}</p>
-                        <p class="definition">${firstMeaning.definition}</p>
-                    `;
-                }
+                    return;
+                } 
+                
+                const entry = defData[0];
+                const meaning = entry.meanings[0];
+                const definition = meaning.definitions[0];
+
+                let synonyms = meaning.synonyms || [];
+                let antonyms = meaning.antonyms || [];
+                let example = definition.example || 'N/A';
+
+                learningContent.innerHTML = `
+                    <p class="word">${entry.word}</p>
+                    <p class="pronunciation">${entry.phonetic || ''}</p>
+                    <p class="definition">${definition.definition}</p>
+                    <p class="sub-heading">Usage:</p>
+                    <p class="list"><em>${example}</em></p>
+                    <p class="sub-heading">Similar Words:</p>
+                    <p class="list">${synonyms.length > 0 ? synonyms.slice(0, 5).join(', ') : 'N/A'}</p>
+                    <p class="sub-heading">Antonyms:</p>
+                    <p class="list">${antonyms.length > 0 ? antonyms.slice(0, 5).join(', ') : 'N/A'}</p>
+                `;
+
             } catch (error) {
                 console.error("Error fetching word of the day:", error);
                 learningContent.innerHTML = `<p>Could not load word. Please check your connection.</p>`;
@@ -1111,7 +1232,8 @@
             updateTimerDisplay();
             if (pomodoroState.timeLeft <= 0) {
                 clearInterval(pomodoroState.timerId);
-                new Audio('https://cdn.freesound.org/previews/242/242857_4284968-lq.mp3').play().catch(e => console.error("Error playing sound:", e));
+                // UPDATED AUDIO URL
+                new Audio('https://actions.google.com/sounds/v1/notifications/positive_notification.ogg').play().catch(e => console.error("Error playing sound:", e));
                 const nextMode = pomodoroState.mode === 'work' ? 'break' : 'work';
                 switchPomodoroMode(nextMode);
             }
@@ -1132,20 +1254,21 @@
         workBtn.addEventListener('click', () => switchPomodoroMode('work'));
         breakBtn.addEventListener('click', () => switchPomodoroMode('break'));
 
-        // --- NEW: Stopwatch Logic ---
-        function formatTime(ms) {
+        // --- Stopwatch Logic ---
+        function formatStopwatchTime(ms) {
             const date = new Date(ms);
             const minutes = String(date.getUTCMinutes()).padStart(2, '0');
             const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-            const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0');
-            return `${minutes}:${seconds}:${milliseconds}`;
+            const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0').slice(0,2);
+            return `${minutes}:${seconds}.${milliseconds}`;
         }
 
         function updateStopwatch() {
             const currentTime = Date.now();
-            stopwatchState.elapsedTime += currentTime - stopwatchState.startTime;
+            const delta = currentTime - stopwatchState.startTime;
+            stopwatchState.elapsedTime += delta;
             stopwatchState.startTime = currentTime;
-            stopwatchDisplay.textContent = formatTime(stopwatchState.elapsedTime);
+            stopwatchDisplay.textContent = formatStopwatchTime(stopwatchState.elapsedTime);
         }
 
         stopwatchStartPauseBtn.addEventListener('click', () => {
@@ -1165,7 +1288,7 @@
             stopwatchState.isRunning = false;
             stopwatchState.elapsedTime = 0;
             stopwatchState.laps = [];
-            stopwatchDisplay.textContent = '00:00:00.000';
+            stopwatchDisplay.textContent = '00:00.00';
             lapsList.innerHTML = '';
             stopwatchStartPauseBtn.textContent = 'Start';
         });
@@ -1176,12 +1299,12 @@
                 stopwatchState.laps.push(lapTime);
                 const li = document.createElement('li');
                 const lapNumber = stopwatchState.laps.length;
-                li.innerHTML = `<span>Lap ${lapNumber}</span><span>${formatTime(lapTime)}</span>`;
+                li.innerHTML = `<span>Lap ${lapNumber}</span><span>${formatStopwatchTime(lapTime)}</span>`;
                 lapsList.prepend(li);
             }
         });
         
-        // --- NEW: Day Counter Logic ---
+        // --- Day Counter Logic ---
         function saveDayCounters() {
             localStorage.setItem('dayCounters', JSON.stringify(dayCounters));
         }
@@ -1259,6 +1382,55 @@
             }
         });
 
+        // --- World Clock & Ambiance Logic ---
+        function populateTimeZones() {
+            const timeZones = [
+                "UTC", "America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles",
+                "Europe/London", "Europe/Paris", "Europe/Berlin", "Asia/Kolkata", "Asia/Dubai", 
+                "Asia/Tokyo", "Australia/Sydney"
+            ];
+            timeZones.forEach(tz => {
+                const option = document.createElement('option');
+                option.value = tz;
+                option.textContent = tz.replace(/_/g, ' ');
+                timeZoneSelect.appendChild(option);
+            });
+            timeZoneSelect.value = selectedTimeZone;
+        }
+
+        function updateClocks() {
+            const now = new Date();
+            localTimeEl.textContent = now.toLocaleTimeString();
+            
+            try {
+                 const selectedTime = now.toLocaleTimeString('en-US', { timeZone: selectedTimeZone });
+                 selectedTimeEl.textContent = selectedTime;
+            } catch (e) {
+                console.error("Invalid time zone:", selectedTimeZone);
+                selectedTimeEl.textContent = "Invalid Zone";
+            }
+        }
+
+        timeZoneSelect.addEventListener('change', (e) => {
+            selectedTimeZone = e.target.value;
+            localStorage.setItem('selectedTimeZone', selectedTimeZone);
+            updateClocks();
+        });
+
+        playPauseAudioBtn.addEventListener('click', () => {
+            if (backgroundAudio.paused) {
+                backgroundAudio.play().catch(e => console.error("Audio play failed:", e));
+                playPauseAudioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                backgroundAudio.pause();
+                playPauseAudioBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            backgroundAudio.volume = e.target.value;
+        });
+
 
         // --- Initialization ---
         function init() {
@@ -1275,6 +1447,12 @@
             renderDayCounters();
             journalEntry.value = journalText;
             updateTimerDisplay();
+            
+            // New initializations
+            populateTimeZones();
+            updateClocks();
+            setInterval(updateClocks, 1000);
+            backgroundAudio.volume = volumeSlider.value;
         }
 
         init();
