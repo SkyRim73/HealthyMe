@@ -3,332 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Habits Tracker</title>
+    <title>Zenith Habits - Dynamic Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-primary: #0f172a; /* Slate 900 */
+            --bg-secondary: #1e293b; /* Slate 800 */
+            --bg-tertiary: #334155; /* Slate 700 */
+            --border-color: #475569; /* Slate 600 */
+            --text-primary: #f1f5f9; /* Slate 100 */
+            --text-secondary: #94a3b8; /* Slate 400 */
+            --accent-primary: #14b8a6; /* Teal 500 */
+            --accent-primary-hover: #0d9488; /* Teal 600 */
+            --accent-secondary: #38bdf8; /* Light Blue 400 */
+            --accent-success: #22c55e; /* Green 500 */
+            --accent-danger: #f43f5e; /* Rose 500 */
+            --accent-warning: #f59e0b; /* Amber 500 */
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* bg-gray-900 */
-            color: #f3f4f6; /* text-gray-100 */
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
         }
         .table-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
         }
         table {
             border-collapse: separate;
             border-spacing: 0;
-            min-width: 1400px; /* Adjusted for progress bar */
+            min-width: 1400px;
         }
         th, td {
-            border: 1px solid #374151; /* border-gray-700 */
-            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            padding: 8px 10px;
             text-align: center;
             font-size: 0.8rem;
+            white-space: nowrap;
         }
-        th.habit-name-col {
-            min-width: 180px; max-width: 230px; text-align: left; white-space: normal; word-break: break-word;
-        }
-        th.day-header, td.day-cell { min-width: 35px; max-width: 35px; }
-        th.stats-col { min-width: 55px; font-size: 0.75rem; }
-        th.progress-col { min-width: 120px; font-size: 0.75rem; } /* For progress bar */
+        th.habit-name-col { min-width: 180px; max-width: 230px; text-align: left; white-space: normal; word-break: break-word; }
+        th.day-header, td.day-cell { min-width: 40px; max-width: 40px; }
+        th.stats-col { min-width: 65px; font-size: 0.75rem; }
+        th.progress-col { min-width: 130px; font-size: 0.75rem; }
         th.action-col, td.action-cell { min-width: 100px; }
         .checkbox-cell input[type="checkbox"] {
-            appearance: none; -webkit-appearance: none; width: 18px; height: 18px;
-            border: 2px solid #4b5563; border-radius: 4px; cursor: pointer; outline: none;
-            transition: background-color 0.2s, border-color 0.2s; vertical-align: middle;
+            appearance: none; -webkit-appearance: none; width: 22px; height: 22px;
+            border: 2px solid var(--border-color); border-radius: 6px; cursor: pointer; outline: none;
+            transition: all 0.2s ease-in-out; vertical-align: middle;
+        }
+        .checkbox-cell input[type="checkbox"]:hover {
+             border-color: var(--accent-primary);
         }
         .checkbox-cell input[type="checkbox"]:checked {
-            background-color: #10b981; border-color: #059669; position: relative;
+            background-image: linear-gradient(45deg, var(--accent-success), var(--accent-primary));
+            border-color: var(--accent-primary);
+            position: relative;
         }
         .checkbox-cell input[type="checkbox"]:checked::after {
-            content: '✔'; font-size: 12px; color: white; position: absolute;
+            content: '✔'; font-size: 14px; font-weight: bold; color: var(--bg-primary); position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
         }
-        .weekend { background-color: #1f2937; }
-        .today { border-left: 2px solid #3b82f6; border-right: 2px solid #3b82f6; }
-        .sticky-header th { position: sticky; top: 0; background-color: #1f2937; z-index: 10; }
-        .sticky-col { position: sticky; left: 0; background-color: #1f2937; z-index: 5; }
+        .weekend { background-color: rgba(0,0,0,0.1); }
+        .today { border-left: 2px solid var(--accent-secondary); border-right: 2px solid var(--accent-secondary); }
+        .sticky-header th { position: sticky; top: 0; background-color: var(--bg-secondary); z-index: 10; }
+        .sticky-col { position: sticky; left: 0; background-color: var(--bg-secondary); z-index: 5; }
         .sticky-header .sticky-col { z-index: 15; }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #1f2937; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; border: 2px solid var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
         .modal {
             display: none; position: fixed; z-index: 100; left: 0; top: 0;
-            width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7);
+            width: 100%; height: 100%; overflow: auto; 
+            background-color: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
         }
         .modal-content {
-            background-color: #1f2937; margin: 8% auto; padding: 25px; /* Adjusted margin-top */
-            border: 1px solid #374151; width: 90%; max-width: 600px; /* Slightly wider for motivation */
-            border-radius: 10px; color: #f3f4f6; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background-color: rgba(30, 41, 59, 0.9); border: 1px solid var(--border-color);
+            margin: 8% auto; padding: 30px; width: 90%; max-width: 550px;
+            border-radius: 12px; color: var(--text-primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-        .modal-close-btn {
-            color: #9ca3af; float: right; font-size: 28px; font-weight: bold; line-height: 1;
+        .modal-close-btn { color: var(--text-secondary); float: right; font-size: 28px; font-weight: bold; line-height: 1; }
+        .modal-close-btn:hover, .modal-close-btn:focus { color: var(--text-primary); text-decoration: none; cursor: pointer; }
+        .action-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            color: white; padding: 10px 16px; border-radius: 8px;
+            font-weight: 600; font-size: 0.875rem; border: none; cursor: pointer; 
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), inset 0 1px 1px rgba(255,255,255,0.1);
         }
-        .modal-close-btn:hover, .modal-close-btn:focus {
-            color: #e5e7eb; text-decoration: none; cursor: pointer;
+        .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1); }
+        .action-btn:active { transform: translateY(0); }
+        .action-btn:disabled { background-color: var(--border-color); cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        .btn-gradient-success { background-image: linear-gradient(45deg, var(--accent-success), #4ade80); }
+        .btn-gradient-primary { background-image: linear-gradient(45deg, var(--accent-primary), #2dd4bf); }
+        .btn-gradient-warning { background-image: linear-gradient(45deg, var(--accent-warning), #fde047); color: #422006 !important; }
+        .btn-gradient-info { background-image: linear-gradient(45deg, var(--accent-secondary), #7dd3fc); }
+        .btn-gradient-danger { background-image: linear-gradient(45deg, var(--accent-danger), #fb7185); }
+        .btn-icon { padding: 8px; }
+
+        input, select, textarea {
+            background-color: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary);
+            padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .ai-tip-btn, .action-btn {
-            background-color: #3b82f6; color: white; padding: 4px 8px; border-radius: 5px;
-            font-size: 0.75rem; border: none; cursor: pointer; transition: background-color 0.2s;
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.3); }
+        label { margin-bottom: 6px; display: block; font-size: 0.9rem; font-weight: 500; }
+        .progress-bar-container { width: 110px; height: 12px; background-color: var(--border-color); border-radius: 6px; overflow: hidden; margin: 0 auto; }
+        .progress-bar-fill { height: 100%; background-image: linear-gradient(45deg, var(--accent-success), var(--accent-primary)); border-radius: 6px; transition: width 0.4s ease-in-out; }
+        .habit-motivation-display { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; font-style: italic; }
+        .icon { width: 1.25rem; height: 1.25rem; }
+        .card { background-color: var(--bg-secondary); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 200; display: flex; flex-direction: column; gap: 10px; }
+        .toast {
+            background-color: var(--bg-tertiary); color: var(--text-primary); padding: 12px 20px; border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px;
+            opacity: 0; transform: translateX(100%); animation: slideIn 0.5s forwards;
         }
-        .ai-tip-btn:hover, .action-btn:hover { background-color: #2563eb; }
-        .ai-tip-btn:disabled, .action-btn:disabled { background-color: #4b5563; cursor: not-allowed; }
-        .delete-btn { background-color: #ef4444; } .delete-btn:hover { background-color: #dc2626; }
-        .edit-btn { background-color: #f59e0b; } .edit-btn:hover { background-color: #d97706; }
-        input[type="text"], input[type="number"], select, textarea {
-            background-color: #374151; border: 1px solid #4b5563; color: #f3f4f6;
-            padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; width: 100%;
-        }
-        textarea { min-height: 80px; }
-        label { margin-bottom: 4px; display: block; font-size: 0.9rem; }
-        .progress-bar-container {
-            width: 100px; height: 10px; background-color: #4b5563; border-radius: 5px; overflow: hidden; margin: 0 auto;
-        }
-        .progress-bar-fill {
-            height: 100%; background-color: #10b981; border-radius: 5px; transition: width 0.3s ease-in-out;
-        }
-        .habit-motivation-display {
-            font-size: 0.7rem;
-            color: #9ca3af; /* gray-400 */
-            margin-top: 2px;
-            font-style: italic;
-        }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideOut { to { opacity: 0; transform: translateX(100%); } }
+        .heatmap-cell { color: white; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen p-2 sm:p-4 md:p-8">
+<body class="min-h-screen p-2 sm:p-4 md:p-8">
 
-    <div id="loadingIndicator" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-[200]">
-        <div class="text-xl font-semibold text-white">Loading Habit Tracker...</div>
+    <div id="toast-container"></div>
+    <input type="file" id="importFileInput" class="hidden" accept=".json">
+    <div id="loadingIndicator" class="fixed inset-0 bg-slate-900 bg-opacity-80 flex items-center justify-center z-[200]">
+        <div class="text-xl font-semibold text-white">Loading Tracker...</div>
     </div>
 
-    <div id="configErrorModal" class="modal z-[210]">
-        <div class="modal-content bg-red-800 text-white">
-            <h2 class="text-2xl font-bold mb-4">Configuration Error!</h2>
-            <p id="configErrorMessage" class="mb-3">Essential Firebase configuration is missing. This application cannot function without it.</p>
-            <p class="text-sm">This configuration is usually provided by the platform where this app is hosted. Please ensure `__firebase_config`, `__app_id`, and potentially `__initial_auth_token` are correctly set up in the environment.</p>
-            <button id="closeConfigErrorModal" class="action-btn mt-6 bg-red-600 hover:bg-red-700 w-full">Acknowledge</button>
-        </div>
-    </div>
+    <!-- Modals -->
+    <div id="tipModal" class="modal z-[160]"><div class="modal-content"><span class="modal-close-btn" id="closeTipModal">&times;</span><h2 class="text-2xl font-bold mb-4 text-teal-400">✨ AI Powered Tip!</h2><p id="tipModalContent" class="text-slate-300 leading-relaxed text-lg">Loading tip...</p></div></div>
+    <div id="habitModal" class="modal z-[170]"><div class="modal-content"><span class="modal-close-btn" id="closeHabitModal">&times;</span><h2 id="habitModalTitle" class="text-2xl font-bold mb-6">Add New Habit</h2><div><input type="hidden" id="habitEditId"><label for="habitEmojiInput">Emoji:</label><input type="text" id="habitEmojiInput" placeholder="e.g., 💪" maxlength="2"><label for="habitNameInput">Habit Name:</label><input type="text" id="habitNameInput" placeholder="e.g., 1 Hr Working Out"><label for="habitGoalInput">Monthly Goal (days):</label><input type="number" id="habitGoalInput" placeholder="e.g., 20"><label for="habitMotivationInput">My Motivation (Why this habit?):</label><textarea id="habitMotivationInput" placeholder="e.g., To improve my physical health."></textarea><button id="saveHabitBtn" class="action-btn btn-gradient-primary mt-4 w-full">Save Habit</button></div></div></div>
+    <div id="confirmationModal" class="modal z-[180]"><div class="modal-content"><span class="modal-close-btn" id="closeConfirmationModal">&times;</span><h2 id="confirmationModalTitle" class="text-2xl font-bold mb-4 text-amber-400">Confirm Action</h2><p id="confirmationModalMessage" class="text-slate-300 leading-relaxed mb-6"></p><div class="flex justify-end gap-4"><button id="cancelConfirmationBtn" class="action-btn bg-slate-600 hover:bg-slate-500">Cancel</button><button id="confirmActionBtn" class="action-btn btn-gradient-danger">Confirm</button></div></div></div>
 
-    <div id="authModal" class="modal z-[150]">
-        <div class="modal-content">
-            <h2 class="text-xl font-semibold mb-4">Authentication</h2>
-            <p id="authMessage">Initializing authentication...</p>
-            <p class="mt-2 text-sm text-gray-400">Your User ID: <span id="modalUserId" class="font-mono"></span></p>
-            <p class="mt-3 text-xs text-gray-500">Your data is kept private and associated with this unique User ID, securely managed by Firebase.</p>
-        </div>
-    </div>
-
-    <div id="tipModal" class="modal z-[160]">
-        <div class="modal-content">
-            <span class="modal-close-btn" id="closeTipModal">&times;</span>
-            <h2 class="text-xl font-semibold mb-3 text-emerald-400">✨ AI Powered Tip!</h2>
-            <p id="tipModalContent" class="text-gray-300 leading-relaxed">Loading tip...</p>
-        </div>
-    </div>
-
-    <div id="habitModal" class="modal z-[170]">
-        <div class="modal-content">
-            <span class="modal-close-btn" id="closeHabitModal">&times;</span>
-            <h2 id="habitModalTitle" class="text-xl font-semibold mb-4">Add New Habit</h2>
-            <div>
-                <input type="hidden" id="habitEditId">
-                <label for="habitNameInput">Habit Name:</label>
-                <input type="text" id="habitNameInput" placeholder="e.g., Read for 30 minutes">
-                <label for="habitGoalInput">Monthly Goal (days):</label>
-                <input type="number" id="habitGoalInput" placeholder="e.g., 20">
-                <label for="habitPhaseInput">Phase:</label>
-                <select id="habitPhaseInput">
-                    <option value="Building">Building</option>
-                    <option value="Breaking">Breaking</option>
-                </select>
-                <label for="habitMotivationInput">My Motivation (Why this habit?):</label>
-                <textarea id="habitMotivationInput" placeholder="e.g., To expand my knowledge and relax."></textarea>
-                <button id="saveHabitBtn" class="action-btn mt-4 w-full bg-emerald-500 hover:bg-emerald-600">Save Habit</button>
-            </div>
-        </div>
-    </div>
-
-    <header class="mb-6 text-center">
-        <h1 class="text-3xl sm:text-4xl font-bold text-emerald-400">DYNAMIC HABITS TRACKER</h1>
-        <p class="text-sm text-gray-400 mt-1">User ID: <span id="displayedUserId" class="font-mono text-xs">Initializing...</span></p>
+    <!-- Main Content -->
+    <header class="mb-10 text-center">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-sky-400">Zenith Habits</h1>
+        <p class="text-lg text-slate-400 mt-2">Your daily progress, elevated.</p>
     </header>
 
-    <div class="mb-8 p-4 bg-gray-800 rounded-lg shadow-lg">
-        <div class="flex flex-col sm:flex-row sm:items-end gap-4">
-            <div>
-                <label for="yearInput" class="text-lg">Year:</label>
-                <input type="number" id="yearInput" value="2025" class="w-full sm:w-auto">
-            </div>
-            <button id="loadYearBtn" class="action-btn bg-sky-500 hover:bg-sky-600 px-4 py-2 text-base">Load Year Data</button>
+    <div class="max-w-7xl mx-auto space-y-10">
+        <!-- Instructions Card -->
+        <div class="card">
+            <h2 class="text-2xl font-bold mb-4">Instructions</h2>
+            <ul class="list-disc list-inside space-y-2 text-slate-300">
+                <li>Use the "Add New Habit" button to create your habits. Don't forget to add an emoji!</li>
+                <li>Every day you complete a habit, check the corresponding box in the monthly grids below.</li>
+                <li>Enter your desired monthly goal (in days) for each habit.</li>
+                <li>Your habit's "Phase" is calculated automatically based on your monthly performance.</li>
+                <li>The "Yearly Heatmap" provides an at-a-glance view of your compliance across the entire year.</li>
+                <li>Use the Dashboard to export your data for backup or import it to another device.</li>
+            </ul>
         </div>
+
+        <!-- Dashboard Card -->
+        <div class="card">
+            <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                <div>
+                    <label for="yearInput" class="text-base font-semibold">Select Year</label>
+                    <div class="flex items-center gap-2 mt-1">
+                        <input type="number" id="yearInput" class="w-full">
+                        <button id="loadYearBtn" class="action-btn btn-gradient-info px-5" title="Load data for the selected year">Load</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-base font-semibold">Manage Data</label>
+                    <div class="flex items-center gap-3 mt-1">
+                        <button id="exportDataBtn" class="action-btn btn-gradient-success w-full" title="Export current year's data to a JSON file"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3v11.25" /></svg></span>Export</button>
+                        <button id="importDataBtn" class="action-btn btn-gradient-warning w-full" title="Import data from a JSON file"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0 6-3-3m0 0-3 3m3-3v11.25" /></svg></span>Import</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Habit Management -->
+        <div class="card">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Habits for <span id="currentYearDisplayHabitMgmt"></span></h2>
+                <button id="openAddHabitModalBtn" class="action-btn btn-gradient-primary text-base"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></span>Add New Habit</button>
+            </div>
+            <div id="habitListContainer" class="space-y-3"></div>
+        </div>
+        
+        <!-- Habit Phases Explanation -->
+        <div class="card">
+            <h2 class="text-2xl font-bold mb-4">The 3 Habit Phases</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-semibold text-lg text-green-400">↗ Accelerate</h3>
+                    <p class="text-slate-300 text-sm">Compliance of 67% or more. You're giving it your all for a specific reason, optimizing for a goal.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg text-amber-400">→ Cruising</h3>
+                    <p class="text-slate-300 text-sm">Compliance between 34% and 66%. This is a maintenance phase. Consider if the habit can be made easier to encourage more consistency.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg text-rose-400">↘ Breaking</h3>
+                    <p class="text-slate-300 text-sm">Compliance of 33% or less. You're being inconsistent. This isn't failure, but awareness. Is the habit too hard? If it's a bad habit, this phase is desirable!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Yearly Heatmap -->
+        <div id="heatmapCard" class="card">
+            <h2 class="text-2xl font-bold mb-4">Yearly Performance Heatmap</h2>
+            <div id="heatmapContainer" class="table-container"></div>
+        </div>
+
+        <!-- Monthly Grids -->
+        <div id="monthsContainer" class="space-y-12"></div>
     </div>
 
-    <div class="mb-8 p-4 bg-gray-800 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold text-emerald-300 mb-3">Manage Habits for <span id="currentYearDisplayHabitMgmt"></span></h2>
-        <div id="habitListContainer" class="mb-4 space-y-2"></div>
-        <button id="openAddHabitModalBtn" class="action-btn bg-green-500 hover:bg-green-600 text-base">Add New Habit</button>
-    </div>
-
-    <div id="monthsContainer" class="space-y-12"></div>
-
-    <footer class="mt-12 text-center text-xs text-gray-500">
-        <p>Dynamic Habit Tracker. Data stored in Firestore.</p>
+    <footer class="mt-16 text-center text-sm text-slate-500">
+        <p>Zenith Habits Tracker. All data is stored securely in your browser.</p>
         <p>AI Tips powered by Gemini.</p>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, deleteField, updateDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-dynamic-tracker-app';
-        let firebaseConfigJSON = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        let firebaseConfig = null;
-        try {
-            if (firebaseConfigJSON) firebaseConfig = JSON.parse(firebaseConfigJSON);
-        } catch (e) {
-            console.error("Failed to parse Firebase config JSON:", e);
-            firebaseConfigJSON = null; // Ensure it's treated as missing
-        }
-
-        let app, auth, db, userId = null, unsubscribeFirestore = null;
-        let isDataInitialized = false;
+    <script>
+        // --- App State & Constants ---
+        const APP_ID = 'zenith-habits-tracker-local';
         let currentYear = new Date().getFullYear();
-        let habitsConfig = [];  
+        let habitsConfig = [];
         let allHabitDataForYear = {};
+        let isDataInitialized = false;
 
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-        function getDaysInMonth(year, month) { return new Date(year, month + 1, 0).getDate(); }
-        function getDayName(year, month, day) { return new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'short' }); }
-
+        // --- DOM Elements ---
         const loadingIndicator = document.getElementById('loadingIndicator');
         const monthsContainer = document.getElementById('monthsContainer');
-        const displayedUserIdElement = document.getElementById('displayedUserId');
         const currentYearDisplayHabitMgmt = document.getElementById('currentYearDisplayHabitMgmt');
-        const authModal = document.getElementById('authModal');
-        const authMessage = document.getElementById('authMessage');
-        const modalUserId = document.getElementById('modalUserId');
-        const tipModal = document.getElementById('tipModal');
-        const tipModalContent = document.getElementById('tipModalContent');
-        const closeTipModalBtn = document.getElementById('closeTipModal');
-        const habitModal = document.getElementById('habitModal');
-        const closeHabitModalBtn = document.getElementById('closeHabitModal');
-        const habitModalTitle = document.getElementById('habitModalTitle');
-        const habitNameInput = document.getElementById('habitNameInput');
-        const habitGoalInput = document.getElementById('habitGoalInput');
-        const habitPhaseInput = document.getElementById('habitPhaseInput');
-        const habitMotivationInput = document.getElementById('habitMotivationInput'); // New motivation input
-        const saveHabitBtn = document.getElementById('saveHabitBtn');
-        const openAddHabitModalBtn = document.getElementById('openAddHabitModalBtn');
-        const habitListContainer = document.getElementById('habitListContainer');
-        const habitEditIdInput = document.getElementById('habitEditId');
         const yearInput = document.getElementById('yearInput');
         const loadYearBtn = document.getElementById('loadYearBtn');
-        const configErrorModal = document.getElementById('configErrorModal');
-        const closeConfigErrorModalBtn = document.getElementById('closeConfigErrorModal');
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const importDataBtn = document.getElementById('importDataBtn');
+        const importFileInput = document.getElementById('importFileInput');
+        const habitListContainer = document.getElementById('habitListContainer');
+        const openAddHabitModalBtn = document.getElementById('openAddHabitModalBtn');
+        const toastContainer = document.getElementById('toast-container');
+        const heatmapContainer = document.getElementById('heatmapContainer');
 
-
-        closeTipModalBtn.onclick = () => tipModal.style.display = "none";
-        closeHabitModalBtn.onclick = () => habitModal.style.display = "none";
-        closeConfigErrorModalBtn.onclick = () => configErrorModal.style.display = "none";
-
-        window.onclick = (event) => {
-            if (event.target == tipModal) tipModal.style.display = "none";
-            if (event.target == habitModal) habitModal.style.display = "none";
-            if (event.target == configErrorModal) configErrorModal.style.display = "none";
-            if (event.target == authModal && authMessage.textContent.includes("Authenticated")) authModal.style.display = "none"; // Allow closing auth modal after success
+        // --- Custom Icons ---
+        const icons = {
+            edit: `<svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>`,
+            delete: `<svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>`,
+            aiTip: `<svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 1-1.13-1.897L3 15.06l2.846-.813a4.5 4.5 0 0 1 1.897-1.13L9 12l2.846.813a4.5 4.5 0 0 1 1.13 1.897L15 15.06l-2.846.813a4.5 4.5 0 0 1-1.897 1.13ZM12.313 8.904 12 11.75l-.313-2.846a4.5 4.5 0 0 1-1.13-1.897L7.5 7.06l2.846-.813a4.5 4.5 0 0 1 1.897-1.13L12 4.25l2.846.813a4.5 4.5 0 0 1 1.13 1.897L16.5 7.06l-2.846.813a4.5 4.5 0 0 1-1.897 1.13Z" /></svg>`
         };
-        openAddHabitModalBtn.onclick = () => openHabitModalForAdd();
-        saveHabitBtn.onclick = () => handleSaveHabit();
-        loadYearBtn.onclick = () => handleChangeYear();
 
-        async function setupFirebase() {
-            yearInput.value = currentYear;
-            if (!firebaseConfig || !appId) { // Check both config and app_id
-                console.error("Firebase config or App ID is missing. App cannot function.");
-                document.getElementById('configErrorMessage').textContent = `Essential Firebase configuration (firebaseConfig or appId) is missing. This application cannot function without it. Please ensure __firebase_config and __app_id are correctly set up in the environment.`;
-                configErrorModal.style.display = "block";
-                loadingIndicator.style.display = "none";
-                authModal.style.display = "none"; // Hide other modals
-                return; // Stop further execution
-            }
-            try {
-                app = initializeApp(firebaseConfig); auth = getAuth(app); db = getFirestore(app); setLogLevel('debug');
-                authModal.style.display = "block"; authMessage.textContent = "Authenticating...";
-                await setPersistence(auth, browserLocalPersistence);
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        userId = user.uid; console.log("User authenticated:", userId);
-                        displayedUserIdElement.textContent = userId; modalUserId.textContent = userId;
-                        authMessage.textContent = "Authenticated. Loading data...";
-                        await loadDataForCurrentYear();
-                        setTimeout(() => { if(isDataInitialized && authModal.style.display === "block") authModal.style.display = "none"; }, 1500);
+        // --- Utility & Data Functions ---
+        const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+        const getDayName = (year, month, day) => new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'short' });
+        const showToast = (message, type = 'success') => {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type === 'error' ? 'bg-rose-500' : 'bg-slate-700'}`;
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.5s forwards';
+                toast.addEventListener('animationend', () => toast.remove());
+            }, 3000);
+        };
+        
+        function loadInitialData() {
+            habitsConfig = [
+                { id: crypto.randomUUID(), name: "1 Hr Working Out", emoji: "💪", monthlyGoal: 20 },
+                { id: crypto.randomUUID(), name: "Hit 10,000 steps", emoji: "🚶‍♂️", monthlyGoal: 25 },
+                { id: crypto.randomUUID(), name: "Sleep Before 10:30 PM", emoji: "😴", monthlyGoal: 22 },
+                { id: crypto.randomUUID(), name: "Skin Care", emoji: "✨", monthlyGoal: 30 },
+                { id: crypto.randomUUID(), name: "4L Water", emoji: "💧", monthlyGoal: 30 },
+                { id: crypto.randomUUID(), name: "No Corn", emoji: "🌽", monthlyGoal: 30 },
+                { id: crypto.randomUUID(), name: "Social Skills Practice", emoji: "🗣️", monthlyGoal: 15 },
+                { id: crypto.randomUUID(), name: "Read 1 Hr", emoji: "📚", monthlyGoal: 20 },
+                { id: crypto.randomUUID(), name: "Professional Skill Dev", emoji: "🛠️", monthlyGoal: 15 },
+                { id: crypto.randomUUID(), name: "Finance 1 Hr", emoji: "💰", monthlyGoal: 10 },
+            ];
+            allHabitDataForYear = {};
+            initializeAndNormalizeData();
+            saveDataToLocalStorage();
+        }
+
+        function loadDataFromLocalStorage() {
+            const key = `${APP_ID}_${currentYear}`;
+            const data = localStorage.getItem(key);
+            if (data) {
+                try {
+                    const parsedData = JSON.parse(data);
+                    if (parsedData.habitsConfig && parsedData.habitsConfig.length > 0) {
+                        habitsConfig = parsedData.habitsConfig;
+                        allHabitDataForYear = parsedData.allHabitDataForYear || {};
                     } else {
-                        authMessage.textContent = "No session. Attempting sign in...";
-                        if (initialAuthToken) {
-                            try { await signInWithCustomToken(auth, initialAuthToken); }
-                            catch (error) { console.error("Token sign-in failed:", error); authMessage.textContent = `Token sign-in failed. Trying anonymous.`; await signInAnonymously(auth); }
-                        } else { await signInAnonymously(auth); }
+                        loadInitialData();
                     }
-                });
-            } catch (error) {
-                console.error("Firebase init error:", error);  
-                document.getElementById('configErrorMessage').textContent = `Firebase initialization failed: ${error.message}. Please check the console and ensure the Firebase project is correctly set up.`;
-                configErrorModal.style.display = "block";
-                loadingIndicator.style.display = "none"; authModal.style.display = "none";
+                } catch (e) { loadInitialData(); }
+            } else {
+                loadInitialData();
             }
+        }
+
+        function saveDataToLocalStorage() {
+            if (!isDataInitialized) return;
+            const key = `${APP_ID}_${currentYear}`;
+            const dataToSave = { habitsConfig, allHabitDataForYear };
+            localStorage.setItem(key, JSON.stringify(dataToSave));
         }
         
-        async function handleChangeYear() {
-            const newYear = parseInt(yearInput.value);
-            if (isNaN(newYear) || newYear < 1900 || newYear > 2200) {
-                // Replace alert with a custom, non-blocking message if desired
-                console.warn("Invalid year entered.");  
-                const tempMsg = document.createElement('p');
-                tempMsg.textContent = "Please enter a valid year (1900-2200).";
-                tempMsg.className = "text-red-400 text-sm text-center my-2";
-                yearInput.parentNode.insertBefore(tempMsg, loadYearBtn.nextSibling);
-                setTimeout(() => tempMsg.remove(), 3000);
-                return;
-            }
-            currentYear = newYear;
-            loadingIndicator.style.display = "flex";  
-            await loadDataForCurrentYear();
+        // --- App Initialization & Rendering ---
+        window.onload = () => {
+            yearInput.value = currentYear;
+            loadDataForCurrentYear();
+        };
+
+        function loadDataForCurrentYear() {
+            loadingIndicator.style.display = "flex";
+            isDataInitialized = false;
+            loadDataFromLocalStorage();
+            initializeAndNormalizeData();
+            isDataInitialized = true;
+            currentYearDisplayHabitMgmt.textContent = currentYear;
+            renderApp();
+            loadingIndicator.style.display = "none";
         }
 
-        async function loadDataForCurrentYear() {
-            if (!userId || !db) { console.error("User/DB not ready."); loadingIndicator.style.display = "none"; return; }
-            currentYearDisplayHabitMgmt.textContent = currentYear;
-            const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
-            if (unsubscribeFirestore) unsubscribeFirestore();
-            unsubscribeFirestore = onSnapshot(docRef, (docSnap) => {
-                isDataInitialized = false; habitsConfig = []; allHabitDataForYear = {};
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    habitsConfig = data.habitDefinitions || [];  
-                    allHabitDataForYear = data.habitTrackingData || {};
-                    console.log(`Data loaded for ${currentYear}:`, habitsConfig, allHabitDataForYear);
-                } else {
-                    console.log(`No data found for ${currentYear}.`);
-                }
-                initializeAndNormalizeData();  
-                isDataInitialized = true; renderApp(); loadingIndicator.style.display = "none";
-                if (authModal.style.display === "block" && authMessage.textContent.includes("Loading data...")) {
-                     authMessage.textContent = "Data loaded!"; setTimeout(() => { if(authModal.style.display === "block") authModal.style.display = "none"; }, 1000);
-                }
-            }, (error) => {
-                console.error(`Error getting document for year ${currentYear}:`, error);
-                authMessage.textContent = `Error loading data: ${error.message}`;
-                loadingIndicator.style.display = "none"; habitsConfig = []; allHabitDataForYear = {};  
-                renderApp();  
-            });
+        function handleChangeYear() {
+            const newYear = parseInt(yearInput.value);
+            if (isNaN(newYear) || newYear < 1900 || newYear > 2200) return;
+            currentYear = newYear;
+            loadDataForCurrentYear();
         }
 
         function initializeAndNormalizeData() {
@@ -339,336 +345,394 @@
                 monthNames.forEach((_, monthIndex) => {
                     const monthKey = `${currentYear}-${String(monthIndex + 1).padStart(2, '0')}`;
                     const daysInThisMonth = getDaysInMonth(currentYear, monthIndex);
-                    if (!habitTracking.months[monthKey] || habitTracking.months[monthKey].days.length !== daysInThisMonth) {
-                        habitTracking.months[monthKey] = { days: Array(daysInThisMonth).fill(false), total: 0, currentStreak: 0, longestStreak: 0 };
+                    if (!habitTracking.months[monthKey] || !habitTracking.months[monthKey].days || habitTracking.months[monthKey].days.length !== daysInThisMonth) {
+                        habitTracking.months[monthKey] = { days: Array(daysInThisMonth).fill(false) };
                     }
+                    calculateAllStats(habitDef.id, monthKey);
                 });
             });
         }
 
-        async function saveDataToFirestore() {
-            if (!userId || !db || !isDataInitialized) { console.warn("User/DB/Data not ready for saving."); return; }
-            const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
-            try {
-                await setDoc(docRef, {
-                    year: currentYear,
-                    habitDefinitions: habitsConfig,  
-                    habitTrackingData: allHabitDataForYear  
-                }, { merge: true });
-                console.log(`Data saved for year ${currentYear}.`);
-            } catch (error) { console.error("Error saving data: ", error); }
-        }
-        
-        function openHabitModalForAdd() {
-            habitModalTitle.textContent = "Add New Habit";
-            habitEditIdInput.value = ""; habitNameInput.value = ""; habitGoalInput.value = "";
-            habitPhaseInput.value = "Building"; habitMotivationInput.value = ""; // Clear motivation
-            habitModal.style.display = "block"; habitNameInput.focus();
+        function renderApp() {
+            if (!isDataInitialized) return;
+            renderHabitList();
+            renderHeatmap();
+            monthsContainer.innerHTML = '';
+            monthNames.forEach((monthName, monthIndex) => {
+                monthsContainer.appendChild(renderMonth(monthIndex, monthName, currentYear));
+            });
         }
 
-        function openHabitModalForEdit(habitId) {
-            const habitToEdit = habitsConfig.find(h => h.id === habitId);
-            if (!habitToEdit) return;
-            habitModalTitle.textContent = "Edit Habit";
-            habitEditIdInput.value = habitId; habitNameInput.value = habitToEdit.name;
-            habitGoalInput.value = habitToEdit.monthlyGoal; habitPhaseInput.value = habitToEdit.phase;
-            habitMotivationInput.value = habitToEdit.motivation || ""; // Load motivation
-            habitModal.style.display = "block"; habitNameInput.focus();
-        }
-
-        async function handleSaveHabit() {
-            const name = habitNameInput.value.trim();
-            const monthlyGoal = parseInt(habitGoalInput.value);
-            const phase = habitPhaseInput.value;
-            const motivation = habitMotivationInput.value.trim(); // Get motivation
-            const editId = habitEditIdInput.value;
-
-            if (!name || isNaN(monthlyGoal) || monthlyGoal <= 0) {
-                // Simple non-blocking validation message
-                const prevMsg = habitModal.querySelector('.validation-error-msg');
-                if (prevMsg) prevMsg.remove();
-                const errorMsg = document.createElement('p');
-                errorMsg.textContent = "Please enter a valid name and a positive monthly goal.";
-                errorMsg.className = "text-red-400 text-sm mt-2 validation-error-msg";
-                saveHabitBtn.insertAdjacentElement('beforebegin', errorMsg);
+        // --- UI Component Rendering ---
+        function renderHabitList() {
+            habitListContainer.innerHTML = '';
+            if (habitsConfig.length === 0) {
+                habitListContainer.innerHTML = `<div class="text-center py-4 px-6 bg-slate-800 rounded-lg"><p class="text-slate-400">No habits defined. Add one to get started!</p></div>`;
                 return;
             }
-            const prevMsg = habitModal.querySelector('.validation-error-msg');
-            if (prevMsg) prevMsg.remove();
-
-
-            if (editId) {  
-                const habitIndex = habitsConfig.findIndex(h => h.id === editId);
-                if (habitIndex > -1) {
-                    habitsConfig[habitIndex] = { ...habitsConfig[habitIndex], name, monthlyGoal, phase, motivation };
-                }
-            } else {  
-                const newHabit = { id: crypto.randomUUID(), name, monthlyGoal, phase, motivation };
-                habitsConfig.push(newHabit);
-                if (!allHabitDataForYear[newHabit.id]) {
-                    allHabitDataForYear[newHabit.id] = { months: {} };
-                    initializeAndNormalizeData();  
-                }
-            }
-            await saveDataToFirestore();
-            renderHabitList(); renderApp();  
-            habitModal.style.display = "none";
-        }
-
-        async function handleDeleteHabit(habitId) {
-            // Custom confirmation modal would be better, using confirm for now.
-            const habitToDelete = habitsConfig.find(h => h.id === habitId);
-            if (!habitToDelete) return;
-            // Replaced alert/confirm with a custom modal UI as per instructions
-            showConfirmationModal(`Are you sure you want to delete the habit "${habitToDelete.name}" and all its tracking data for ${currentYear}? This action cannot be undone.`, async () => {
-                habitsConfig = habitsConfig.filter(h => h.id !== habitId);
-                delete allHabitDataForYear[habitId];  
-                const docRef = doc(db, "artifacts", appId, "users", userId, "habitsTrackerData", `userData_${currentYear}`);
-                const updates = {};
-                updates[`habitTrackingData.${habitId}`] = deleteField();  
-                try {
-                    await updateDoc(docRef, updates);  
-                    await setDoc(docRef, { habitDefinitions: habitsConfig }, { merge: true });  
-                    console.log(`Habit ${habitId} deleted for year ${currentYear}.`);
-                } catch (error) { console.error(`Error deleting habit ${habitId}:`, error); }
-                renderHabitList(); renderApp();
+            habitsConfig.forEach(habit => {
+                const li = document.createElement('div');
+                li.className = 'flex flex-col sm:flex-row justify-between sm:items-center p-4 bg-slate-800 rounded-lg';
+                let motivationHTML = habit.motivation ? `<p class="habit-motivation-display">${habit.motivation}</p>` : '';
+                li.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl">${habit.emoji || '🎯'}</span>
+                        <div>
+                            <span class="font-semibold block text-slate-100">${habit.name}</span>
+                            <span class="text-sm text-slate-400 block">(Goal: ${habit.monthlyGoal} days)</span>
+                            ${motivationHTML}
+                        </div>
+                    </div>
+                    <div class="mt-3 sm:mt-0 flex gap-2 self-end sm:self-center">
+                        <button class="action-btn btn-icon btn-gradient-warning" data-habit-id="${habit.id}" title="Edit Habit">${icons.edit}</button>
+                        <button class="action-btn btn-icon btn-gradient-danger" data-habit-id="${habit.id}" title="Delete Habit">${icons.delete}</button>
+                    </div>
+                `;
+                habitListContainer.appendChild(li);
             });
-        }
 
-        function calculateAllStats(habitId, monthKey) {
-            const habitDef = habitsConfig.find(h => h.id === habitId);
-            const habitTracking = allHabitDataForYear[habitId];
-            if (!habitDef || !habitTracking || !habitTracking.months[monthKey]) return;
-            const monthData = habitTracking.months[monthKey]; const daysArray = monthData.days;
-            monthData.total = daysArray.filter(done => done).length;
-            let longestStreak = 0, currentRun = 0;
-            for (const dayDone of daysArray) { if (dayDone) currentRun++; else { longestStreak = Math.max(longestStreak, currentRun); currentRun = 0; } }
-            monthData.longestStreak = Math.max(longestStreak, currentRun);
-            let currentStreak = 0; const today = new Date();
-            const [yearStr, monthStr] = monthKey.split('-'); const monthYear = parseInt(yearStr), monthIndex = parseInt(monthStr) - 1;
-            let lastRelevantDayIndex = daysArray.length - 1;
-            if (monthYear === today.getFullYear() && monthIndex === today.getMonth() && monthYear === currentYear) lastRelevantDayIndex = today.getDate() - 1;
-            else if (new Date(monthYear, monthIndex) > today || monthYear !== currentYear) lastRelevantDayIndex = -1;
-            for (let i = lastRelevantDayIndex; i >= 0; i--) { if (daysArray[i]) currentStreak++; else break; }
-            if(lastRelevantDayIndex < 0) currentStreak = 0;
-            monthData.currentStreak = currentStreak;
-        }
-
-        function renderApp() {
-            if (!isDataInitialized && !configErrorModal.style.display.includes('block')) { // Don't hide loading if config error is up
-                 loadingIndicator.style.display = "flex"; return;  
-            }
-            loadingIndicator.style.display = "none"; monthsContainer.innerHTML = '';
-            renderHabitList();  
-            monthNames.forEach((monthName, monthIndex) => { monthsContainer.appendChild(renderMonth(monthIndex, monthName, currentYear)); });
+            habitListContainer.querySelectorAll('[data-habit-id]').forEach(btn => {
+                if (btn.title.includes("Edit")) btn.addEventListener('click', (e) => openHabitModal('edit', e.currentTarget.dataset.habitId));
+                if (btn.title.includes("Delete")) btn.addEventListener('click', (e) => handleDeleteHabit(e.currentTarget.dataset.habitId));
+            });
         }
         
-        function renderHabitList() {
-            habitListContainer.innerHTML = '';  
+        function renderHeatmap() {
+            let tableHTML = `<table class="w-full" style="min-width: 800px;"><thead><tr class="sticky-header">
+                <th class="sticky-col habit-name-col text-left">Habit</th>
+                ${monthNames.map(m => `<th>${m.substring(0,3)}</th>`).join('')}
+            </tr></thead><tbody>`;
+
             if (habitsConfig.length === 0) {
-                habitListContainer.innerHTML = `<p class="text-gray-400">No habits defined for ${currentYear}. Add one below!</p>`; return;
+                tableHTML += `<tr><td colspan="13" class="text-center py-6 text-slate-400">No habits to display.</td></tr>`;
+            } else {
+                habitsConfig.forEach(habit => {
+                    tableHTML += `<tr><td class="sticky-col habit-name-col text-left font-semibold">${habit.emoji || '🎯'} ${habit.name}</td>`;
+                    for (let i = 0; i < 12; i++) {
+                        const monthKey = `${currentYear}-${String(i + 1).padStart(2, '0')}`;
+                        const daysInMonth = getDaysInMonth(currentYear, i);
+                        const monthData = allHabitDataForYear[habit.id]?.months?.[monthKey];
+                        const total = monthData?.total || 0;
+                        const compliance = (total / daysInMonth) * 100;
+                        
+                        let bgColor = 'bg-slate-700';
+                        if (compliance > 0 && compliance < 34) bgColor = 'bg-rose-800';
+                        else if (compliance >= 34 && compliance < 67) bgColor = 'bg-amber-700';
+                        else if (compliance >= 67) bgColor = 'bg-green-700';
+                        
+                        tableHTML += `<td class="heatmap-cell ${bgColor}" title="${monthNames[i]}: ${total}/${daysInMonth} days">${compliance.toFixed(0)}%</td>`;
+                    }
+                    tableHTML += `</tr>`;
+                });
             }
-            const ul = document.createElement('ul'); ul.className = 'space-y-3'; // Increased space
-            habitsConfig.forEach(habit => {
-                const li = document.createElement('li');
-                li.className = 'flex flex-col sm:flex-row justify-between sm:items-center p-3 bg-gray-700 rounded-md shadow';
-                
-                const habitInfoDiv = document.createElement('div');
-                const habitNameSpan = document.createElement('span');
-                habitNameSpan.className = 'font-medium block text-gray-100';
-                habitNameSpan.textContent = `${habit.name}`;
-                habitInfoDiv.appendChild(habitNameSpan);
-
-                const habitDetailsSpan = document.createElement('span');
-                habitDetailsSpan.className = 'text-xs text-gray-400 block';
-                habitDetailsSpan.textContent = `(Goal: ${habit.monthlyGoal}, Phase: ${habit.phase})`;
-                habitInfoDiv.appendChild(habitDetailsSpan);
-
-                if (habit.motivation) {
-                    const motivationP = document.createElement('p');
-                    motivationP.className = 'habit-motivation-display mt-1';
-                    motivationP.textContent = `Motivation: ${habit.motivation}`;
-                    habitInfoDiv.appendChild(motivationP);
-                }
-                
-                const buttonsDiv = document.createElement('div');
-                buttonsDiv.className = 'mt-2 sm:mt-0';
-                const editBtn = document.createElement('button');
-                editBtn.className = 'action-btn edit-btn text-xs mr-2'; editBtn.dataset.habitId = habit.id; editBtn.textContent = 'Edit';
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'action-btn delete-btn text-xs'; deleteBtn.dataset.habitId = habit.id; deleteBtn.textContent = 'Delete';
-                
-                buttonsDiv.appendChild(editBtn); buttonsDiv.appendChild(deleteBtn);
-                li.appendChild(habitInfoDiv); li.appendChild(buttonsDiv);
-
-                editBtn.addEventListener('click', (e) => openHabitModalForEdit(e.target.dataset.habitId));
-                deleteBtn.addEventListener('click', (e) => handleDeleteHabit(e.target.dataset.habitId));
-                ul.appendChild(li);
-            });
-            habitListContainer.appendChild(ul);
+            tableHTML += `</tbody></table>`;
+            heatmapContainer.innerHTML = tableHTML;
         }
 
         function renderMonth(monthIndex, monthName, year) {
             const monthDiv = document.createElement('div');
-            monthDiv.className = 'mb-8 p-3 sm:p-4 bg-gray-800 rounded-lg shadow-xl';
-            monthDiv.innerHTML = `<h2 class="text-2xl font-semibold text-emerald-300 mb-4 text-center">${monthName} ${year}</h2>`;
-            const tableContainer = document.createElement('div'); tableContainer.className = 'table-container';
-            const table = document.createElement('table'); table.className = 'w-full';
-            const daysInThisMonth = getDaysInMonth(year, monthIndex); const today = new Date();
-            const isCurrentMonthForToday = today.getFullYear() === year && today.getMonth() === monthIndex; const todayDate = today.getDate();
+            monthDiv.className = 'card';
+            monthDiv.innerHTML = `<h3 class="text-3xl font-bold text-center mb-6">${monthName} ${year}</h3>`;
             
-            const thead = table.createTHead(); const headerRowTop = thead.insertRow(); headerRowTop.className = "sticky-header";
-            const headerRowBottom = thead.insertRow(); headerRowBottom.className = "sticky-header";
-            const thHabitTop = document.createElement('th'); thHabitTop.textContent = 'Habit'; thHabitTop.rowSpan = 2; thHabitTop.className = 'sticky-col habit-name-col'; headerRowTop.appendChild(thHabitTop);
-            for (let day = 1; day <= daysInThisMonth; day++) {
-                const thDayNum = document.createElement('th'); thDayNum.textContent = day; thDayNum.className = 'day-header';
-                const thDayName = document.createElement('th'); const dayNameStr = getDayName(year, monthIndex, day); thDayName.textContent = dayNameStr; thDayName.className = 'day-header';
-                if (dayNameStr === 'Sat' || dayNameStr === 'Sun') { thDayNum.classList.add('weekend'); thDayName.classList.add('weekend'); }
-                if (isCurrentMonthForToday && day === todayDate) { thDayNum.classList.add('today'); thDayName.classList.add('today'); }
-                headerRowTop.appendChild(thDayNum); headerRowBottom.appendChild(thDayName);
-            }
-            ['Total', 'Current', 'Longest', 'Goal', 'Progress', 'Phase', '✨ AI Tip'].forEach(statName => { // Added Progress
-                const thStat = document.createElement('th'); thStat.textContent = statName; thStat.rowSpan = 2;
-                thStat.className = statName === '✨ AI Tip' ? 'action-col' : (statName === 'Progress' ? 'progress-col' : 'stats-col');  
-                headerRowTop.appendChild(thStat);
-            });
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'table-container';
+            const table = document.createElement('table');
+            table.className = 'w-full';
+            
+            const daysInThisMonth = getDaysInMonth(year, monthIndex);
+            const today = new Date();
+            const isCurrentMonthForToday = today.getFullYear() === year && today.getMonth() === monthIndex;
+            const todayDate = today.getDate();
+
+            const thead = table.createTHead();
+            thead.innerHTML = `<tr class="sticky-header">
+                <th rowspan="2" class="sticky-col habit-name-col">Habit</th>
+                ${Array.from({length: daysInThisMonth}, (_, i) => `<th class="day-header ${getDayName(year, monthIndex, i+1).match(/S(at|un)/) ? 'weekend' : ''} ${isCurrentMonthForToday && i+1 === todayDate ? 'today' : ''}">${i+1}</th>`).join('')}
+                <th rowspan="2" class="stats-col">Total</th><th rowspan="2" class="stats-col">Current</th><th rowspan="2" class="stats-col">Longest</th><th rowspan="2" class="stats-col">Goal</th><th rowspan="2" class="progress-col">Progress</th><th rowspan="2" class="stats-col">Phase</th><th rowspan="2" class="action-col">AI Tip</th>
+            </tr>
+            <tr class="sticky-header">
+                ${Array.from({length: daysInThisMonth}, (_, i) => `<th class="day-header ${getDayName(year, monthIndex, i+1).match(/S(at|un)/) ? 'weekend' : ''} ${isCurrentMonthForToday && i+1 === todayDate ? 'today' : ''}">${getDayName(year, monthIndex, i+1)}</th>`).join('')}
+            </tr>`;
+
             const tbody = table.createTBody();
             if (habitsConfig.length === 0) {
-                const trEmpty = tbody.insertRow(); const tdEmpty = trEmpty.insertCell();
-                tdEmpty.colSpan = daysInThisMonth + 1 + 6; // Adjusted colspan for Progress
-                tdEmpty.textContent = `No habits defined for ${year}. Add habits in 'Manage Habits'.`;
-                tdEmpty.className = "text-center py-4 text-gray-400";
+                tbody.innerHTML = `<tr><td colspan="${daysInThisMonth + 8}" class="text-center py-6 text-slate-400">No habits to display.</td></tr>`;
             } else {
                 habitsConfig.forEach(habitDef => {
                     const monthKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
-                    const habitTracking = allHabitDataForYear[habitDef.id];
-                    const habitMonthData = habitTracking?.months?.[monthKey];
-                    if (!habitMonthData) { console.warn(`No month data for ${habitDef.id} in ${monthKey}`); return; }
+                    const habitMonthData = allHabitDataForYear[habitDef.id]?.months?.[monthKey];
+                    if (!habitMonthData) return;
 
                     const tr = tbody.insertRow();
-                    const tdHabitName = tr.insertCell(); tdHabitName.textContent = habitDef.name; tdHabitName.className = 'sticky-col habit-name-col text-left py-2 px-3 text-sm';
-                    for (let day = 0; day < daysInThisMonth; day++) {
-                        const tdDay = tr.insertCell(); tdDay.className = 'checkbox-cell day-cell';
-                        const dayNameStr = getDayName(year, monthIndex, day + 1);
-                        if (dayNameStr === 'Sat' || dayNameStr === 'Sun') tdDay.classList.add('weekend');
-                        if (isCurrentMonthForToday && (day + 1) === todayDate) tdDay.classList.add('today');
-                        const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.checked = habitMonthData.days[day];
-                        Object.assign(checkbox.dataset, { habitId: habitDef.id, monthKey: monthKey, dayIndex: day });
-                        checkbox.addEventListener('change', handleCheckboxChange); tdDay.appendChild(checkbox);
-                    }
-                    tr.insertCell().textContent = habitMonthData.total; tr.insertCell().textContent = habitMonthData.currentStreak;
-                    tr.insertCell().textContent = habitMonthData.longestStreak; tr.insertCell().textContent = habitDef.monthlyGoal;
+                    tr.innerHTML = `<td class="sticky-col habit-name-col text-left py-3 px-4 text-base font-semibold">${habitDef.emoji || '🎯'} ${habitDef.name}</td>`;
                     
-                    // Progress Bar Cell
-                    const tdProgress = tr.insertCell(); tdProgress.className = 'progress-col';
-                    const progressPercent = habitDef.monthlyGoal > 0 ? (habitMonthData.total / habitDef.monthlyGoal) * 100 : 0;
-                    const progressBarContainer = document.createElement('div'); progressBarContainer.className = 'progress-bar-container';
-                    const progressBarFill = document.createElement('div'); progressBarFill.className = 'progress-bar-fill';
-                    progressBarFill.style.width = `${Math.min(progressPercent, 100)}%`; // Cap at 100%
-                    progressBarContainer.appendChild(progressBarFill);
-                    tdProgress.appendChild(progressBarContainer);
-                    const progressText = document.createElement('span'); progressText.className = 'block text-xs mt-1';
-                    progressText.textContent = `${habitMonthData.total}/${habitDef.monthlyGoal}`;
-                    tdProgress.appendChild(progressText);
+                    for (let day = 0; day < daysInThisMonth; day++) {
+                        const isWeekend = getDayName(year, monthIndex, day + 1).match(/S(at|un)/);
+                        const isToday = isCurrentMonthForToday && (day + 1) === todayDate;
+                        const tdDay = tr.insertCell();
+                        tdDay.className = `checkbox-cell day-cell ${isWeekend ? 'weekend' : ''} ${isToday ? 'today' : ''}`;
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.checked = habitMonthData.days[day];
+                        checkbox.title = `${monthName} ${day + 1}`;
+                        Object.assign(checkbox.dataset, { habitId: habitDef.id, monthKey, dayIndex: day });
+                        checkbox.addEventListener('change', handleCheckboxChange);
+                        tdDay.appendChild(checkbox);
+                    }
 
-                    tr.insertCell().textContent = habitDef.phase;
-                    const tdAction = tr.insertCell(); tdAction.className = 'action-cell';
-                    const tipButton = document.createElement('button'); tipButton.innerHTML = 'Get Tip ✨'; tipButton.className = 'ai-tip-btn';
-                    Object.assign(tipButton.dataset, { habitId: habitDef.id, habitName: habitDef.name, habitPhase: habitDef.phase, habitMotivation: habitDef.motivation || "" });
-                    tipButton.addEventListener('click', () => fetchMotivationalTip(tipButton.dataset.habitId, tipButton.dataset.habitName, tipButton.dataset.habitPhase, tipButton.dataset.habitMotivation, tipButton));
+                    tr.insertCell().textContent = habitMonthData.total;
+                    tr.insertCell().textContent = habitMonthData.currentStreak;
+                    tr.insertCell().textContent = habitMonthData.longestStreak;
+                    tr.insertCell().textContent = habitDef.monthlyGoal;
+
+                    const tdProgress = tr.insertCell();
+                    const progressPercent = habitDef.monthlyGoal > 0 ? (habitMonthData.total / habitDef.monthlyGoal) * 100 : 0;
+                    tdProgress.innerHTML = `<div class="progress-bar-container" title="${progressPercent.toFixed(1)}% Complete"><div class="progress-bar-fill" style="width: ${Math.min(progressPercent, 100)}%;"></div></div><span class="block text-xs mt-1.5">${habitMonthData.total}/${habitDef.monthlyGoal}</span>`;
+                    
+                    const compliance = (habitMonthData.total / daysInThisMonth) * 100;
+                    let phaseHTML;
+                    if (compliance >= 67) phaseHTML = `<span class="font-semibold text-green-400">↗ Accel.</span>`;
+                    else if (compliance >= 34) phaseHTML = `<span class="font-semibold text-amber-400">→ Cruise</span>`;
+                    else phaseHTML = `<span class="font-semibold text-rose-400">↘ Break</span>`;
+                    tr.insertCell().innerHTML = phaseHTML;
+                    
+                    const tdAction = tr.insertCell();
+                    const tipButton = document.createElement('button');
+                    tipButton.innerHTML = icons.aiTip;
+                    tipButton.className = 'action-btn btn-icon btn-gradient-info';
+                    tipButton.title = "Get AI Tip";
+                    Object.assign(tipButton.dataset, { habitName: habitDef.name, habitMotivation: habitDef.motivation || "" });
+                    tipButton.addEventListener('click', () => fetchMotivationalTip(tipButton.dataset, tipButton));
                     tdAction.appendChild(tipButton);
                 });
             }
-            tableContainer.appendChild(table); monthDiv.appendChild(tableContainer); return monthDiv;
+            
+            tableContainer.appendChild(table);
+            monthDiv.appendChild(tableContainer);
+            return monthDiv;
         }
 
+        // --- Event Handlers & Logic ---
         function handleCheckboxChange(event) {
             const { habitId, monthKey, dayIndex } = event.target.dataset;
             const habitTracking = allHabitDataForYear[habitId];
-            if (habitTracking && habitTracking.months[monthKey]) {
+            if (habitTracking?.months[monthKey]) {
                 habitTracking.months[monthKey].days[parseInt(dayIndex)] = event.target.checked;
-                calculateAllStats(habitId, monthKey); saveDataToFirestore();
-                renderApp();  
+                calculateAllStats(habitId, monthKey);
+                saveDataToLocalStorage();
+                renderApp();
             }
         }
 
-        // Custom Confirmation Modal HTML (Add this to your body, perhaps near other modals)
-        const confirmationModalHTML = `
-            <div id="confirmationModal" class="modal z-[180]">
-                <div class="modal-content">
-                    <span class="modal-close-btn" id="closeConfirmationModal">&times;</span>
-                    <h2 id="confirmationModalTitle" class="text-xl font-semibold mb-3 text-yellow-400">Confirm Action</h2>
-                    <p id="confirmationModalMessage" class="text-gray-300 leading-relaxed mb-4"></p>
-                    <div class="flex justify-end gap-3">
-                        <button id="cancelConfirmationBtn" class="action-btn bg-gray-600 hover:bg-gray-700">Cancel</button>
-                        <button id="confirmActionBtn" class="action-btn bg-red-600 hover:bg-red-700">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', confirmationModalHTML);
+        function calculateAllStats(habitId, monthKey) {
+            const monthData = allHabitDataForYear[habitId]?.months?.[monthKey];
+            if (!monthData) return;
+            
+            const daysArray = monthData.days;
+            monthData.total = daysArray.filter(Boolean).length;
+            
+            let longestStreak = 0, currentRun = 0;
+            daysArray.forEach(dayDone => {
+                if (dayDone) currentRun++;
+                else { longestStreak = Math.max(longestStreak, currentRun); currentRun = 0; }
+            });
+            monthData.longestStreak = Math.max(longestStreak, currentRun);
 
-        const confirmationModal = document.getElementById('confirmationModal');
-        const closeConfirmationModalBtn = document.getElementById('closeConfirmationModal');
-        const confirmationModalTitle = document.getElementById('confirmationModalTitle');
-        const confirmationModalMessage = document.getElementById('confirmationModalMessage');
-        const cancelConfirmationBtn = document.getElementById('cancelConfirmationBtn');
-        const confirmActionBtn = document.getElementById('confirmActionBtn');
+            let currentStreak = 0;
+            const today = new Date();
+            const [yearStr, monthStr] = monthKey.split('-');
+            const monthYear = parseInt(yearStr), monthIndex = parseInt(monthStr) - 1;
+            
+            let lastRelevantDayIndex = -1;
+            if (monthYear === today.getFullYear() && monthIndex === today.getMonth()) lastRelevantDayIndex = today.getDate() - 1;
+            else if (new Date(monthYear, monthIndex) < today) lastRelevantDayIndex = daysArray.length - 1;
 
-        let confirmationCallback = null; // Stores the function to call if confirmed
-
-        closeConfirmationModalBtn.onclick = () => confirmationModal.style.display = "none";
-        cancelConfirmationBtn.onclick = () => confirmationModal.style.display = "none";
-        confirmActionBtn.onclick = () => {
-            if (confirmationCallback) {
-                confirmationCallback();
+            if (lastRelevantDayIndex >= 0 && daysArray[lastRelevantDayIndex]) {
+                 for (let i = lastRelevantDayIndex; i >= 0; i--) {
+                    if (daysArray[i]) currentStreak++; else break;
+                }
             }
-            confirmationModal.style.display = "none";
-        };
-
-        window.onclick = (event) => {
-            if (event.target == tipModal) tipModal.style.display = "none";
-            if (event.target == habitModal) habitModal.style.display = "none";
-            if (event.target == configErrorModal) configErrorModal.style.display = "none";
-            if (event.target == authModal && authMessage.textContent.includes("Authenticated")) authModal.style.display = "none";
-            if (event.target == confirmationModal) confirmationModal.style.display = "none"; // Allow closing confirmation modal
-        };
-
-        function showConfirmationModal(message, callback) {
-            confirmationModalMessage.textContent = message;
-            confirmationCallback = callback;
-            confirmationModal.style.display = "block";
+            monthData.currentStreak = currentStreak;
         }
 
-        async function fetchMotivationalTip(habitId, habitName, habitPhase, habitMotivation, buttonElement) {
-            tipModalContent.textContent = "Generating your motivational tip..."; tipModal.style.display = "block";
-            buttonElement.disabled = true; buttonElement.textContent = "Loading...";
-            const promptType = habitPhase === "Breaking" ? "breaking" : "build the habit";
-            let prompt = `Generate a short, actionable, and encouraging tip for someone trying to ${promptType} of "${habitName}".`;
-            if (habitMotivation) {
-                prompt += ` Their motivation is: "${habitMotivation}". Try to incorporate this motivation into the tip.`;
-            }
-            prompt += " Keep the tip to 1-2 concise sentences. Be positive and supportive.";
+        // --- Modal & Form Logic ---
+        function openHabitModal(mode, habitId = null) {
+            const modal = document.getElementById('habitModal');
+            const title = modal.querySelector('#habitModalTitle');
+            
+            // Manual Reset
+            modal.querySelector('#habitEditId').value = '';
+            modal.querySelector('#habitEmojiInput').value = '';
+            modal.querySelector('#habitNameInput').value = '';
+            modal.querySelector('#habitGoalInput').value = '';
+            modal.querySelector('#habitMotivationInput').value = '';
 
-            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }]; const payload = { contents: chatHistory };
-            // API key is left as empty string for Canvas to inject it for gemini-2.0-flash
-            const apiKey = ""; 
+            if (mode === 'edit') {
+                const habit = habitsConfig.find(h => h.id === habitId);
+                if (!habit) return;
+                title.textContent = "Edit Habit";
+                modal.querySelector('#habitEditId').value = habit.id;
+                modal.querySelector('#habitEmojiInput').value = habit.emoji || '';
+                modal.querySelector('#habitNameInput').value = habit.name;
+                modal.querySelector('#habitGoalInput').value = habit.monthlyGoal;
+                modal.querySelector('#habitMotivationInput').value = habit.motivation || '';
+            } else {
+                title.textContent = "Add New Habit";
+            }
+            modal.style.display = "block";
+            modal.querySelector('#habitEmojiInput').focus();
+        }
+
+        function handleSaveHabit() {
+            const modal = document.getElementById('habitModal');
+            const name = modal.querySelector('#habitNameInput').value.trim();
+            const emoji = modal.querySelector('#habitEmojiInput').value.trim();
+            const monthlyGoal = parseInt(modal.querySelector('#habitGoalInput').value);
+            const motivation = modal.querySelector('#habitMotivationInput').value.trim();
+            const editId = modal.querySelector('#habitEditId').value;
+
+            if (!name || isNaN(monthlyGoal) || monthlyGoal <= 0) {
+                showToast("Please enter a valid name and goal.", "error");
+                return;
+            }
+
+            if (editId) {
+                const index = habitsConfig.findIndex(h => h.id === editId);
+                if (index > -1) habitsConfig[index] = { ...habitsConfig[index], name, emoji, monthlyGoal, motivation };
+            } else {
+                habitsConfig.push({ id: crypto.randomUUID(), name, emoji, monthlyGoal, motivation });
+                initializeAndNormalizeData();
+            }
+            
+            saveDataToLocalStorage();
+            renderApp();
+            modal.style.display = "none";
+            showToast(`Habit "${name}" saved successfully!`);
+        }
+
+        function handleDeleteHabit(habitId) {
+            const habit = habitsConfig.find(h => h.id === habitId);
+            if (!habit) return;
+            
+            showConfirmationModal(`Delete the habit "${habit.name}" and all its data for ${currentYear}? This cannot be undone.`, () => {
+                habitsConfig = habitsConfig.filter(h => h.id !== habitId);
+                delete allHabitDataForYear[habitId];
+                saveDataToLocalStorage();
+                renderApp();
+                showToast(`Habit "${habit.name}" deleted.`, 'success');
+            }, "Delete Habit");
+        }
+        
+        // --- Data Export/Import ---
+        function exportData() {
+            if (habitsConfig.length === 0) {
+                showToast("No habits to export for this year.", "error");
+                return;
+            }
+            const data = JSON.stringify({ habitsConfig, allHabitDataForYear }, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `zenith-habits-data-${currentYear}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast(`Exported data for ${currentYear}.`);
+        }
+
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (!data.habitsConfig || !data.allHabitDataForYear) throw new Error("Invalid file format.");
+                    showConfirmationModal(`This will overwrite all habit data for ${currentYear}. Are you sure?`, () => {
+                        habitsConfig = data.habitsConfig;
+                        allHabitDataForYear = data.allHabitDataForYear;
+                        saveDataToLocalStorage();
+                        loadDataForCurrentYear();
+                        showToast(`Successfully imported data for ${currentYear}.`);
+                    }, "Import & Overwrite");
+                } catch (err) { showToast(`Error importing file: ${err.message}`, "error"); }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // --- Modal & Confirmation Logic ---
+        function showConfirmationModal(message, callback, confirmText = "Confirm") {
+            const modal = document.getElementById('confirmationModal');
+            modal.querySelector('#confirmationModalMessage').textContent = message;
+            modal.querySelector('#confirmActionBtn').textContent = confirmText;
+            window.confirmationCallback = callback;
+            modal.style.display = "block";
+        }
+
+        function setupModal(modalId, openTriggers, closeTriggers) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            openTriggers.forEach(trigger => {
+                const el = document.getElementById(trigger.id);
+                if (el) el.addEventListener('click', () => trigger.action(modal));
+            });
+            closeTriggers.forEach(triggerId => {
+                const el = document.getElementById(triggerId);
+                if (el) el.addEventListener('click', () => modal.style.display = 'none');
+            });
+        }
+        
+        // --- AI Tip Fetching ---
+        async function fetchMotivationalTip(dataset, buttonElement) {
+            const { habitName, habitMotivation } = dataset;
+            const modal = document.getElementById('tipModal');
+            modal.querySelector('#tipModalContent').textContent = "Generating your motivational tip...";
+            modal.style.display = "block";
+            buttonElement.disabled = true;
+
+            const prompt = `Generate a short, actionable, and encouraging tip for someone trying to build the habit of "${habitName}". Their motivation is: "${habitMotivation || 'no specific motivation given'}". Keep it concise and positive.`;
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
             try {
                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) { const errorData = await response.json(); throw new Error(`API Error ${response.status}: ${errorData.error?.message || 'Unknown'}`); }
+                if (!response.ok) throw new Error(`API Error ${response.status}`);
                 const result = await response.json();
-                if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                    tipModalContent.innerHTML = result.candidates[0].content.parts[0].text.replace(/\n/g, '<br>'); // Support newlines in tip
-                } else { throw new Error("Unexpected API response structure."); }
-            } catch (error) { console.error('Error fetching tip:', error); tipModalContent.textContent = `Sorry, couldn't fetch a tip. ${error.message}`; }
-            finally { buttonElement.disabled = false; buttonElement.innerHTML = 'Get Tip ✨'; }
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) modal.querySelector('#tipModalContent').innerHTML = text.replace(/\n/g, '<br>');
+                else throw new Error("Unexpected API response.");
+            } catch (error) {
+                modal.querySelector('#tipModalContent').textContent = `Sorry, couldn't fetch a tip. ${error.message}`;
+            } finally {
+                buttonElement.disabled = false;
+            }
         }
 
-        window.onload = async () => {
-            currentYearDisplayHabitMgmt.textContent = currentYear;
-            await setupFirebase();
-        };
+        // --- Event Listeners ---
+        loadYearBtn.addEventListener('click', handleChangeYear);
+        exportDataBtn.addEventListener('click', exportData);
+        importDataBtn.addEventListener('click', () => importFileInput.click());
+        importFileInput.addEventListener('change', handleImportFile);
+
+        setupModal('habitModal', 
+            [{ id: 'openAddHabitModalBtn', action: () => openHabitModal('add') }],
+            ['closeHabitModal']
+        );
+        document.getElementById('saveHabitBtn').addEventListener('click', handleSaveHabit);
+
+        setupModal('tipModal', [], ['closeTipModal']);
+        setupModal('confirmationModal', [], ['closeConfirmationModal', 'cancelConfirmationBtn']);
+        document.getElementById('confirmActionBtn').addEventListener('click', () => {
+             if (window.confirmationCallback) window.confirmationCallback();
+             document.getElementById('confirmationModal').style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) event.target.style.display = "none";
+        });
+
     </script>
 </body>
 </html>
