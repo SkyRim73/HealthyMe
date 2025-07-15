@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual Focus - Daily Habits</title>
+    
+    <!-- Google Fonts: Sora & Noto Naskh Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Sora', sans-serif;
+            background-color: #F0F2F5;
+            color: #1A202C;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1A202C;
+        }
+        .header p {
+            font-size: 1.125rem;
+            color: #4B5563;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #3B82F6;
+            border-bottom: 2px solid #E5E7EB;
+            padding-bottom: 0.75rem;
+        }
+        .habit-section {
+            margin-bottom: 1.5rem;
+        }
+        .habit-section h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .habit-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .habit-section li {
+            margin-bottom: 0.5rem;
+            color: #4B5563;
+            display: flex;
+            align-items: flex-start;
+        }
+        .habit-section li i {
+            margin-right: 0.75rem;
+            color: #34D399;
+            margin-top: 5px;
+        }
+        .dua-container {
+            background-color: #F9FAFB;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .dua-arabic {
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 1.5rem;
+            text-align: right;
+            margin-bottom: 0.5rem;
+        }
+        .dua-transliteration {
+            font-style: italic;
+            color: #6B7280;
+            margin-bottom: 0.5rem;
+        }
+        .dua-translation {
+            color: #4B5563;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #3B82F6;
+            color: white;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+        .back-link:hover {
+            background-color: #2563EB;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Hub</a>
+
+        <div class="header">
+            <h1>Daily Spiritual Focus</h1>
+            <p>A guide to incorporating Islamic habits and supplications throughout your day.</p>
+        </div>
+
+        <!-- Upon Waking Up -->
+        <div class="card" id="waking-up">
+            <h3 class="card-title">Upon Waking Up</h3>
+            <div class="habit-section">
+                <h4>Sunnah Actions</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i>Wipe the traces of sleep from your face with your hands.</li>
+                    <li><i class="fas fa-check-circle"></i>Recite the dua for waking up.</li>
+                    <li><i class="fas fa-check-circle"></i>Use a Miswak (or brush your teeth) to cleanse your mouth.</li>
+                </ul>
+            </div>
+            <div class="dua-container">
+                <p class="dua-arabic">اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ</p>
+                <p class="dua-transliteration">Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur.</p>
+                <p class="dua-translation">"All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection."</p>
+            </div>
+        </div>
+
+        <!-- Entering & Leaving the Toilet -->
+        <div class="card" id="toilet">
+            <h3 class="card-title">Entering & Leaving the Toilet</h3>
+            <div class="habit-section">
+                <h4>Dua Before Entering</h4>
+                <div class="dua-container">
+                    <p class="dua-arabic">بِسْمِ اللهِ، اَللّٰهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ</p>
+                    <p class="dua-transliteration">Bismillahi, Allahumma inni a'udhu bika minal-khubuthi wal-khaba'ith.</p>
+                    <p class="dua-translation">"In the name of Allah. O Allah, I seek refuge in You from the male and female evil spirits."</p>
+                </div>
+            </div>
+            <div class="habit-section">
+                <h4>Dua After Leaving</h4>
+                <div class="dua-container">
+                    <p class="dua-arabic">غُفْرَانَكَ</p>
+                    <p class="dua-transliteration">Ghufranak.</p>
+                    <p class="dua-translation">"(I seek) Your forgiveness."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before & After Wudu (Ablution) -->
+        <div class="card" id="wudu">
+            <h3 class="card-title">Before & After Wudu (Ablution)</h3>
+            <div class="habit-section">
+                <h4>Before Wudu</h4>
+                <div class="dua-container">
+                    <p class="dua-arabic">بِسْمِ اللهِ</p>
+                    <p class="dua-transliteration">Bismillah.</p>
+                    <p class="dua-translation">"In the name of Allah."</p>
+                </div>
+            </div>
+            <div class="habit-section">
+                <h4>After Wudu</h4>
+                <div class="dua-container">
+                    <p class="dua-arabic">أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ. اَللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ</p>
+                    <p class="dua-transliteration">Ash-hadu an la ilaha illal-lahu wahdahu la sharika lah, wa ash-hadu anna Muhammadan 'abduhu wa rasuluh. Allahummaj-'alni minat-tawwabina waj-'alni minal-mutatahhirin.</p>
+                    <p class="dua-translation">"I bear witness that there is no god but Allah alone, with no partner or associate, and I bear witness that Muhammad is His slave and Messenger. O Allah, make me one of those who repent and make me one of those who purify themselves."</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- After Salah (Prayer) -->
+        <div class="card" id="after-salah">
+            <h3 class="card-title">Remembrance After Salah</h3>
+            <div class="habit-section">
+                <h4>Tasbeeh of Fatimah</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i><b>Subhan'Allah</b> (Glory be to Allah) - 33 times</li>
+                    <li><i class="fas fa-check-circle"></i><b>Alhamdulillah</b> (All praise is for Allah) - 33 times</li>
+                    <li><i class="fas fa-check-circle"></i><b>Allahu Akbar</b> (Allah is the Greatest) - 33 times</li>
+                </ul>
+                <div class="dua-container">
+                    <p class="dua-arabic">لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ</p>
+                    <p class="dua-transliteration">La ilaha illal-lahu wahdahu la sharika lah, lahul-mulku wa lahul-hamdu wa huwa 'ala kulli shay'in qadir.</p>
+                    <p class="dua-translation">"There is no god but Allah alone, with no partner or associate, His is the dominion and to Him be praise, and He is able to do all things." (Recite once to complete 100)</p>
+                </div>
+            </div>
+            <div class="habit-section">
+                <h4>Ayat al-Kursi (The Verse of the Throne)</h4>
+                <p>It is highly recommended to recite Ayat al-Kursi (Quran 2:255) after each obligatory prayer.</p>
+            </div>
+        </div>
+
+        <!-- Morning & Evening Adhkar -->
+        <div class="card" id="morning-evening">
+            <h3 class="card-title">Morning & Evening Adhkar (Remembrance)</h3>
+             <div class="habit-section">
+                <h4>Master Supplication for Forgiveness (Sayyid al-Istighfar)</h4>
+                <div class="dua-container">
+                    <p class="dua-arabic">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</p>
+                    <p class="dua-transliteration">Allahumma anta Rabbi la ilaha illa anta, khalaqtani wa ana 'abduka, wa ana 'ala 'ahdika wa wa'dika mastata'tu, a'udhu bika min sharri ma sana'tu, abu'u laka bini'matika 'alayya, wa abu'u laka bidhanbi faghfirli, fa innahu la yaghfirudh-dhunuba illa anta.</p>
+                    <p class="dua-translation">"O Allah, You are my Lord, there is no god but You. You created me and I am Your slave, and I am faithful to my covenant and my promise as much as I can. I seek refuge in You from all the evil I have done. I acknowledge before You all the blessings You have bestowed upon me, and I confess to You my sins. So forgive me, for surely no one can forgive sins except You."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before Sleeping -->
+        <div class="card" id="sleeping">
+            <h3 class="card-title">Before Sleeping</h3>
+            <div class="habit-section">
+                <h4>Sunnah Actions</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i>Perform Wudu (ablution).</li>
+                    <li><i class="fas fa-check-circle"></i>Dust the bed three times.</li>
+                    <li><i class="fas fa-check-circle"></i>Recite Ayat al-Kursi.</li>
+                    <li><i class="fas fa-check-circle"></i>Cup your hands, recite Surah Al-Ikhlas, Al-Falaq, and An-Nas into them, and then wipe over your body, starting with your head and face. (Repeat three times)</li>
+                    <li><i class="fas fa-check-circle"></i>Recite the Tasbeeh of Fatimah.</li>
+                    <li><i class="fas fa-check-circle"></i>Sleep on your right side, with your right hand under your right cheek.</li>
+                </ul>
+            </div>
+            <div class="dua-container">
+                <p class="dua-arabic">بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا</p>
+                <p class="dua-transliteration">Bismika Allahumma amutu wa ahya.</p>
+                <p class="dua-translation">"In Your name, O Allah, I die and I live."</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
