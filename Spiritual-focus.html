@@ -113,11 +113,45 @@
         .back-link:hover {
             background-color: #2563EB;
         }
+        /* Page Navigation Styles */
+        .page-nav {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        .page-nav a {
+            padding: 0.5rem 1rem;
+            color: #4B5563;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .page-nav a:hover {
+            background-color: #E5E7EB;
+            color: #1A202C;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Hub</a>
+
+        <!-- NEW: Page Navigation -->
+        <div class="page-nav">
+            <a href="#waking-up">Waking Up</a>
+            <a href="#toilet">Toilet</a>
+            <a href="#wudu">Wudu</a>
+            <a href="#after-salah">After Salah</a>
+            <a href="#morning-evening">Adhkar</a>
+            <a href="#sleeping">Sleeping</a>
+        </div>
 
         <div class="header">
             <h1>Daily Spiritual Focus</h1>
