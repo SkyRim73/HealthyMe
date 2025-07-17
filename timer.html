@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrono Hub - Stable & Optimized</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+        .time-display {
+            font-family: 'Roboto Mono', monospace;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOutUp {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+        .new-item-animation {
+            animation: fadeInDown 0.5s ease-out forwards;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.3s;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center px-4 py-8">
+
+    <div class="text-center space-y-2 mb-10">
+        <h1 class="text-6xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Chrono Hub</h1>
+        <p class="text-gray-400 text-lg">Your Advanced Timer & Stopwatch</p>
+    </div>
+
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl">
+        <!-- Stopwatch Section -->
+        <div class="glass p-6 rounded-3xl space-y-6 flex flex-col">
+            <h2 class="text-3xl font-semibold flex items-center gap-3 justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Stopwatch
+            </h2>
+            <div class="time-display text-7xl font-mono text-center" id="stopwatch-display">00:00:00<span class="text-4xl text-gray-400">.00</span></div>
+            <div class="flex gap-4">
+                <button id="start-stop-btn" class="flex-1 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold transition">Start</button>
+                <button id="lap-btn" class="flex-1 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 font-bold transition disabled:opacity-50" disabled>Lap</button>
+                <button id="reset-btn" class="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-bold transition disabled:opacity-50" disabled>Reset</button>
+            </div>
+            <div class="space-y-2 flex-grow flex flex-col">
+                <h3 class="font-semibold text-xl">Laps</h3>
+                <ul id="laps-list" class="h-48 overflow-y-auto space-y-2 text-sm p-2 rounded-lg bg-slate-900/50 flex-grow">
+                    <li class="text-center italic text-gray-500 pt-16">No laps recorded yet.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Timers Section -->
+        <div class="glass p-6 rounded-3xl space-y-6 flex flex-col">
+            <h2 class="text-3xl font-semibold flex items-center gap-3 justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400"><circle cx="12" cy="12" r="7"></circle><polyline points="12 9 12 12 13.5 13.5"></polyline><path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.83a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 0 1 9.83 1h4.35a2 2 0 0 1 2 1.82l.35 3.83"></path></svg>
+                Timers
+            </h2>
+            <form id="add-timer-form" class="space-y-4">
+                <input id="timer-name" type="text" placeholder="Timer Name (e.g., Workout)" class="w-full bg-slate-700/50 rounded-xl p-3 outline-none focus:ring-2 focus:ring-cyan-400 transition">
+                <div class="flex gap-3">
+                    <input id="timer-hours" type="number" placeholder="HH" min="0" class="flex-1 text-center bg-slate-700/50 rounded-xl p-3 outline-none focus:ring-2 focus:ring-cyan-400 transition">
+                    <input id="timer-minutes" type="number" placeholder="MM" min="0" max="59" class="flex-1 text-center bg-slate-700/50 rounded-xl p-3 outline-none focus:ring-2 focus:ring-cyan-400 transition">
+                    <input id="timer-seconds" type="number" placeholder="SS" min="0" max="59" class="flex-1 text-center bg-slate-700/50 rounded-xl p-3 outline-none focus:ring-2 focus:ring-cyan-400 transition">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 font-bold flex items-center justify-center gap-2 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    Add Timer
+                </button>
+            </form>
+
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-slate-600"></div>
+                <span class="flex-shrink mx-4 text-slate-400">OR</span>
+                <div class="flex-grow border-t border-slate-600"></div>
+            </div>
+            
+            <div class="space-y-4">
+                 <input id="countdown-datetime" type="datetime-local" class="w-full bg-slate-700/50 rounded-xl p-3 outline-none focus:ring-2 focus:ring-cyan-400 transition">
+                 <button id="set-countdown-btn" class="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-700 font-bold flex items-center justify-center gap-2 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    Set Countdown
+                </button>
+            </div>
+
+            <div class="space-y-3 max-h-96 overflow-y-auto flex-grow" id="timers-container">
+                <p id="no-timers-message" class="text-center italic text-gray-500 pt-16">No active timers.</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Custom Modal for Alerts -->
+    <div id="custom-alert" class="modal-overlay">
+        <div class="modal-content">
+            <p id="alert-message" class="text-lg text-gray-200 mb-6"></p>
+            <button id="alert-ok-btn" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-8 rounded-lg transition-all">OK</button>
+        </div>
+    </div>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- GLOBAL STATE ---
+            const AppState = {
+                timers: [],
+                stopwatch: {
+                    startTime: 0,
+                    elapsedTime: 0,
+                    isRunning: false,
+                    laps: []
+                }
+            };
+
+            // --- DOM ELEMENTS ---
+            const DOMElements = {
+                stopwatch: {
+                    display: document.getElementById('stopwatch-display'),
+                    startStopBtn: document.getElementById('start-stop-btn'),
+                    lapBtn: document.getElementById('lap-btn'),
+                    resetBtn: document.getElementById('reset-btn'),
+                    lapsList: document.getElementById('laps-list')
+                },
+                timers: {
+                    container: document.getElementById('timers-container'),
+                    noTimersMsg: document.getElementById('no-timers-message'),
+                    nameInput: document.getElementById('timer-name'),
+                    hoursInput: document.getElementById('timer-hours'),
+                    minutesInput: document.getElementById('timer-minutes'),
+                    secondsInput: document.getElementById('timer-seconds'),
+                    addForm: document.getElementById('add-timer-form'),
+                    countdownInput: document.getElementById('countdown-datetime'),
+                    setCountdownBtn: document.getElementById('set-countdown-btn'),
+                },
+                modal: {
+                    overlay: document.getElementById('custom-alert'),
+                    message: document.getElementById('alert-message'),
+                    okBtn: document.getElementById('alert-ok-btn')
+                }
+            };
+
+            // --- UTILITIES ---
+            const Utils = {
+                sound: new Tone.Synth({ oscillator: { type: 'sine' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 } }).toDestination(),
+                playTimerEndSound() {
+                    if (Tone.context.state !== 'running') Tone.start();
+                    this.sound.triggerAttackRelease("C5", "0.5");
+                },
+                showAlert(message) {
+                    DOMElements.modal.message.textContent = message;
+                    DOMElements.modal.overlay.classList.add('visible');
+                },
+                formatStopwatchTime(ms) {
+                    const date = new Date(ms);
+                    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+                    const seconds = date.getUTCSeconds().toString().padStart(2, '0');
+                    const hours = Math.floor(ms / 3600000).toString().padStart(2, '0');
+                    const milliseconds = Math.floor((ms % 1000) / 10).toString().padStart(2, '0');
+                    return `${hours}:${minutes}:${seconds}<span class="text-4xl text-gray-400">.${milliseconds}</span>`;
+                },
+                formatTimerTime(ms) {
+                    if (ms <= 0) return "00:00:00";
+                    const totalSeconds = Math.floor(ms / 1000);
+                    const days = Math.floor(totalSeconds / 86400);
+                    const hours = Math.floor((totalSeconds % 86400) / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+
+                    if (days > 0) {
+                        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    }
+                    return [hours, minutes, seconds].map(v => v.toString().padStart(2, '0')).join(':');
+                }
+            };
+
+            // --- STOPWATCH LOGIC ---
+            const Stopwatch = {
+                toggle() {
+                    AppState.stopwatch.isRunning ? this.stop() : this.start();
+                },
+                start() {
+                    const { stopwatch } = AppState;
+                    if (stopwatch.isRunning) return;
+                    stopwatch.isRunning = true;
+                    stopwatch.startTime = Date.now() - stopwatch.elapsedTime;
+                    DOMElements.stopwatch.startStopBtn.textContent = 'Stop';
+                    DOMElements.stopwatch.startStopBtn.classList.replace('bg-blue-600', 'bg-yellow-600');
+                    DOMElements.stopwatch.lapBtn.disabled = false;
+                    DOMElements.stopwatch.resetBtn.disabled = false;
+                },
+                stop() {
+                    const { stopwatch } = AppState;
+                    if (!stopwatch.isRunning) return;
+                    stopwatch.isRunning = false;
+                    stopwatch.elapsedTime = Date.now() - stopwatch.startTime;
+                    DOMElements.stopwatch.startStopBtn.textContent = 'Start';
+                    DOMElements.stopwatch.startStopBtn.classList.replace('bg-yellow-600', 'bg-blue-600');
+                },
+                reset() {
+                    this.stop();
+                    AppState.stopwatch.elapsedTime = 0;
+                    AppState.stopwatch.laps = [];
+                    DOMElements.stopwatch.display.innerHTML = Utils.formatStopwatchTime(0);
+                    DOMElements.stopwatch.lapBtn.disabled = true;
+                    DOMElements.stopwatch.resetBtn.disabled = true;
+                    this.renderLaps();
+                },
+                lap() {
+                    const { stopwatch } = AppState;
+                    if (!stopwatch.isRunning) return;
+                    const lapTime = Date.now() - stopwatch.startTime;
+                    stopwatch.laps.unshift(lapTime);
+                    this.renderLaps();
+                },
+                updateDisplay() {
+                    const { stopwatch } = AppState;
+                    if (!stopwatch.isRunning) return;
+                    const currentTime = Date.now() - stopwatch.startTime;
+                    DOMElements.stopwatch.display.innerHTML = Utils.formatStopwatchTime(currentTime);
+                },
+                renderLaps() {
+                    const { lapsList } = DOMElements.stopwatch;
+                    const { laps } = AppState.stopwatch;
+                    lapsList.innerHTML = '';
+                    if (laps.length === 0) {
+                        lapsList.innerHTML = '<li class="text-center italic text-gray-500 pt-16">No laps recorded yet.</li>';
+                        return;
+                    }
+                    laps.forEach((lapTime, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'flex justify-between items-center p-2 rounded-md bg-slate-800/60 new-item-animation';
+                        const lapNumber = laps.length - index;
+                        const previousLapTime = laps[index + 1] || 0;
+                        const lapDuration = lapTime - previousLapTime;
+                        li.innerHTML = `
+                            <span class="font-semibold text-gray-400">Lap ${lapNumber}</span>
+                            <span class="time-display text-cyan-400">${Utils.formatStopwatchTime(lapDuration).replace(/<span.*<\/span>/, '')}</span>
+                            <span class="time-display text-gray-300">${Utils.formatStopwatchTime(lapTime).replace(/<span.*<\/span>/, '')}</span>
+                        `;
+                        lapsList.appendChild(li);
+                    });
+                }
+            };
+
+            // --- TIMERS LOGIC ---
+            const Timers = {
+                addFromDuration(e) {
+                    e.preventDefault();
+                    const { nameInput, hoursInput, minutesInput, secondsInput, addForm } = DOMElements.timers;
+                    const name = nameInput.value.trim();
+                    const h = parseInt(hoursInput.value) || 0;
+                    const m = parseInt(minutesInput.value) || 0;
+                    const s = parseInt(secondsInput.value) || 0;
+                    const totalMs = (h * 3600 + m * 60 + s) * 1000;
+                    if (totalMs <= 0) return Utils.showAlert("Please enter a valid duration.");
+                    this.create(name || 'Untitled Timer', totalMs);
+                    addForm.reset();
+                },
+                addFromCountdown() {
+                    const { countdownInput } = DOMElements.timers;
+                    if (!countdownInput.value) return Utils.showAlert('Please select a valid date and time.');
+                    const targetDate = new Date(countdownInput.value);
+                    if (targetDate <= new Date()) return Utils.showAlert('Please select a future date.');
+                    const totalMs = targetDate.getTime() - new Date().getTime();
+                    const name = `Countdown to ${targetDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} ${targetDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
+                    this.create(name, totalMs);
+                    countdownInput.value = '';
+                },
+                create(name, duration) {
+                    const newTimer = { id: `timer-${Date.now()}`, name, initialDuration: duration, remainingTime: duration, isRunning: false, isFinished: false };
+                    AppState.timers.unshift(newTimer);
+                    this.renderNew(newTimer);
+                },
+                renderNew(timerData) {
+                    const { container, noTimersMsg } = DOMElements.timers;
+                    noTimersMsg.style.display = 'none';
+                    const div = document.createElement('div');
+                    div.id = timerData.id;
+                    div.className = 'bg-slate-800/50 p-4 rounded-xl flex flex-col space-y-3 new-item-animation border border-slate-700';
+                    div.dataset.timerId = timerData.id;
+                    div.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-lg text-gray-200">${timerData.name}</span>
+                            <button data-action="delete" class="text-gray-500 hover:text-red-500 p-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                        </div>
+                        <div class="time-display text-4xl text-center font-bold text-cyan-400">${Utils.formatTimerTime(timerData.remainingTime)}</div>
+                        <div class="w-full bg-slate-700 rounded-full h-2"><div class="bg-gradient-to-r from-cyan-400 to-blue-400 h-2 rounded-full" style="width: 100%;"></div></div>
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <button data-action="toggle" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg">Start</button>
+                            <button data-action="reset" class="bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 rounded-lg">Reset</button>
+                        </div>
+                    `;
+                    container.prepend(div);
+                },
+                handleAction(e) {
+                    const button = e.target.closest('button[data-action]');
+                    if (!button) return;
+                    const timerId = button.closest('[data-timer-id]').dataset.timerId;
+                    const timer = AppState.timers.find(t => t.id === timerId);
+                    if (!timer) return;
+                    switch (button.dataset.action) {
+                        case 'toggle': this.toggle(timer); break;
+                        case 'reset': this.reset(timer); break;
+                        case 'delete': this.delete(timer); break;
+                    }
+                },
+                toggle(timer) {
+                    if (timer.isFinished) return;
+                    timer.isRunning = !timer.isRunning;
+                },
+                reset(timer) {
+                    timer.isRunning = false;
+                    timer.isFinished = false;
+                    timer.remainingTime = timer.initialDuration;
+                },
+                delete(timer) {
+                    AppState.timers = AppState.timers.filter(t => t.id !== timer.id);
+                    const el = document.getElementById(timer.id);
+                    if (el) {
+                        el.style.animation = 'fadeOutUp 0.3s ease-out forwards';
+                        setTimeout(() => {
+                            el.remove();
+                            if (AppState.timers.length === 0) DOMElements.timers.noTimersMsg.style.display = 'block';
+                        }, 300);
+                    }
+                },
+                updateAll() {
+                    AppState.timers.forEach(timer => {
+                        if (timer.isRunning && !timer.isFinished) {
+                            timer.remainingTime = Math.max(0, timer.remainingTime - 100);
+                            if (timer.remainingTime <= 0) {
+                                timer.isRunning = false;
+                                timer.isFinished = true;
+                                Utils.playTimerEndSound();
+                            }
+                        }
+                        this.updateElement(timer);
+                    });
+                },
+                updateElement(timer) {
+                    const el = document.getElementById(timer.id);
+                    if (!el) return;
+                    const timeDisplay = el.querySelector('.time-display');
+                    const progress = el.querySelector('.h-2.rounded-full');
+                    const startPauseBtn = el.querySelector('[data-action="toggle"]');
+                    timeDisplay.textContent = Utils.formatTimerTime(timer.remainingTime);
+                    progress.style.width = `${Math.max(0, (timer.remainingTime / timer.initialDuration) * 100)}%`;
+                    if (timer.isFinished) {
+                        progress.className = 'bg-red-500 h-2 rounded-full';
+                        timeDisplay.classList.replace('text-cyan-400', 'text-red-400');
+                    } else {
+                        progress.className = 'bg-gradient-to-r from-cyan-400 to-blue-400 h-2 rounded-full';
+                        timeDisplay.classList.replace('text-red-400', 'text-cyan-400');
+                    }
+                    startPauseBtn.textContent = timer.isRunning ? 'Pause' : 'Start';
+                    startPauseBtn.className = `font-bold py-2 rounded-lg ${timer.isRunning ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700'}`;
+                }
+            };
+
+            // --- MAIN APP INITIALIZATION & LOOP ---
+            DOMElements.modal.okBtn.addEventListener('click', () => DOMElements.modal.overlay.classList.remove('visible'));
+            DOMElements.stopwatch.startStopBtn.addEventListener('click', () => Stopwatch.toggle());
+            DOMElements.stopwatch.resetBtn.addEventListener('click', () => Stopwatch.reset());
+            DOMElements.stopwatch.lapBtn.addEventListener('click', () => Stopwatch.lap());
+            DOMElements.timers.addForm.addEventListener('submit', (e) => Timers.addFromDuration(e));
+            DOMElements.timers.setCountdownBtn.addEventListener('click', () => Timers.addFromCountdown());
+            DOMElements.timers.container.addEventListener('click', (e) => Timers.handleAction(e));
+
+            setInterval(() => {
+                Stopwatch.updateDisplay();
+                Timers.updateAll();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
