@@ -3,551 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Journey: A Guide to Success</title>
+    <title>My Journey</title>
     <style>
+        /* Minimalist Color Palette */
         :root {
-            --color-white: #fff;
-            --color-black: #000;
-            --color-cream-50: #fcfcf9;
-            --color-cream-100: #fffefd;
-            --color-gray-200: #f5f5f5;
-            --color-gray-300: #a7a9a9;
-            --color-gray-400: #777c7c;
-            --color-slate-500: #626c71;
-            --color-brown-600: #5e5240;
-            --color-charcoal-700: #1f2121;
-            --color-charcoal-800: #262828;
-            --color-slate-900: #13343b;
-            --color-teal-300: #32b8c6;
-            --color-teal-400: #2da6b2;
-            --color-teal-500: #21808d;
-            --color-teal-600: #1d7480;
-            --color-teal-700: #1a6873;
-            --color-teal-800: #2996a1;
-            --color-red-400: #ff5459;
-            --color-red-500: #c0152f;
-            --color-orange-400: #e68161;
-            --color-orange-500: #a84b2f;
+            --bg-dark: #1f2121;
+            --bg-light: #262828;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a7a9a9;
+            --accent-orange: #e68161;
+            --accent-teal: #32b8c6;
+            --border-color: rgba(167, 169, 169, 0.3); /* Based on gray-300 */
+            --focus-glow: rgba(50, 184, 198, 0.4); /* Based on teal-300 */
+            --success-bg: rgba(50, 184, 198, 0.15);
+            --info-bg: rgba(98, 108, 113, 0.15);
 
-            /* RGB for opacity */
-            --color-brown-600-rgb: 94, 82, 64;
-            --color-teal-500-rgb: 33, 128, 141;
-            --color-slate-900-rgb: 19, 52, 59;
-            --color-slate-500-rgb: 98, 108, 113;
-            --color-red-500-rgb: 192, 21, 47;
-            --color-red-400-rgb: 255, 84, 89;
-            --color-orange-500-rgb: 168, 75, 47;
-            --color-orange-400-rgb: 230, 129, 97;
-            --color-success-rgb: var(--color-teal-500-rgb);
-            --color-error-rgb: var(--color-red-500-rgb);
-            --color-warning-rgb: var(--color-orange-500-rgb);
-            --color-info-rgb: var(--color-slate-500-rgb);
-
-            /* Semantic Colors (Light Mode) */
-            --color-background: var(--color-cream-50);
-            --color-surface: var(--color-cream-100);
-            --color-text: var(--color-slate-900);
-            --color-text-secondary: var(--color-slate-500);
-            --color-primary: var(--color-teal-500);
-            --color-primary-hover: var(--color-teal-600);
-            --color-primary-active: var(--color-teal-700);
-            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-            --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-            --color-btn-primary-text: var(--color-cream-50);
-            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-            --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
-            --color-error: var(--color-red-500);
-            --color-success: var(--color-teal-500);
-            --color-warning: var(--color-orange-500);
-            --color-info: var(--color-slate-500);
-            --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-
-            /* Typography */
-            --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-size-xs: 11px;
-            --font-size-sm: 12px;
-            --font-size-base: 14px;
-            --font-size-md: 14px;
-            --font-size-lg: 16px;
-            --font-size-xl: 18px;
-            --font-size-2xl: 20px;
-            --font-size-3xl: 24px;
-            --font-size-4xl: 30px;
-            --font-weight-normal: 400;
-            --font-weight-medium: 500;
-            --font-weight-semibold: 550;
-            --font-weight-bold: 600;
-            --line-height-tight: 1.2;
-            --line-height-normal: 1.5;
-            --letter-spacing-tight: -0.01em;
-
-            /* Spacing */
-            --space-0: 0;
-            --space-1: 1px;
-            --space-2: 2px;
-            --space-4: 4px;
-            --space-6: 6px;
-            --space-8: 8px;
-            --space-10: 10px;
-            --space-12: 12px;
-            --space-16: 16px;
-            --space-20: 20px;
-            --space-24: 24px;
-            --space-32: 32px;
-
-            /* Border Radius */
-            --radius-sm: 6px;
-            --radius-base: 8px;
-            --radius-md: 10px;
-            --radius-lg: 12px;
-            --radius-full: 9999px;
-
-            /* Shadows */
-            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-
-            /* Animation */
-            --duration-fast: 150ms;
-            --duration-normal: 250ms;
-            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+            /* Spacing & Sizes */
+            --s-0: 0; --s-1: 4px; --s-2: 8px; --s-3: 16px; --s-4: 24px; --s-5: 32px;
+            --r-sm: 6px; --r-md: 8px; --r-lg: 12px;
+            --font-sm: 12px; --font-base: 14px; --font-lg: 16px; --font-xl: 18px; --font-2xl: 20px; --font-3xl: 24px;
+            --line-tight: 1.2; --line-normal: 1.5;
+            --transition-speed: 0.2s;
         }
 
-        /* Dark mode colors */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --color-gray-400-rgb: 119, 124, 124;
-                --color-teal-300-rgb: 50, 184, 198;
-                --color-gray-300-rgb: 167, 169, 169;
-                --color-gray-200-rgb: 245, 245, 245;
-
-                --color-background: var(--color-charcoal-700);
-                --color-surface: var(--color-charcoal-800);
-                --color-text: var(--color-gray-200);
-                --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-                --color-primary: var(--color-teal-300);
-                --color-primary-hover: var(--color-teal-400);
-                --color-primary-active: var(--color-teal-800);
-                --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-                --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-                --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-                --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-                --color-error: var(--color-red-400);
-                --color-success: var(--color-teal-300);
-                --color-warning: var(--color-orange-400);
-                --color-info: var(--color-gray-300);
-                --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-                --color-btn-primary-text: var(--color-slate-900);
-                --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
-                --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-                --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-                --color-success-rgb: var(--color-teal-300-rgb);
-                --color-error-rgb: var(--color-red-400-rgb);
-                --color-warning-rgb: var(--color-orange-400-rgb);
-                --color-info-rgb: var(--color-gray-300-rgb);
-            }
-        }
-
-        /* Base styles */
+        /* Base & Resets */
         html {
-            font-size: var(--font-size-base);
-            font-family: var(--font-family-base);
-            line-height: var(--line-height-normal);
-            color: var(--color-text);
-            background-color: var(--color-background);
-            -webkit-font-smoothing: antialiased;
-            box-sizing: border-box;
+            font-family: sans-serif;
+            font-size: var(--font-base);
+            line-height: var(--line-normal);
+            color: var(--text-primary);
+            background-color: var(--bg-dark);
             scroll-behavior: smooth;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
         }
+        body { margin: var(--s-0); padding: var(--s-0); }
+        *, *::before, *::after { box-sizing: inherit; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--color-charcoal-700);
-            color: var(--color-gray-200);
+        h1, h2 {
+            margin: var(--s-0);
+            font-weight: 600;
+            line-height: var(--line-tight);
+            letter-spacing: -0.01em;
         }
-
-        *, *::before, *::after {
-            box-sizing: inherit;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            margin: 0;
-            font-weight: var(--font-weight-semibold);
-            line-height: var(--line-height-tight);
-            color: var(--color-text);
-            letter-spacing: var(--letter-spacing-tight);
-        }
-        h1 { font-size: var(--font-size-4xl); }
-        h2 { font-size: var(--font-size-3xl); }
-
-        p { margin: 0 0 var(--space-16) 0; }
-
-        a {
-            color: var(--color-primary);
-            text-decoration: none;
-            transition: color var(--duration-fast) var(--ease-standard);
-        }
-        a:hover { color: var(--color-primary-hover); }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--space-8) var(--space-16);
-            border-radius: var(--radius-base);
-            font-size: var(--font-size-base);
-            font-weight: 500;
-            line-height: 1.5;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-standard);
-            border: none;
-            text-decoration: none;
+        h1 { font-size: var(--font-3xl); color: var(--accent-orange); }
+        h2 { font-size: var(--font-2xl); color: var(--accent-orange); margin-bottom: var(--s-4); }
+        p { margin: var(--s-0) 0 var(--s-3) 0; }
+        a { color: var(--accent-teal); text-decoration: none; transition: color var(--transition-speed) ease; }
+        a:hover { color: var(--accent-teal); } /* Keep consistent hover */
+        ul { list-style: none; padding: var(--s-0); margin: var(--s-0); }
+        li {
             position: relative;
+            padding-left: var(--s-4);
+            margin-bottom: var(--s-3);
+            line-height: var(--line-normal);
         }
-        .btn:focus-visible {
-            outline: none;
-            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        li:before {
+            content: "→";
+            position: absolute;
+            left: var(--s-0);
+            top: var(--s-0);
+            color: var(--accent-teal);
+            font-weight: bold;
         }
-        .btn--secondary {
-            background-color: rgba(var(--color-orange-400-rgb), 0.15);
-            color: var(--color-text);
-            border: 2px solid var(--color-orange-400);
-        }
-        .btn--secondary:hover {
-            background-color: var(--color-orange-400);
-            color: var(--color-charcoal-800);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-        .btn--sm {
-            padding: var(--space-6) var(--space-12);
-            font-size: var(--font-size-sm);
-            border-radius: var(--radius-sm);
-        }
+        li:last-child { margin-bottom: var(--s-0); }
+        strong { color: var(--accent-orange); font-weight: 550; }
 
-        /* Card component */
+        /* General UI Elements */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: var(--s-2) var(--s-3);
+            border-radius: var(--r-md);
+            font-size: var(--font-base); font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: 2px solid var(--accent-orange);
+            background-color: rgba(230, 129, 97, 0.15); /* Orange-400 with opacity */
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .btn:hover { background-color: var(--accent-orange); color: var(--bg-dark); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn:focus-visible { outline: 2px solid var(--accent-teal); outline-offset: 2px; }
+
         .card {
-            background-color: var(--color-charcoal-800);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            box-shadow: var(--shadow-lg);
+            background-color: var(--bg-light);
+            border-radius: var(--r-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.04);
+            transition: all var(--transition-speed) ease;
             overflow: hidden;
-            transition: all var(--duration-normal) var(--ease-standard);
         }
-        .card:hover {
-            border-color: rgba(var(--color-gray-300-rgb), 0.3);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .card__body {
-            padding: var(--space-32);
-        }
+        .card:hover { border-color: rgba(167, 169, 169, 0.5); box-shadow: 0 20px 25px rgba(0,0,0,0.1); }
+        .card__body { padding: var(--s-5); }
 
-        /* Application-specific styles */
+        .quote {
+            background-color: rgba(59, 130, 246, 0.08); /* Blue-ish bg for contrast */
+            border-left: 4px solid var(--accent-teal);
+            padding: var(--s-3) var(--s-4);
+            margin-bottom: var(--s-4);
+            border-radius: var(--r-md);
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        .quote cite { display: block; margin-top: var(--s-2); font-weight: 500; color: var(--accent-teal); font-style: normal; }
+
+        /* Layout */
         .app-container {
             display: grid;
             grid-template-columns: 280px 1fr;
             min-height: 100vh;
         }
-        @media (max-width: 1024px) {
-            .app-container {
-                grid-template-columns: 1fr;
-            }
-        }
 
         /* Sidebar */
         .sidebar {
-            background-color: var(--color-charcoal-800);
-            border-right: 1px solid var(--color-border);
-            position: fixed;
-            top: 0;
-            left: 0;
+            background-color: var(--bg-light);
+            border-right: 1px solid var(--border-color);
+            position: fixed; /* Keep it fixed */
+            top: 0; left: 0;
             width: 280px;
             height: 100vh;
             overflow-y: auto;
-            z-index: 10;
-        }
-        @media (max-width: 1024px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
         }
         .sidebar-content {
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             height: 100%;
-            padding: var(--space-24);
+            padding: var(--s-4);
         }
-        .app-title {
-            font-size: var(--font-size-3xl);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-orange-400);
-            margin-bottom: var(--space-32);
-        }
-        .sidebar-nav {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-4);
-        }
+        .sidebar-header { margin-bottom: var(--s-5); }
+        .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: var(--s-1); }
         .nav-link {
-            display: flex;
-            align-items: center;
-            padding: var(--space-12) var(--space-16);
-            border-radius: var(--radius-base);
-            color: var(--color-gray-300);
-            font-weight: var(--font-weight-medium);
-            transition: all var(--duration-normal) var(--ease-standard);
+            display: flex; align-items: center;
+            padding: var(--s-2) var(--s-3);
+            border-radius: var(--r-md);
+            color: var(--text-secondary); font-weight: 500;
+            transition: all var(--transition-speed) ease;
             border: 1px solid transparent;
         }
-        .nav-link:hover, .nav-link.active {
-            background-color: var(--color-secondary);
-            color: var(--color-orange-400);
-            border-color: var(--color-border);
-        }
-        .nav-link--highlight {
-            margin-top: var(--space-24);
-            color: var(--color-teal-300);
-            font-weight: var(--font-weight-semibold);
-            font-size: var(--font-size-lg);
-        }
-        .nav-link--highlight:hover {
-            color: var(--color-teal-400);
-        }
-        .nav-icon {
-            width: 24px;
-            text-align: center;
-            margin-right: var(--space-12);
-            font-size: var(--font-size-lg);
-        }
-        .sidebar-footer {
-            margin-top: var(--space-32);
-            padding-top: var(--space-16);
-            border-top: 1px solid var(--color-border);
-            font-size: var(--font-size-sm);
-            color: var(--color-text-secondary);
-            text-align: center;
-            font-style: italic;
-        }
+        .nav-link:hover, .nav-link.active { background-color: rgba(94, 82, 64, 0.15); color: var(--accent-orange); border-color: var(--border-color); } /* Brown-600 with opacity */
+        .nav-link--highlight { margin-top: var(--s-4); color: var(--accent-teal); font-weight: 550; font-size: var(--font-lg); }
+        .nav-link--highlight:hover { color: var(--accent-teal); } /* Keep teal hover */
+        .nav-icon { width: 24px; text-align: center; margin-right: var(--s-3); font-size: var(--font-lg); }
+        .sidebar-footer { margin-top: var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--border-color); font-size: var(--font-sm); color: var(--text-secondary); text-align: center; font-style: italic; }
 
-        /* Main content */
+        /* Main Content */
         .main-content {
-            margin-left: 280px;
-            padding: var(--space-32);
+            margin-left: 280px; /* Offset for fixed sidebar */
+            padding: var(--s-5);
             max-width: 1200px;
         }
-        @media (max-width: 1024px) {
-            .main-content { margin-left: 0; padding: var(--space-24); }
-        }
-        @media (max-width: 768px) {
-            .main-content { padding: var(--space-16); }
-            .card__body { padding: var(--space-24); }
-            .section-title { font-size: var(--font-size-2xl); }
-            .app-title { font-size: var(--font-size-2xl); }
-            .nav-link { font-size: var(--font-size-sm); }
-            .checklist-text { font-size: var(--font-size-sm); }
-            .custom-checkbox { width: 20px; height: 20px; }
-        }
+        .content-section { margin-bottom: var(--s-5); }
+        .section-title--highlight { color: var(--accent-teal); }
 
-        .content-section { margin-bottom: var(--space-32); }
-        .section-title {
-            font-size: var(--font-size-3xl);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-orange-400);
-            margin: 0 0 var(--space-24) 0;
-            line-height: var(--line-height-tight);
-        }
-        .section-title--highlight { color: var(--color-teal-300); }
-
-        .quote {
-            background-color: rgba(59, 130, 246, 0.08);
-            border-left: 4px solid var(--color-teal-300);
-            padding: var(--space-16) var(--space-20);
-            margin: 0 0 var(--space-24) 0;
-            border-radius: var(--radius-base);
-            font-style: italic;
-            color: var(--color-text-secondary);
-        }
-        .quote cite {
-            display: block;
-            margin-top: var(--space-8);
-            font-weight: var(--font-weight-medium);
-            color: var(--color-teal-300);
-            font-style: normal;
-        }
-
-        .step-subtitle strong {
-            display: block;
-            font-size: var(--font-size-xl);
-            color: var(--color-orange-400);
-            margin-bottom: var(--space-8);
-        }
-        .step-description {
-            color: var(--color-text-secondary);
-            margin: 0;
-        }
-        .step-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .step-list li {
-            position: relative;
-            padding-left: var(--space-24);
-            margin-bottom: var(--space-16);
-            color: var(--color-gray-200);
-            line-height: var(--line-height-normal);
-        }
-        .step-list li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--color-teal-300);
-            font-weight: var(--font-weight-bold);
-        }
-        .step-list li:last-child { margin-bottom: 0; }
-        .step-list strong {
-            color: var(--color-orange-400);
-            font-weight: var(--font-weight-semibold);
-        }
-
-        /* Checklist */
-        .checklist-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: var(--space-24);
-            gap: var(--space-16);
-        }
-        @media (max-width: 768px) {
-            .checklist-header { flex-direction: column; align-items: flex-start; }
-        }
-        .checklist-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--space-8);
-        }
-        @media (min-width: 768px) {
-            .checklist-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-16); }
-        }
+        /* Checklist Specifics */
+        .checklist-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-4); gap: var(--s-3); }
+        .checklist-grid { display: grid; grid-template-columns: 1fr; gap: var(--s-2); }
         .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            gap: var(--space-16);
-            padding: var(--space-16);
-            border-radius: var(--radius-base);
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-standard);
-            border: 1px solid transparent;
-            background-color: transparent;
+            display: flex; align-items: flex-start; gap: var(--s-3);
+            padding: var(--s-3); border-radius: var(--r-md);
+            cursor: pointer; transition: all var(--transition-speed) ease;
+            border: 1px solid transparent; background-color: transparent;
         }
-        .checklist-item:hover {
-            background-color: rgba(59, 130, 246, 0.08);
-            border-color: var(--color-border);
-        }
-        .checklist-text {
-            flex: 1;
-            font-weight: var(--font-weight-medium);
-            color: var(--color-gray-200);
-            line-height: var(--line-height-normal);
-            user-select: none;
-        }
-
-        /* Custom Checkbox */
+        .checklist-item:hover { background-color: rgba(59, 130, 246, 0.08); border-color: var(--border-color); } /* Blue-ish bg for contrast */
+        .checklist-text { flex: 1; font-weight: 500; color: var(--text-primary); user-select: none; }
         .custom-checkbox {
-            flex-shrink: 0;
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--color-teal-300);
-            border-radius: var(--radius-sm);
-            background-color: var(--color-charcoal-800);
-            position: relative;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-standard);
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
+            flex-shrink: 0; width: 24px; height: 24px;
+            border: 2px solid var(--accent-teal); border-radius: var(--r-sm);
+            background-color: var(--bg-light);
+            position: relative; cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            display: block !important; opacity: 1 !important; visibility: visible !important;
         }
-        .custom-checkbox:hover {
-            border-color: var(--color-teal-400);
-            background-color: rgba(var(--color-teal-300-rgb), 0.1);
-            transform: scale(1.05);
-        }
-        .custom-checkbox.checked {
-            background-color: var(--color-teal-300);
-            border-color: var(--color-teal-300);
-        }
+        .custom-checkbox:hover { border-color: var(--accent-teal); background-color: rgba(50, 184, 198, 0.1); transform: scale(1.05); }
+        .custom-checkbox.checked { background-color: var(--accent-teal); border-color: var(--accent-teal); }
         .custom-checkbox.checked::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 8px;
-            height: 12px;
-            border: solid var(--color-charcoal-800);
-            border-width: 0 3px 3px 0;
-            transform: translate(-50%, -60%) rotate(45deg);
-            display: block;
+            content: ''; position: absolute;
+            left: 50%; top: 50%;
+            width: 8px; height: 12px;
+            border: solid var(--bg-light); border-width: 0 3px 3px 0;
+            transform: translate(-50%, -60%) rotate(45deg); display: block;
         }
 
-        /* Accessibility & Animations */
-        :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
-        :target { scroll-margin-top: var(--space-32); }
-        .checklist-item.changing { transform: scale(0.98); }
-        .checklist-item.changing .custom-checkbox { transform: scale(0.9); }
+        /* Messaging & Animations */
+        .msg {
+            position: fixed; top: var(--s-4);
+            padding: var(--s-2) var(--s-4); border-radius: var(--r-md);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.08); z-index: 1000;
+            font-size: var(--font-base); font-weight: 500;
+            opacity: 0; transition: all 0.3s ease;
+        }
+        .msg.show { opacity: 1; transform: translateY(0) !important; }
+        .msg.success { background-color: var(--success-bg); color: var(--accent-teal); right: var(--s-4); transform: translateY(-20px); }
+        .msg.info { background-color: var(--info-bg); color: var(--text-secondary); left: 50%; transform: translateX(-50%); }
 
-        .completion-message, .reset-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--color-success);
-            color: var(--color-btn-primary-text);
-            padding: var(--space-12) var(--space-20);
-            border-radius: var(--radius-base);
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            font-size: var(--font-size-base);
-            font-weight: var(--font-weight-medium);
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-        }
-        .reset-message {
-            background-color: var(--color-info);
-            color: var(--color-white);
-            left: 50%;
-            transform: translateX(-50%);
-            right: auto;
-        }
-        .completion-message.show, .reset-message.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
         .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none;
-            z-index: 1000;
+            position: absolute; border-radius: 50%; background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(0); animation: ripple-animation 0.6s linear; pointer-events: none; z-index: 1000;
         }
-        @keyframes ripple-animation {
-            to { transform: scale(4); opacity: 0; }
-        }
+        @keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
 
-        /* Print styles */
-        @media print {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; }
-            .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app-container { grid-template-columns: 1fr; }
+            .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .main-content { margin-left: var(--s-0); padding: var(--s-4); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: var(--font-2xl); }
+            h2 { font-size: var(--font-xl); }
+            .card__body { padding: var(--s-4); }
+            .checklist-header { flex-direction: column; align-items: flex-start; }
+            .checklist-grid { gap: var(--s-3); }
+            .nav-link, .checklist-text { font-size: var(--font-sm); }
+            .custom-checkbox { width: 20px; height: 20px; }
         }
     </style>
 </head>
@@ -556,20 +223,20 @@
         <aside class="sidebar">
             <div class="sidebar-content">
                 <div class="sidebar-header">
-                    <h1 class="app-title">My Journey</h1>
+                    <h1>My Journey</h1>
                 </div>
                 <nav class="sidebar-nav">
-                    <a href="#step-1" class="nav-link"><span class="nav-icon">🌙</span><span class="nav-text">Step 1: Relationship with Allah</span></a>
-                    <a href="#step-2" class="nav-link"><span class="nav-icon">⚖️</span><span class="nav-text">Step 2: Clean Your Life from Sins</span></a>
-                    <a href="#step-3" class="nav-link"><span class="nav-icon">🧠</span><span class="nav-text">Step 3: Level Up Your Mind & Skills</span></a>
-                    <a href="#step-4" class="nav-link"><span class="nav-icon">💰</span><span class="nav-text">Step 4: Build Your Rizq</span></a>
-                    <a href="#step-5" class="nav-link"><span class="nav-icon">🤝</span><span class="nav-text">Step 5: Be Strong in Character</span></a>
-                    <a href="#step-6" class="nav-link"><span class="nav-icon">💪</span><span class="nav-text">Step 6: Physically & Emotionally Strong</span></a>
-                    <a href="#step-7" class="nav-link"><span class="nav-icon">🕌</span><span class="nav-text">Step 7: Serve Others</span></a>
-                    <a href="#daily-checklist" class="nav-link nav-link--highlight"><span class="nav-icon">✅</span><span class="nav-text">Daily Checklist</span></a>
+                    <a href="#step-1" class="nav-link"><span class="nav-icon">🌙</span><span>Step 1: Relationship with Allah</span></a>
+                    <a href="#step-2" class="nav-link"><span class="nav-icon">⚖️</span><span>Step 2: Clean Your Life from Sins</span></a>
+                    <a href="#step-3" class="nav-link"><span class="nav-icon">🧠</span><span>Step 3: Level Up Your Mind & Skills</span></a>
+                    <a href="#step-4" class="nav-link"><span class="nav-icon">💰</span><span>Step 4: Build Your Rizq</span></a>
+                    <a href="#step-5" class="nav-link"><span class="nav-icon">🤝</span><span>Step 5: Be Strong in Character</span></a>
+                    <a href="#step-6" class="nav-link"><span class="nav-icon">💪</span><span>Step 6: Physically & Emotionally Strong</span></a>
+                    <a href="#step-7" class="nav-link"><span class="nav-icon">🕌</span><span>Step 7: Serve Others</span></a>
+                    <a href="#daily-checklist" class="nav-link nav-link--highlight"><span class="nav-icon">✅</span><span>Daily Checklist</span></a>
                 </nav>
                 <div class="sidebar-footer">
-                    <p class="footer-quote">Trust in Allah, but tie your camel.</p>
+                    <p>Trust in Allah, but tie your camel.</p>
                 </div>
             </div>
         </aside>
@@ -578,12 +245,12 @@
             <section id="step-1" class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">🌙 STEP 1: Build Your Relationship with Allah</h2>
+                        <h2>🌙 STEP 1: Build Your Relationship with Allah</h2>
                         <blockquote class="quote">
                             "Whoever fears Allah, He will make a way out for him and provide for him from where he never expected."
                             <cite>— Qur'an 65:2-3</cite>
                         </blockquote>
-                        <ul class="step-list">
+                        <ul>
                             <li><strong>Pray 5 times daily</strong> (no matter what — even if your life feels messy).</li>
                             <li><strong>Start your day with Fajr</strong> — it gives barakah to your time.</li>
                             <li><strong>Say dhikr daily</strong> (start with: SubhanAllah, Alhamdulillah, Allahu Akbar x33 after prayer).</li>
@@ -597,8 +264,8 @@
             <section id="step-2" class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">⚖️ STEP 2: Clean Your Life from Sins</h2>
-                        <ul class="step-list">
+                        <h2>⚖️ STEP 2: Clean Your Life from Sins</h2>
+                        <ul>
                             <li><strong>Repent sincerely</strong> — say: Astaghfirullah and make intention to stop wrong actions.</li>
                             <li><strong>Cut off haram income</strong> (if any) — even if it's hard, Allah replaces it with better.</li>
                             <li><strong>Avoid major sins</strong> (interest, backbiting, pornography, etc.).</li>
@@ -611,8 +278,8 @@
             <section id="step-3" class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">🧠 STEP 3: Level Up Your Mind & Skills</h2>
-                        <ul class="step-list">
+                        <h2>🧠 STEP 3: Level Up Your Mind & Skills</h2>
+                        <ul>
                             <li><strong>Learn something valuable</strong> — tech, data (like you're doing), business, or trade skills.</li>
                             <li><strong>Be consistent</strong> — learn every day, even if it's 30 minutes.</li>
                             <li><strong>Fix your English if needed</strong> — communication = money.</li>
@@ -625,12 +292,10 @@
             <section id="step-4" class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">💰 STEP 4: Build Your Rizq (Income) the Halal Way</h2>
-                        <div class="step-subtitle">
-                            <strong>Dua + Effort = Rizq</strong>
-                            <p class="step-description">Allah provides through your efforts.</p>
-                        </div>
-                        <ul class="step-list">
+                        <h2>💰 STEP 4: Build Your Rizq (Income) the Halal Way</h2>
+                        <p><strong>Dua + Effort = Rizq</strong></p>
+                        <p class="step-description">Allah provides through your efforts.</p>
+                        <ul>
                             <li><strong>Try freelancing or remote jobs</strong> in your skill (e.g., Power BI, SQL, Alteryx).</li>
                             <li><strong>Avoid laziness</strong> — it's one of Shaytan's best traps. Treat your day as a mission.</li>
                             <li><strong>Spend wisely</strong> — control lifestyle. Save. Avoid debt. Give zakat and sadaqah (even small amounts).</li>
@@ -642,8 +307,8 @@
             <section id="step-5" class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">🤝 STEP 5: Be Strong in Character</h2>
-                        <ul class="step-list">
+                        <h2>🤝 STEP 5: Be Strong in Character</h2>
+                        <ul>
                             <li><strong>Be honest</strong> — even if it costs you.</li>
                             <li><strong>Keep promises</strong> — your word is your contract.</li>
                             <li><strong>Speak kindly</strong> — with parents, with friends, with strangers.</li>
@@ -656,8 +321,8 @@
             <section id="step-6" class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">💪 STEP 6: Be Physically & Emotionally Strong</h2>
-                        <ul class="step-list">
+                        <h2>💪 STEP 6: Be Physically & Emotionally Strong</h2>
+                        <ul>
                             <li><strong>Workout</strong> — strength is part of being a strong Muslim man.</li>
                             <li><strong>Eat clean</strong> — avoid junk, eat Sunnah foods (dates, olives, etc.).</li>
                             <li><strong>Sleep properly</strong> — don't waste nights on scrolling.</li>
@@ -670,8 +335,8 @@
             <section id="step-7" class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">🕌 STEP 7: Serve Others & Live With Purpose</h2>
-                        <ul class="step-list">
+                        <h2>🕌 STEP 7: Serve Others & Live With Purpose</h2>
+                        <ul>
                             <li><strong>Help people</strong> — even a smile or advice is sadaqah.</li>
                             <li><strong>Teach what you know</strong> — don't keep it to yourself.</li>
                             <li><strong>Think legacy</strong> — how will people remember you when you're gone?</li>
@@ -684,7 +349,7 @@
                 <div class="card">
                     <div class="card__body">
                         <div class="checklist-header">
-                            <h2 class="section-title section-title--highlight">✅ DAILY CHECKLIST</h2>
+                            <h2 class="section-title--highlight">✅ DAILY CHECKLIST</h2>
                             <button id="reset-button" class="btn btn--secondary btn--sm">Reset</button>
                         </div>
                         <div class="checklist-grid">
@@ -732,8 +397,8 @@
             <section class="content-section">
                 <div class="card">
                     <div class="card__body">
-                        <h2 class="section-title">🔑 Remember This</h2>
-                        <ul class="step-list">
+                        <h2>🔑 Remember This</h2>
+                        <ul>
                             <li>Success is a process, not a moment.</li>
                             <li>Trust in Allah, but tie your camel — put in the work.</li>
                             <li>It's okay to fall — get back up and keep going.</li>
@@ -751,17 +416,63 @@
             const resetButton = document.getElementById('reset-button');
             const checklistTitle = document.querySelector('.section-title--highlight');
 
-            // --- Navigation ---
+            const showMessage = (text, type) => {
+                const existingMsgs = document.querySelectorAll('.msg');
+                existingMsgs.forEach(msg => msg.remove());
+
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `msg ${type}`;
+                msgDiv.textContent = text;
+                document.body.appendChild(msgDiv);
+                requestAnimationFrame(() => msgDiv.classList.add('show'));
+                setTimeout(() => {
+                    msgDiv.classList.remove('show');
+                    msgDiv.addEventListener('transitionend', () => msgDiv.remove(), { once: true });
+                }, 3000);
+            };
+
+            const createRipple = (rect) => {
+                const ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${rect.left + rect.width / 2}px`;
+                ripple.style.top = `${rect.top + rect.height / 2}px`;
+                ripple.style.marginLeft = `${-size / 2}px`;
+                ripple.style.marginTop = `${-size / 2}px`;
+                document.body.appendChild(ripple);
+                ripple.addEventListener('animationend', () => ripple.remove());
+            };
+
+            const updateCompletionStatus = () => {
+                const total = checkboxes.length;
+                const completed = document.querySelectorAll('.custom-checkbox.checked').length;
+                checklistTitle.textContent = `✅ DAILY CHECKLIST (${completed}/${total})`;
+                if (completed === total && total > 0) {
+                    showMessage('🎉 Great job! All daily tasks completed!', 'success');
+                }
+            };
+
+            const toggleCheckbox = (checkbox) => {
+                const isChecked = checkbox.classList.toggle('checked');
+                checkbox.setAttribute('aria-checked', isChecked);
+                if (isChecked) {
+                    createRipple(checkbox.getBoundingClientRect());
+                }
+                updateCompletionStatus();
+            };
+
+            // Navigation scroll logic
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById(this.getAttribute('href').substring(1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
             });
 
-            const updateActiveNavigation = () => {
-                const sections = document.querySelectorAll('[id^="step-"], #daily-checklist');
+            // Active nav link on scroll
+            const sections = document.querySelectorAll('[id^="step-"], #daily-checklist');
+            const updateActiveNav = () => {
                 let currentSection = '';
                 sections.forEach(section => {
                     const rect = section.getBoundingClientRect();
@@ -773,33 +484,16 @@
                     link.classList.toggle('active', link.getAttribute('href').substring(1) === currentSection);
                 });
             };
-            window.addEventListener('scroll', updateActiveNavigation);
-            updateActiveNavigation(); // Initial call
+            window.addEventListener('scroll', updateActiveNav);
+            updateActiveNav(); // Initial call
 
-            // --- Checklist ---
-            const toggleCheckbox = (checkbox) => {
-                if (!checkbox) return;
-                const isChecked = checkbox.classList.toggle('checked');
-                checkbox.setAttribute('aria-checked', isChecked);
-                if (isChecked) {
-                    createVisualFeedback(checkbox.getBoundingClientRect(), 'checkmark');
-                }
-                updateCompletionStatus();
-            };
-
+            // Checklist event listeners
             checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent label click from double-toggling
-                    toggleCheckbox(checkbox);
-                });
+                checkbox.addEventListener('click', (e) => { e.stopPropagation(); toggleCheckbox(checkbox); });
                 checkbox.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleCheckbox(checkbox);
-                    }
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCheckbox(checkbox); }
                 });
             });
-
             document.querySelectorAll('.checklist-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     if (!e.target.classList.contains('custom-checkbox')) {
@@ -808,70 +502,18 @@
                 });
             });
 
-            const updateCompletionStatus = () => {
-                const total = checkboxes.length;
-                const completed = document.querySelectorAll('.custom-checkbox.checked').length;
-                checklistTitle.textContent = `✅ DAILY CHECKLIST (${completed}/${total})`;
-
-                if (completed === total && total > 0) {
-                    showMessage('🎉 Great job! All daily tasks completed!', 'success');
-                }
-            };
-
-            const resetChecklist = () => {
-                const checkedBoxes = document.querySelectorAll('.custom-checkbox.checked');
-                if (checkedBoxes.length === 0) {
+            // Reset button
+            resetButton.addEventListener('click', () => {
+                const checked = document.querySelectorAll('.custom-checkbox.checked');
+                if (checked.length === 0) {
                     showMessage('No items to reset!', 'info');
                     return;
                 }
-                checkedBoxes.forEach((checkbox, index) => {
-                    setTimeout(() => {
-                        checkbox.classList.remove('checked');
-                        checkbox.setAttribute('aria-checked', 'false');
-                    }, index * 30);
-                });
-                setTimeout(() => {
-                    updateCompletionStatus();
-                    showMessage('🔄 Checklist reset successfully!', 'info');
-                }, checkboxes.length * 30 + 200);
-            };
+                checked.forEach((cb, i) => setTimeout(() => { cb.classList.remove('checked'); cb.setAttribute('aria-checked', 'false'); }, i * 30));
+                setTimeout(() => { updateCompletionStatus(); showMessage('🔄 Checklist reset successfully!', 'info'); }, checked.length * 30 + 200);
+            });
 
-            resetButton.addEventListener('click', resetChecklist);
-
-            // --- Visual Feedback (Messages & Animations) ---
-            const showMessage = (text, type) => {
-                const existingMessages = document.querySelectorAll('.completion-message, .reset-message');
-                existingMessages.forEach(msg => msg.remove());
-
-                const message = document.createElement('div');
-                message.className = `${type === 'success' ? 'completion-message' : 'reset-message'}`;
-                message.textContent = text;
-                document.body.appendChild(message);
-
-                requestAnimationFrame(() => {
-                    message.classList.add('show');
-                });
-
-                setTimeout(() => {
-                    message.classList.remove('show');
-                    message.addEventListener('transitionend', () => message.remove(), { once: true });
-                }, 3000);
-            };
-
-            const createVisualFeedback = (rect) => {
-                const animation = document.createElement('div');
-                animation.classList.add('ripple');
-                animation.style.left = rect.left + rect.width / 2 + 'px';
-                animation.style.top = rect.top + rect.height / 2 + 'px';
-                animation.style.width = Math.max(rect.width, rect.height) + 'px';
-                animation.style.height = Math.max(rect.width, rect.height) + 'px';
-                animation.style.marginLeft = -Math.max(rect.width, rect.height) / 2 + 'px';
-                animation.style.marginTop = -Math.max(rect.width, rect.height) / 2 + 'px';
-                document.body.appendChild(animation);
-                animation.addEventListener('animationend', () => animation.remove());
-            };
-
-            updateCompletionStatus(); // Initial status update on load
+            updateCompletionStatus(); // Set initial status on load
         });
     </script>
 </body>
