@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Journey</title>
+    <title>My Journey: A Guide to Success</title>
     <style>
         /* Minimalist Color Palette */
         :root {
@@ -14,7 +14,6 @@
             --accent-orange: #e68161;
             --accent-teal: #32b8c6;
             --border-color: rgba(167, 169, 169, 0.3); /* Based on gray-300 */
-            --focus-glow: rgba(50, 184, 198, 0.4); /* Based on teal-300 */
             --success-bg: rgba(50, 184, 198, 0.15);
             --info-bg: rgba(98, 108, 113, 0.15);
 
@@ -46,11 +45,11 @@
             line-height: var(--line-tight);
             letter-spacing: -0.01em;
         }
-        h1 { font-size: var(--font-3xl); color: var(--accent-orange); }
+        h1 { font-size: var(--font-3xl); color: var(--accent-orange); text-align: center; margin-bottom: var(--s-5); }
         h2 { font-size: var(--font-2xl); color: var(--accent-orange); margin-bottom: var(--s-4); }
         p { margin: var(--s-0) 0 var(--s-3) 0; }
         a { color: var(--accent-teal); text-decoration: none; transition: color var(--transition-speed) ease; }
-        a:hover { color: var(--accent-teal); } /* Keep consistent hover */
+        a:hover { color: var(--accent-teal); }
         ul { list-style: none; padding: var(--s-0); margin: var(--s-0); }
         li {
             position: relative;
@@ -107,49 +106,11 @@
         }
         .quote cite { display: block; margin-top: var(--s-2); font-weight: 500; color: var(--accent-teal); font-style: normal; }
 
-        /* Layout */
-        .app-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            background-color: var(--bg-light);
-            border-right: 1px solid var(--border-color);
-            position: fixed; /* Keep it fixed */
-            top: 0; left: 0;
-            width: 280px;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .sidebar-content {
-            display: flex; flex-direction: column;
-            height: 100%;
-            padding: var(--s-4);
-        }
-        .sidebar-header { margin-bottom: var(--s-5); }
-        .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: var(--s-1); }
-        .nav-link {
-            display: flex; align-items: center;
-            padding: var(--s-2) var(--s-3);
-            border-radius: var(--r-md);
-            color: var(--text-secondary); font-weight: 500;
-            transition: all var(--transition-speed) ease;
-            border: 1px solid transparent;
-        }
-        .nav-link:hover, .nav-link.active { background-color: rgba(94, 82, 64, 0.15); color: var(--accent-orange); border-color: var(--border-color); } /* Brown-600 with opacity */
-        .nav-link--highlight { margin-top: var(--s-4); color: var(--accent-teal); font-weight: 550; font-size: var(--font-lg); }
-        .nav-link--highlight:hover { color: var(--accent-teal); } /* Keep teal hover */
-        .nav-icon { width: 24px; text-align: center; margin-right: var(--s-3); font-size: var(--font-lg); }
-        .sidebar-footer { margin-top: var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--border-color); font-size: var(--font-sm); color: var(--text-secondary); text-align: center; font-style: italic; }
-
-        /* Main Content */
+        /* Main Content Layout */
         .main-content {
-            margin-left: 280px; /* Offset for fixed sidebar */
-            padding: var(--s-5);
-            max-width: 1200px;
+            max-width: 768px; /* Constrain width for readability */
+            margin: var(--s-5) auto; /* Center content with top/bottom margin */
+            padding: var(--s-4); /* Add padding around the content */
         }
         .content-section { margin-bottom: var(--s-5); }
         .section-title--highlight { color: var(--accent-teal); }
@@ -201,195 +162,170 @@
         }
         @keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .app-container { grid-template-columns: 1fr; }
-            .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-color); }
-            .main-content { margin-left: var(--s-0); padding: var(--s-4); }
-        }
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
             h1 { font-size: var(--font-2xl); }
             h2 { font-size: var(--font-xl); }
             .card__body { padding: var(--s-4); }
             .checklist-header { flex-direction: column; align-items: flex-start; }
             .checklist-grid { gap: var(--s-3); }
-            .nav-link, .checklist-text { font-size: var(--font-sm); }
+            .checklist-text { font-size: var(--font-sm); }
             .custom-checkbox { width: 20px; height: 20px; }
+            .main-content { padding: var(--s-3); }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <aside class="sidebar">
-            <div class="sidebar-content">
-                <div class="sidebar-header">
-                    <h1>My Journey</h1>
-                </div>
-                <nav class="sidebar-nav">
-                    <a href="#step-1" class="nav-link"><span class="nav-icon">🌙</span><span>Step 1: Relationship with Allah</span></a>
-                    <a href="#step-2" class="nav-link"><span class="nav-icon">⚖️</span><span>Step 2: Clean Your Life from Sins</span></a>
-                    <a href="#step-3" class="nav-link"><span class="nav-icon">🧠</span><span>Step 3: Level Up Your Mind & Skills</span></a>
-                    <a href="#step-4" class="nav-link"><span class="nav-icon">💰</span><span>Step 4: Build Your Rizq</span></a>
-                    <a href="#step-5" class="nav-link"><span class="nav-icon">🤝</span><span>Step 5: Be Strong in Character</span></a>
-                    <a href="#step-6" class="nav-link"><span class="nav-icon">💪</span><span>Step 6: Physically & Emotionally Strong</span></a>
-                    <a href="#step-7" class="nav-link"><span class="nav-icon">🕌</span><span>Step 7: Serve Others</span></a>
-                    <a href="#daily-checklist" class="nav-link nav-link--highlight"><span class="nav-icon">✅</span><span>Daily Checklist</span></a>
-                </nav>
-                <div class="sidebar-footer">
-                    <p>Trust in Allah, but tie your camel.</p>
+    <main class="main-content">
+        <h1>My Journey</h1>
+
+        <section id="step-1" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>🌙 STEP 1: Build Your Relationship with Allah</h2>
+                    <blockquote class="quote">
+                        "Whoever fears Allah, He will make a way out for him and provide for him from where he never expected."
+                        <cite>— Qur'an 65:2-3</cite>
+                    </blockquote>
+                    <ul>
+                        <li><strong>Pray 5 times daily</strong> (no matter what — even if your life feels messy).</li>
+                        <li><strong>Start your day with Fajr</strong> — it gives barakah to your time.</li>
+                        <li><strong>Say dhikr daily</strong> (start with: SubhanAllah, Alhamdulillah, Allahu Akbar x33 after prayer).</li>
+                        <li><strong>Read Qur'an daily</strong> — even 5 verses. Understand its message.</li>
+                        <li><strong>Make duʿā</strong> — speak to Allah like you mean it. Be real with Him.</li>
+                    </ul>
                 </div>
             </div>
-        </aside>
+        </section>
 
-        <main class="main-content">
-            <section id="step-1" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h2>🌙 STEP 1: Build Your Relationship with Allah</h2>
-                        <blockquote class="quote">
-                            "Whoever fears Allah, He will make a way out for him and provide for him from where he never expected."
-                            <cite>— Qur'an 65:2-3</cite>
-                        </blockquote>
-                        <ul>
-                            <li><strong>Pray 5 times daily</strong> (no matter what — even if your life feels messy).</li>
-                            <li><strong>Start your day with Fajr</strong> — it gives barakah to your time.</li>
-                            <li><strong>Say dhikr daily</strong> (start with: SubhanAllah, Alhamdulillah, Allahu Akbar x33 after prayer).</li>
-                            <li><strong>Read Qur'an daily</strong> — even 5 verses. Understand its message.</li>
-                            <li><strong>Make duʿā</strong> — speak to Allah like you mean it. Be real with Him.</li>
-                        </ul>
-                    </div>
+        <section id="step-2" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>⚖️ STEP 2: Clean Your Life from Sins</h2>
+                    <ul>
+                        <li><strong>Repent sincerely</strong> — say: Astaghfirullah and make intention to stop wrong actions.</li>
+                        <li><strong>Cut off haram income</strong> (if any) — even if it's hard, Allah replaces it with better.</li>
+                        <li><strong>Avoid major sins</strong> (interest, backbiting, pornography, etc.).</li>
+                        <li><strong>Guard your gaze</strong> — start lowering your eyes, it helps clean your heart.</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="step-2" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h2>⚖️ STEP 2: Clean Your Life from Sins</h2>
-                        <ul>
-                            <li><strong>Repent sincerely</strong> — say: Astaghfirullah and make intention to stop wrong actions.</li>
-                            <li><strong>Cut off haram income</strong> (if any) — even if it's hard, Allah replaces it with better.</li>
-                            <li><strong>Avoid major sins</strong> (interest, backbiting, pornography, etc.).</li>
-                            <li><strong>Guard your gaze</strong> — start lowering your eyes, it helps clean your heart.</li>
-                        </ul>
-                    </div>
+        <section id="step-3" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>🧠 STEP 3: Level Up Your Mind & Skills</h2>
+                    <ul>
+                        <li><strong>Learn something valuable</strong> — tech, data (like you're doing), business, or trade skills.</li>
+                        <li><strong>Be consistent</strong> — learn every day, even if it's 30 minutes.</li>
+                        <li><strong>Fix your English if needed</strong> — communication = money.</li>
+                        <li><strong>Focus on solving real problems</strong> — the world pays you to solve problems.</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="step-3" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h2>🧠 STEP 3: Level Up Your Mind & Skills</h2>
-                        <ul>
-                            <li><strong>Learn something valuable</strong> — tech, data (like you're doing), business, or trade skills.</li>
-                            <li><strong>Be consistent</strong> — learn every day, even if it's 30 minutes.</li>
-                            <li><strong>Fix your English if needed</strong> — communication = money.</li>
-                            <li><strong>Focus on solving real problems</strong> — the world pays you to solve problems.</li>
-                        </ul>
-                    </div>
+        <section id="step-4" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>💰 STEP 4: Build Your Rizq (Income) the Halal Way</h2>
+                    <p><strong>Dua + Effort = Rizq</strong></p>
+                    <p class="step-description">Allah provides through your efforts.</p>
+                    <ul>
+                        <li><strong>Try freelancing or remote jobs</strong> in your skill (e.g., Power BI, SQL, Alteryx).</li>
+                        <li><strong>Avoid laziness</strong> — it's one of Shaytan's best traps. Treat your day as a mission.</li>
+                        <li><strong>Spend wisely</strong> — control lifestyle. Save. Avoid debt. Give zakat and sadaqah (even small amounts).</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="step-4" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h2>💰 STEP 4: Build Your Rizq (Income) the Halal Way</h2>
-                        <p><strong>Dua + Effort = Rizq</strong></p>
-                        <p class="step-description">Allah provides through your efforts.</p>
-                        <ul>
-                            <li><strong>Try freelancing or remote jobs</strong> in your skill (e.g., Power BI, SQL, Alteryx).</li>
-                            <li><strong>Avoid laziness</strong> — it's one of Shaytan's best traps. Treat your day as a mission.</li>
-                            <li><strong>Spend wisely</strong> — control lifestyle. Save. Avoid debt. Give zakat and sadaqah (even small amounts).</li>
-                        </ul>
-                    </div>
+        <section id="step-5" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>🤝 STEP 5: Be Strong in Character</h2>
+                    <ul>
+                        <li><strong>Be honest</strong> — even if it costs you.</li>
+                        <li><strong>Keep promises</strong> — your word is your contract.</li>
+                        <li><strong>Speak kindly</strong> — with parents, with friends, with strangers.</li>
+                        <li><strong>Stay humble</strong> — arrogance ruins everything.</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="step-5" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h2>🤝 STEP 5: Be Strong in Character</h2>
-                        <ul>
-                            <li><strong>Be honest</strong> — even if it costs you.</li>
-                            <li><strong>Keep promises</strong> — your word is your contract.</li>
-                            <li><strong>Speak kindly</strong> — with parents, with friends, with strangers.</li>
-                            <li><strong>Stay humble</strong> — arrogance ruins everything.</li>
-                        </ul>
-                    </div>
+        <section id="step-6" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>💪 STEP 6: Be Physically & Emotionally Strong</h2>
+                    <ul>
+                        <li><strong>Workout</strong> — strength is part of being a strong Muslim man.</li>
+                        <li><strong>Eat clean</strong> — avoid junk, eat Sunnah foods (dates, olives, etc.).</li>
+                        <li><strong>Sleep properly</strong> — don't waste nights on scrolling.</li>
+                        <li><strong>Learn to control emotions</strong> — anger, jealousy, lust. It's jihad.</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="step-6" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h2>💪 STEP 6: Be Physically & Emotionally Strong</h2>
-                        <ul>
-                            <li><strong>Workout</strong> — strength is part of being a strong Muslim man.</li>
-                            <li><strong>Eat clean</strong> — avoid junk, eat Sunnah foods (dates, olives, etc.).</li>
-                            <li><strong>Sleep properly</strong> — don't waste nights on scrolling.</li>
-                            <li><strong>Learn to control emotions</strong> — anger, jealousy, lust. It's jihad.</li>
-                        </ul>
-                    </div>
+        <section id="step-7" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>🕌 STEP 7: Serve Others & Live With Purpose</h2>
+                    <ul>
+                        <li><strong>Help people</strong> — even a smile or advice is sadaqah.</li>
+                        <li><strong>Teach what you know</strong> — don't keep it to yourself.</li>
+                        <li><strong>Think legacy</strong> — how will people remember you when you're gone?</li>
+                    </ul>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="step-7" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h2>🕌 STEP 7: Serve Others & Live With Purpose</h2>
-                        <ul>
-                            <li><strong>Help people</strong> — even a smile or advice is sadaqah.</li>
-                            <li><strong>Teach what you know</strong> — don't keep it to yourself.</li>
-                            <li><strong>Think legacy</strong> — how will people remember you when you're gone?</li>
-                        </ul>
+        <section id="daily-checklist" class="content-section">
+            <div class="card">
+                <div class="card__body">
+                    <div class="checklist-header">
+                        <h2 class="section-title--highlight">✅ DAILY CHECKLIST</h2>
+                        <button id="reset-button" class="btn btn--secondary btn--sm">Reset</button>
                     </div>
-                </div>
-            </section>
-
-            <section id="daily-checklist" class="content-section">
-                <div class="card">
-                    <div class="card__body">
-                        <div class="checklist-header">
-                            <h2 class="section-title--highlight">✅ DAILY CHECKLIST</h2>
-                            <button id="reset-button" class="btn btn--secondary btn--sm">Reset</button>
-                        </div>
-                        <div class="checklist-grid">
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="fajr-wudhu" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Before Fajr: Wake up, make wudhu, pray 2 rakʿah tahajjud if possible</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="fajr-dhikr" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Fajr: Pray. Do 10 min dhikr/Qur'an</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="morning-work" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Morning: Focus on learning & earning</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="dhuhr-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Dhuhr: Pray. Short walk or break</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="afternoon-work" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Afternoon: Work or study again</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="asr-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Asr: Pray. Reflect. No wasting time.</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="maghrib-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Maghrib: Pray. Family. Qur'an 10 min</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="isha-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Isha: Pray. Duʿā. Reflect on your day</span>
-                            </label>
-                            <label class="checklist-item">
-                                <div class="custom-checkbox" data-task="sleep-istighfar" tabindex="0" role="checkbox" aria-checked="false"></div>
-                                <span class="checklist-text">Before sleep: Istighfar. Plan tomorrow</span>
-                            </label>
-                        </div>
+                    <div class="checklist-grid">
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="fajr-wudhu" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Before Fajr: Wake up, make wudhu, pray 2 rakʿah tahajjud if possible</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="fajr-dhikr" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Fajr: Pray. Do 10 min dhikr/Qur'an</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="morning-work" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Morning: Focus on learning & earning</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="dhuhr-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Dhuhr: Pray. Short walk or break</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="afternoon-work" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Afternoon: Work or study again</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="asr-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Asr: Pray. Reflect. No wasting time.</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="maghrib-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Maghrib: Pray. Family. Qur'an 10 min</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="isha-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Isha: Pray. Duʿā. Reflect on your day</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="sleep-istighfar" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">Before sleep: Istighfar. Plan tomorrow</span>
+                        </label>
                     </div>
                 </div>
             </section>
@@ -406,31 +342,39 @@
                     </div>
                 </div>
             </section>
+
+            <footer class="sidebar-footer">
+                <p>Trust in Allah, but tie your camel.</p>
+            </footer>
         </main>
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const navLinks = document.querySelectorAll('.nav-link');
             const checkboxes = document.querySelectorAll('.custom-checkbox');
             const resetButton = document.getElementById('reset-button');
             const checklistTitle = document.querySelector('.section-title--highlight');
 
+            // Generic message display function
             const showMessage = (text, type) => {
                 const existingMsgs = document.querySelectorAll('.msg');
-                existingMsgs.forEach(msg => msg.remove());
+                existingMsgs.forEach(msg => msg.remove()); // Remove existing messages
 
                 const msgDiv = document.createElement('div');
                 msgDiv.className = `msg ${type}`;
                 msgDiv.textContent = text;
                 document.body.appendChild(msgDiv);
+                
+                // Animate in
                 requestAnimationFrame(() => msgDiv.classList.add('show'));
+                
+                // Animate out and remove after a delay
                 setTimeout(() => {
                     msgDiv.classList.remove('show');
                     msgDiv.addEventListener('transitionend', () => msgDiv.remove(), { once: true });
                 }, 3000);
             };
 
+            // Ripple animation for checkbox checks
             const createRipple = (rect) => {
                 const ripple = document.createElement('div');
                 ripple.classList.add('ripple');
@@ -444,6 +388,7 @@
                 ripple.addEventListener('animationend', () => ripple.remove());
             };
 
+            // Update checklist progress and show completion message
             const updateCompletionStatus = () => {
                 const total = checkboxes.length;
                 const completed = document.querySelectorAll('.custom-checkbox.checked').length;
@@ -453,6 +398,7 @@
                 }
             };
 
+            // Toggle checkbox state
             const toggleCheckbox = (checkbox) => {
                 const isChecked = checkbox.classList.toggle('checked');
                 checkbox.setAttribute('aria-checked', isChecked);
@@ -462,47 +408,25 @@
                 updateCompletionStatus();
             };
 
-            // Navigation scroll logic
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById(this.getAttribute('href').substring(1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
-            });
-
-            // Active nav link on scroll
-            const sections = document.querySelectorAll('[id^="step-"], #daily-checklist');
-            const updateActiveNav = () => {
-                let currentSection = '';
-                sections.forEach(section => {
-                    const rect = section.getBoundingClientRect();
-                    if (rect.top <= 100 && rect.bottom >= 100) {
-                        currentSection = section.id;
-                    }
-                });
-                navLinks.forEach(link => {
-                    link.classList.toggle('active', link.getAttribute('href').substring(1) === currentSection);
-                });
-            };
-            window.addEventListener('scroll', updateActiveNav);
-            updateActiveNav(); // Initial call
-
-            // Checklist event listeners
+            // Attach event listeners to checkboxes
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('click', (e) => { e.stopPropagation(); toggleCheckbox(checkbox); });
                 checkbox.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCheckbox(checkbox); }
                 });
             });
+
+            // Attach event listeners to checklist item labels (for easier clicking)
             document.querySelectorAll('.checklist-item').forEach(item => {
                 item.addEventListener('click', function(e) {
+                    // Only trigger if the click was not directly on the checkbox itself
                     if (!e.target.classList.contains('custom-checkbox')) {
                         toggleCheckbox(this.querySelector('.custom-checkbox'));
                     }
                 });
             });
 
-            // Reset button
+            // Reset all checkboxes
             resetButton.addEventListener('click', () => {
                 const checked = document.querySelectorAll('.custom-checkbox.checked');
                 if (checked.length === 0) {
