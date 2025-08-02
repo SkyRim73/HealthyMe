@@ -8,9 +8,9 @@
         /* Minimalist Color Palette */
         :root {
             --bg-dark: #1f2121;
-            --bg-light: #262828;
-            --text-primary: #f5f5f5;
-            --text-secondary: #a7a9a9;
+            --bg-light: #2a2d2d; /* Slightly lighter for cards */
+            --text-primary: #e0e0e0; /* Lighter text for readability */
+            --text-secondary: #b0b0b0; /* Slightly lighter secondary text */
             --accent-orange: #e68161;
             --accent-teal: #32b8c6;
             --border-color: rgba(167, 169, 169, 0.3); /* Based on gray-300 */
@@ -20,7 +20,7 @@
             /* Spacing & Sizes */
             --s-0: 0; --s-1: 4px; --s-2: 8px; --s-3: 16px; --s-4: 24px; --s-5: 32px;
             --r-sm: 6px; --r-md: 8px; --r-lg: 12px;
-            --font-sm: 12px; --font-base: 14px; --font-lg: 16px; --font-xl: 18px; --font-2xl: 20px; --font-3xl: 24px;
+            --font-sm: 13px; --font-base: 16px; --font-lg: 18px; --font-xl: 20px; --font-2xl: 24px; --font-3xl: 28px;
             --line-tight: 1.2; --line-normal: 1.5;
             --transition-speed: 0.2s;
         }
@@ -28,7 +28,7 @@
         /* Base & Resets */
         html {
             font-family: sans-serif;
-            font-size: var(--font-base);
+            font-size: 100%; /* Base font size relative to user settings */
             line-height: var(--line-normal);
             color: var(--text-primary);
             background-color: var(--bg-dark);
@@ -45,8 +45,8 @@
             line-height: var(--line-tight);
             letter-spacing: -0.01em;
         }
-        h1 { font-size: var(--font-3xl); color: var(--accent-orange); text-align: center; margin-bottom: var(--s-5); }
-        h2 { font-size: var(--font-2xl); color: var(--accent-orange); margin-bottom: var(--s-4); }
+        h1 { font-size: var(--font-3xl); color: var(--accent-orange); text-align: center; margin-bottom: var(--s-5); padding-top: var(--s-5); } /* Added top padding */
+        h2 { font-size: var(--font-2xl); color: var(--accent-orange); margin-bottom: var(--s-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--s-2); } /* Added border */
         p { margin: var(--s-0) 0 var(--s-3) 0; }
         a { color: var(--accent-teal); text-decoration: none; transition: color var(--transition-speed) ease; }
         a:hover { color: var(--accent-teal); }
@@ -56,7 +56,7 @@
             padding-left: var(--s-4);
             margin-bottom: var(--s-3);
             line-height: var(--line-normal);
-        }
+        } /* Removed custom bullet for cleaner look */
         li:before {
             content: "→";
             position: absolute;
@@ -67,6 +67,7 @@
         }
         li:last-child { margin-bottom: var(--s-0); }
         strong { color: var(--accent-orange); font-weight: 550; }
+        em { color: var(--text-secondary); font-style: italic; }
 
         /* General UI Elements */
         .btn {
@@ -84,6 +85,15 @@
         .btn:hover { background-color: var(--accent-orange); color: var(--bg-dark); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn:focus-visible { outline: 2px solid var(--accent-teal); outline-offset: 2px; }
 
+        /* Added secondary button style */
+        .btn--secondary {
+            border-color: var(--accent-teal);
+            background-color: rgba(50, 184, 198, 0.15);
+            color: var(--text-primary);
+        }
+        .btn--secondary:hover { background-color: var(--accent-teal); color: var(--bg-dark); }
+        .btn--sm { padding: var(--s-1) var(--s-2); font-size: var(--font-sm); }
+
         .card {
             background-color: var(--bg-light);
             border-radius: var(--r-lg);
@@ -92,7 +102,7 @@
             transition: all var(--transition-speed) ease;
             overflow: hidden;
         }
-        .card:hover { border-color: rgba(167, 169, 169, 0.5); box-shadow: 0 20px 25px rgba(0,0,0,0.1); }
+        .card:hover { border-color: rgba(167, 169, 169, 0.5); box-shadow: 0 15px 20px rgba(0,0,0,0.1); } /* Slightly less intense hover shadow */
         .card__body { padding: var(--s-5); }
 
         .quote {
@@ -102,7 +112,7 @@
             margin-bottom: var(--s-4);
             border-radius: var(--r-md);
             font-style: italic;
-            color: var(--text-secondary);
+            color: var(--text-primary); /* Primary text color for quotes */
         }
         .quote cite { display: block; margin-top: var(--s-2); font-weight: 500; color: var(--accent-teal); font-style: normal; }
 
@@ -110,7 +120,7 @@
         .main-content {
             max-width: 768px; /* Constrain width for readability */
             margin: var(--s-5) auto; /* Center content with top/bottom margin */
-            padding: var(--s-4); /* Add padding around the content */
+            padding: var(--s-4) var(--s-3); /* Add padding around the content, slightly less horizontal */
         }
         .content-section { margin-bottom: var(--s-5); }
         .section-title--highlight { color: var(--accent-teal); }
@@ -121,18 +131,23 @@
         .checklist-item {
             display: flex; align-items: flex-start; gap: var(--s-3);
             padding: var(--s-3); border-radius: var(--r-md);
+            background-color: var(--bg-dark); /* Darker background for items */
             cursor: pointer; transition: all var(--transition-speed) ease;
-            border: 1px solid transparent; background-color: transparent;
+            border: 1px solid rgba(167, 169, 169, 0.1); /* Subtle border */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .checklist-item:hover { background-color: rgba(59, 130, 246, 0.08); border-color: var(--border-color); } /* Blue-ish bg for contrast */
+        .checklist-item:hover {
+            background-color: rgba(50, 184, 198, 0.08); /* Teal-ish hover */
+            border-color: rgba(167, 169, 169, 0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
         .checklist-text { flex: 1; font-weight: 500; color: var(--text-primary); user-select: none; }
         .custom-checkbox {
             flex-shrink: 0; width: 24px; height: 24px;
             border: 2px solid var(--accent-teal); border-radius: var(--r-sm);
             background-color: var(--bg-light);
             position: relative; cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            display: block !important; opacity: 1 !important; visibility: visible !important;
+            transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, transform var(--transition-speed) ease;
         }
         .custom-checkbox:hover { border-color: var(--accent-teal); background-color: rgba(50, 184, 198, 0.1); transform: scale(1.05); }
         .custom-checkbox.checked { background-color: var(--accent-teal); border-color: var(--accent-teal); }
@@ -144,6 +159,15 @@
             transform: translate(-50%, -60%) rotate(45deg); display: block;
         }
 
+        /* Added Header/Nav Styling */
+        .site-header {
+            background-color: rgba(38, 40, 40, 0.9); /* Semi-transparent light background */
+            padding: var(--s-3) var(--s-4);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid var(--border-color);
+        }
         /* Messaging & Animations */
         .msg {
             position: fixed; top: var(--s-4);
@@ -163,11 +187,18 @@
         @keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
 
         /* Responsive Adjustments */
+        @media (min-width: 769px) {
+             /* Keep list styles for larger screens */
+            li:before { content: "→"; }
+            li { padding-left: var(--s-4); }
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: var(--font-2xl); }
             h2 { font-size: var(--font-xl); }
             .card__body { padding: var(--s-4); }
             .checklist-header { flex-direction: column; align-items: flex-start; }
+            .checklist-header h2 { border-bottom: none; padding-bottom: 0; margin-bottom: var(--s-2); } /* Adjust title in mobile header */
             .checklist-grid { gap: var(--s-3); }
             .checklist-text { font-size: var(--font-sm); }
             .custom-checkbox { width: 20px; height: 20px; }
@@ -175,9 +206,16 @@
         }
     </style>
 </head>
+
 <body>
+
+    <header class="site-header">
+        <h1>My Journey: A Guide to Success</h1>
+        <!-- Simple navigation could go here if needed -->
+    </header>
+
     <main class="main-content">
-        <h1>My Journey</h1>
+        <!-- Removed redundant h1 here as it's now in the header -->
 
         <section id="step-1" class="content-section">
             <div class="card">
@@ -191,7 +229,7 @@
                         <li><strong>Pray 5 times daily</strong> (no matter what — even if your life feels messy).</li>
                         <li><strong>Start your day with Fajr</strong> — it gives barakah to your time.</li>
                         <li><strong>Say dhikr daily</strong> (start with: SubhanAllah, Alhamdulillah, Allahu Akbar x33 after prayer).</li>
-                        <li><strong>Read Qur'an daily</strong> — even 5 verses. Understand its message.</li>
+                        <li><strong>Read Qur'an daily</strong> — even 5 verses. <em>Understand its message.</em></li>
                         <li><strong>Make duʿā</strong> — speak to Allah like you mean it. Be real with Him.</li>
                     </ul>
                 </div>
@@ -203,7 +241,7 @@
                 <div class="card__body">
                     <h2>⚖️ STEP 2: Clean Your Life from Sins</h2>
                     <ul>
-                        <li><strong>Repent sincerely</strong> — say: Astaghfirullah and make intention to stop wrong actions.</li>
+                        <li><strong>Repent sincerely</strong> — say: <em>Astaghfirullah</em> and make intention to stop wrong actions.</li>
                         <li><strong>Cut off haram income</strong> (if any) — even if it's hard, Allah replaces it with better.</li>
                         <li><strong>Avoid major sins</strong> (interest, backbiting, pornography, etc.).</li>
                         <li><strong>Guard your gaze</strong> — start lowering your eyes, it helps clean your heart.</li>
@@ -217,7 +255,7 @@
                 <div class="card__body">
                     <h2>🧠 STEP 3: Level Up Your Mind & Skills</h2>
                     <ul>
-                        <li><strong>Learn something valuable</strong> — tech, data (like you're doing), business, or trade skills.</li>
+                        <li><strong>Learn something valuable</strong> — tech, data, business, or trade skills.</li>
                         <li><strong>Be consistent</strong> — learn every day, even if it's 30 minutes.</li>
                         <li><strong>Fix your English if needed</strong> — communication = money.</li>
                         <li><strong>Focus on solving real problems</strong> — the world pays you to solve problems.</li>
@@ -232,7 +270,7 @@
                     <h2>💰 STEP 4: Build Your Rizq (Income) the Halal Way</h2>
                     <p><strong>Dua + Effort = Rizq</strong></p>
                     <p class="step-description">Allah provides through your efforts.</p>
-                    <ul>
+                    <ul style="list-style-type: none; padding: 0;"> <!-- Removed custom bullet for this list -->
                         <li><strong>Try freelancing or remote jobs</strong> in your skill (e.g., Power BI, SQL, Alteryx).</li>
                         <li><strong>Avoid laziness</strong> — it's one of Shaytan's best traps. Treat your day as a mission.</li>
                         <li><strong>Spend wisely</strong> — control lifestyle. Save. Avoid debt. Give zakat and sadaqah (even small amounts).</li>
@@ -293,22 +331,18 @@
                         <label class="checklist-item">
                             <div class="custom-checkbox" data-task="fajr-wudhu" tabindex="0" role="checkbox" aria-checked="false"></div>
                             <span class="checklist-text">Before Fajr: Wake up, make wudhu, pray 2 rakʿah tahajjud if possible</span>
-                        </label>
+                        </label> <!-- Ensure labels wrap checkboxes properly -->
                         <label class="checklist-item">
                             <div class="custom-checkbox" data-task="fajr-dhikr" tabindex="0" role="checkbox" aria-checked="false"></div>
                             <span class="checklist-text">Fajr: Pray. Do 10 min dhikr/Qur'an</span>
                         </label>
                         <label class="checklist-item">
                             <div class="custom-checkbox" data-task="morning-work" tabindex="0" role="checkbox" aria-checked="false"></div>
-                            <span class="checklist-text">Morning: Focus on learning & earning</span>
+                            <span class="checklist-text">Morning: Focus on learning & earning <em>(Rizq Building)</em></span>
                         </label>
                         <label class="checklist-item">
                             <div class="custom-checkbox" data-task="dhuhr-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
                             <span class="checklist-text">Dhuhr: Pray. Short walk or break</span>
-                        </label>
-                        <label class="checklist-item">
-                            <div class="custom-checkbox" data-task="afternoon-work" tabindex="0" role="checkbox" aria-checked="false"></div>
-                            <span class="checklist-text">Afternoon: Work or study again</span>
                         </label>
                         <label class="checklist-item">
                             <div class="custom-checkbox" data-task="asr-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
@@ -317,6 +351,10 @@
                         <label class="checklist-item">
                             <div class="custom-checkbox" data-task="maghrib-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
                             <span class="checklist-text">Maghrib: Pray. Family. Qur'an 10 min</span>
+                        </label>
+                        <label class="checklist-item">
+                            <div class="custom-checkbox" data-task="after-maghrib" tabindex="0" role="checkbox" aria-checked="false"></div>
+                            <span class="checklist-text">After Maghrib: Finish urgent tasks, plan for tomorrow</span>
                         </label>
                         <label class="checklist-item">
                             <div class="custom-checkbox" data-task="isha-prayer" tabindex="0" role="checkbox" aria-checked="false"></div>
@@ -345,7 +383,7 @@
 
             <footer class="sidebar-footer">
                 <p>Trust in Allah, but tie your camel.</p>
-            </footer>
+            </footer> <!-- Consider removing or styling footer -->
         </main>
 
     <script>
@@ -420,7 +458,7 @@
             document.querySelectorAll('.checklist-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     // Only trigger if the click was not directly on the checkbox itself
-                    if (!e.target.classList.contains('custom-checkbox')) {
+                    if (!e.target.closest('.custom-checkbox')) { // Use closest for robust selection
                         toggleCheckbox(this.querySelector('.custom-checkbox'));
                     }
                 });
